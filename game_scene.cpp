@@ -3,28 +3,34 @@
 #include <iostream>
 
 const int TILE_SIZE = 16;
+
+// Save all sprites for which collision should be checked.
 std::vector<sf::Sprite> collision_sprites;
 
+// Render objects that are not tiles.
 void Game_scene::render_objects(sf::RenderWindow& window)
 {
     window.draw(sprite_loader.player_sprite);
 }
 
+// This is where the tiles are drawn.
 void Game_scene::draw_level(sf::RenderWindow& window)
 {
     for (int y = 0; y < 16; y++)
     {
         for (int x = 0; x < 16; x++)
         {
-            int index = y * 16 + x;  // Correct way to map 2D coordinates to a 1D array
+            int index = y * 16 + x;
 
-            if (level_loader.title_screen_level_terrain[index] == '#')
+            if (level_loader.level_1_terrain[index] == '#')
             {
                 sprite_loader.wall_sprite.setPosition(x * SCALE_FACTOR * TILE_SIZE + (SCREEN_WIDTH - (TILE_SIZE*TILE_SIZE*SCALE_FACTOR))/2, y * SCALE_FACTOR * TILE_SIZE + (SCREEN_HEIGHT - (TILE_SIZE*TILE_SIZE*SCALE_FACTOR))/2);
                 window.draw(sprite_loader.wall_sprite);
+
+                // Save in collision sprites.
                 collision_sprites.push_back(sprite_loader.wall_sprite);
             }
-            else if (level_loader.title_screen_level_terrain[index] == 'F')
+            else if (level_loader.level_1_terrain[index] == 'F')
             {
                 sprite_loader.floor_sprite.setPosition(x * SCALE_FACTOR * TILE_SIZE + (SCREEN_WIDTH - (TILE_SIZE*TILE_SIZE*SCALE_FACTOR))/2, y * SCALE_FACTOR * TILE_SIZE + (SCREEN_HEIGHT - (TILE_SIZE*TILE_SIZE*SCALE_FACTOR))/2);
                 window.draw(sprite_loader.floor_sprite);
@@ -86,8 +92,7 @@ bool Game_scene::check_collision()
     return false; // No collision
 }
 
-
-
+// Animations of sprites are handled here.
 void Game_scene::update_sprites(sf::Clock& timer, sf::RenderWindow& window)
 {
     if ((int)timer.getElapsedTime().asMilliseconds() % 3000 > 2000)
