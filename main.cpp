@@ -1,6 +1,7 @@
-#include <iostream>
+#include "game_window.h"
 
-int main(int argc, char **argv) {
-    std::cout << "Hello, world!" << std::endl;
+int main() {
+    game_window game_window;
+    game_window.open_game_window();
     return 0;
 }
