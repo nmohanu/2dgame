@@ -7,6 +7,8 @@ const int TILE_SIZE = 16;
 // Save all sprites for which collision should be checked.
 std::vector<sf::Sprite> collision_sprites;
 sf::Vector2f world_offset(0.f, 0.f);
+sf::Vector2f new_world_position(0.f, 0.f);
+sf::Vector2f original_world_positio(0.f, 0.f);
 
 // Render objects that are not tiles.
 void Game_scene::render_objects(sf::RenderWindow& window)
@@ -32,7 +34,7 @@ void Game_scene::draw_level(sf::RenderWindow& window)
                 sprite_loader.wall_sprite.setPosition(position);
                 window.draw(sprite_loader.wall_sprite);
 
-                // No need to save in collision_sprites here
+                collision_sprites.push_back(sprite_loader.wall_sprite);
             }
             else if (level_1->level_1_terrain[x][y] == 'F')
             {
@@ -51,77 +53,31 @@ void Game_scene::draw_level(sf::RenderWindow& window)
 
 void Game_scene::move_player(float deltaTimeSeconds)
 {
-    // Store the original player position
-    sf::Vector2f originalPosition = this->sprite_loader.player_sprite.getPosition();
+    // Store the original camera position.
+    sf::Vector2f original_world_position(world_offset);
 
-    // Calculate the world offset based on player position
+    // New camera position.
+    new_world_position = world_offset;
 
-    sf::RectangleShape rectangle(sf::Vector2f(200.f, 200.f)); // Width and height of the rectangle
-    rectangle.setPosition(SCREEN_WIDTH/2 - 100.f, SCREEN_HEIGHT/2 - 100.f);
+    // Move camera position.
+    new_world_position -= get_velocity(deltaTimeSeconds);
 
-    bool move_camera = true;
-
-    sf::FloatRect rectBounds = rectangle.getGlobalBounds();
-
-    for (const sf::Sprite& wallSprite : collision_sprites)
-    {
-        if (rectBounds.intersects(wallSprite.getGlobalBounds()))
-        {
-            move_camera = false;
-        }
-    }
-
-    // Move player
-    if(move_camera)
-    {
-        // Handle player movement
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-        {
-            this->sprite_loader.player_sprite.move(get_velocity(deltaTimeSeconds)); // Move upward
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        {
-            this->sprite_loader.player_sprite.move(get_velocity(deltaTimeSeconds)); // Move to the left
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        {
-            this->sprite_loader.player_sprite.move(get_velocity(deltaTimeSeconds)); // Move downward
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        {
-            this->sprite_loader.player_sprite.move(get_velocity(deltaTimeSeconds)); // Move to the right
-        }
-    }
-
+    // // Print offset.
     std::cout << (int) world_offset.x << " " << (int) world_offset.y << '\n';
-
 
     // Check for collision after movement
     if (check_collision())
     {
-        // If collision occurred, reset player position
-        this->sprite_loader.player_sprite.setPosition(originalPosition);
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-        {
-            world_offset.y = world_offset.y - get_velocity(deltaTimeSeconds).y;
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        {
-            world_offset.x = world_offset.x - get_velocity(deltaTimeSeconds).x;
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        {
-            world_offset.y = world_offset.y - get_velocity(deltaTimeSeconds).y;
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        {
-            world_offset.x = world_offset.x - get_velocity(deltaTimeSeconds).x;
-        }
-        std::cout << "check" << '\n';
+        // Restore position to previous working one.
+        world_offset = original_world_position;
+        std::cout << "COLLISION" << '\n';
     }
-
-    // Move screen...
+    // No collision, update camera position.
+    else
+    {
+        original_world_position = (sf::Vector2f(world_offset.x, world_offset.y));
+        world_offset = new_world_position;
+    }
 
     // Clear walls (if this is the appropriate place to do so)
     collision_sprites.clear();
@@ -131,30 +87,31 @@ void Game_scene::move_player(float deltaTimeSeconds)
 sf::Vector2f Game_scene::get_velocity(float deltaTimeSeconds)
 {
     sf::Vector2f player_velocity(0.f, 0.f);
+
     // Set player velocity
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-        {
-            player_velocity += sf::Vector2f(0.f, -100.f * deltaTimeSeconds * PLAYER_SPEED);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        {
-            player_velocity += sf::Vector2f(-100.f * deltaTimeSeconds * PLAYER_SPEED, 0.f);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        {
-            player_velocity += sf::Vector2f(0.f, 100.f * deltaTimeSeconds * PLAYER_SPEED);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        {
-            player_velocity += sf::Vector2f(100.f * deltaTimeSeconds * PLAYER_SPEED, 0.f);
-        }
-    // Correct velocity
+    {
+        player_velocity += sf::Vector2f(0.f, -100.f * deltaTimeSeconds * PLAYER_SPEED);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+    {
+        player_velocity += sf::Vector2f(-100.f * deltaTimeSeconds * PLAYER_SPEED, 0.f);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+    {
+        player_velocity += sf::Vector2f(0.f, 100.f * deltaTimeSeconds * PLAYER_SPEED);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+    {
+        player_velocity += sf::Vector2f(100.f * deltaTimeSeconds * PLAYER_SPEED, 0.f);
+    }
+    // Correct velocity (pythagoras theorem approximation).
     if ((sf::Keyboard::isKeyPressed(sf::Keyboard::W) && sf::Keyboard::isKeyPressed(sf::Keyboard::A)) ||
     (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && sf::Keyboard::isKeyPressed(sf::Keyboard::D)) ||
     (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && sf::Keyboard::isKeyPressed(sf::Keyboard::A)) ||
     (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && sf::Keyboard::isKeyPressed(sf::Keyboard::D)))
     {
-        player_velocity = sf::Vector2f(player_velocity.x/2, player_velocity.y/2);
+        player_velocity = sf::Vector2f(player_velocity.x/100*60, player_velocity.y/100*60);
     }
     return player_velocity;
 }
@@ -164,6 +121,7 @@ bool Game_scene::check_collision()
 {
     sf::FloatRect playerBounds = this->sprite_loader.player_sprite.getGlobalBounds();
 
+    // Character sprite is 12 pixels wide.
     playerBounds.left += (playerBounds.width - 12) / 2;
     playerBounds.width = 12;
 
@@ -175,13 +133,6 @@ bool Game_scene::check_collision()
             return true; // Collision detected
         }
     }
-    if(this->sprite_loader.player_sprite.getPosition().x <= SCREEN_WIDTH/2 - 100 ||
-       this->sprite_loader.player_sprite.getPosition().x >= SCREEN_WIDTH/2 + 100 ||
-       this->sprite_loader.player_sprite.getPosition().y <= SCREEN_HEIGHT/2 - 100 ||
-       this->sprite_loader.player_sprite.getPosition().y >= SCREEN_HEIGHT/2 + 100)
-    {
-        return true;
-    }
 
     return false; // No collision
 }
@@ -191,17 +142,17 @@ void Game_scene::update_sprites(sf::Clock& timer, sf::RenderWindow& window)
 {
     if ((int)timer.getElapsedTime().asMilliseconds() % 3000 > 2000)
     {
-        sf::IntRect textureRect(32, 0, 16, 16); // Adjusted coordinates for the first version
+        sf::IntRect textureRect(32, 0, 16, 16); // Adjusted sprite for the first version
         this->sprite_loader.player_sprite.setTextureRect(textureRect);
     }
     else if ((int)timer.getElapsedTime().asMilliseconds() % 3000 > 1000)
     {
-        sf::IntRect textureRect(16, 0, 16, 16); // Adjusted coordinates for the second version
+        sf::IntRect textureRect(16, 0, 16, 16); // Adjusted sprite for the second version
         this->sprite_loader.player_sprite.setTextureRect(textureRect);
     }
     else
     {
-        sf::IntRect textureRect(0, 0, 16, 16); // Adjusted coordinates for the third version
+        sf::IntRect textureRect(0, 0, 16, 16); // Adjusted sprite for the third version
         this->sprite_loader.player_sprite.setTextureRect(textureRect);
     }
 }
