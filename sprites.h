@@ -19,6 +19,12 @@ struct Sprite_loader
     sf::Texture floor_texture;
     sf::Sprite floor_sprite;
 
+    sf::Texture puddle_texture;
+    sf::Sprite puddle_sprite;
+
+    sf::Texture flower_texture;
+    sf::Sprite flower_sprite;
+
     Sprite_loader();
     void add_sprites();
 };
