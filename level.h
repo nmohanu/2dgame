@@ -3,7 +3,9 @@
 struct Level
 {
     Level();
-    char title_screen_level_terrain[256] =
+
+    // Level 1 terrain.
+    char level_1_terrain[256] =
     {'#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#',
 
     '#', '#', '#', '#', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', '#',

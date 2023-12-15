@@ -6,7 +6,7 @@
 const int SCREEN_WIDTH = 1920/2;
 const int SCREEN_HEIGHT = 1080/2;
 const int SCALE_FACTOR = 2;
-const float PLAYER_SPEED = 4.f;
+const float PLAYER_SPEED = 2.f;
 
 struct Sprite_loader
 {

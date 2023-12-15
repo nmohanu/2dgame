@@ -2,14 +2,15 @@
 #include <cmath>
 #include <iostream>
 
-
+// This is where the window is created.
 void game_window::open_game_window()
 {
-    current_scene = &title_screen;
+    current_scene = &level_1;
     sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Bruh");
     game_window_loop(window);
 }
 
+// This is where the updates of the window are called.
 void game_window::game_window_loop(sf::RenderWindow& window)
 {
     while (window.isOpen())
@@ -19,6 +20,7 @@ void game_window::game_window_loop(sf::RenderWindow& window)
     }
 }
 
+// Draw objects.
 void game_window::game_window_draw(sf::RenderWindow& window)
 {
     window.clear();
@@ -27,6 +29,7 @@ void game_window::game_window_draw(sf::RenderWindow& window)
     window.display();
 }
 
+// Update objects and events.
 void game_window::game_window_update(sf::RenderWindow& window)
 {
     // check all the window's events that were triggered since the last iteration of the loop
@@ -43,6 +46,7 @@ void game_window::game_window_update(sf::RenderWindow& window)
     // Update game logic based on delta time
     float deltaTimeSeconds = deltaTime.asSeconds();
 
+    // Move player.
     current_scene->move_player(deltaTimeSeconds);
 
     // Sprite frame update

@@ -7,7 +7,7 @@ struct game_window
     sf::Clock frame_clock;
     sf::Clock delta_clock;
     Game_scene* current_scene = nullptr;
-    Game_scene title_screen;
+    Game_scene level_1;
 
     void open_game_window();
     void game_window_loop(sf::RenderWindow&);

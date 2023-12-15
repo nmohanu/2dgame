@@ -8,7 +8,7 @@ Sprite_loader::Sprite_loader()
 
 void Sprite_loader::add_sprites()
 {
-    // ADD PLAYER SPRITE
+    // Add player sprite.
     if (!player_texture.loadFromFile("/home/nathanaelm/projects/ghostgame/Assets/Characters/player_sprite_sheet.png")) {
         // Error handling if the image fails to load
         std::cout << "ERR" << '\n';
@@ -17,6 +17,7 @@ void Sprite_loader::add_sprites()
     player_sprite.setScale(SCALE_FACTOR, SCALE_FACTOR);
     player_sprite.setPosition(SCREEN_WIDTH/2-(16 * SCALE_FACTOR)/2, SCREEN_HEIGHT/2-(16 * SCALE_FACTOR)/2);
 
+    // Add wall sprite.
     if (!wall_texture.loadFromFile("/home/nathanaelm/projects/ghostgame/Assets/Tiles/wall.png")) {
         // Error handling if the image fails to load
         std::cout << "ERR" << '\n';
@@ -24,6 +25,7 @@ void Sprite_loader::add_sprites()
     wall_sprite.setTexture(wall_texture);
     wall_sprite.setScale(SCALE_FACTOR, SCALE_FACTOR);
 
+    // Add floor sprite.
     if (!floor_texture.loadFromFile("/home/nathanaelm/projects/ghostgame/Assets/Tiles/floor.png")) {
         // Error handling if the image fails to load
         std::cout << "ERR" << '\n';
