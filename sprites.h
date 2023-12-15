@@ -1,9 +1,8 @@
 #pragma once
-#include <cmath>
+
 #include <SFML/Graphics.hpp>
 #include <vector>
 
-// General data.
 const int SCREEN_WIDTH = 1920/2;
 const int SCREEN_HEIGHT = 1080/2;
 const int SCALE_FACTOR = 2;
@@ -19,6 +18,12 @@ struct Sprite_loader
 
     sf::Texture floor_texture;
     sf::Sprite floor_sprite;
+
+    sf::Texture puddle_texture;
+    sf::Sprite puddle_sprite;
+
+    sf::Texture flower_texture;
+    sf::Sprite flower_sprite;
 
     Sprite_loader();
     void add_sprites();

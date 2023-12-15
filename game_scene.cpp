@@ -47,6 +47,29 @@ void Game_scene::draw_level(sf::RenderWindow& window)
                 sprite_loader.floor_sprite.setPosition(position);
                 window.draw(sprite_loader.floor_sprite);
             }
+            else if (level_1->level_1_terrain[x][y] == 'P')
+            {
+                sf::Vector2f position(x * SCALE_FACTOR * TILE_SIZE + (SCREEN_WIDTH - (TILE_SIZE*TILE_SIZE*SCALE_FACTOR))/2,
+                                       y * SCALE_FACTOR * TILE_SIZE + (SCREEN_HEIGHT - (TILE_SIZE*TILE_SIZE*SCALE_FACTOR))/2);
+
+                // Apply world offset to position
+                position += world_offset;
+
+                sprite_loader.puddle_sprite.setPosition(position);
+                window.draw(sprite_loader.puddle_sprite);
+                collision_sprites.push_back(sprite_loader.puddle_sprite);
+            }
+            else if (level_1->level_1_terrain[x][y] == 'L')
+            {
+                sf::Vector2f position(x * SCALE_FACTOR * TILE_SIZE + (SCREEN_WIDTH - (TILE_SIZE*TILE_SIZE*SCALE_FACTOR))/2,
+                                       y * SCALE_FACTOR * TILE_SIZE + (SCREEN_HEIGHT - (TILE_SIZE*TILE_SIZE*SCALE_FACTOR))/2);
+
+                // Apply world offset to position
+                position += world_offset;
+
+                sprite_loader.flower_sprite.setPosition(position);
+                window.draw(sprite_loader.flower_sprite);
+            }
         }
     }
 }
@@ -142,18 +165,22 @@ void Game_scene::update_sprites(sf::Clock& timer, sf::RenderWindow& window)
 {
     if ((int)timer.getElapsedTime().asMilliseconds() % 3000 > 2000)
     {
-        sf::IntRect textureRect(32, 0, 16, 16); // Adjusted sprite for the first version
+        sf::IntRect textureRect(32, 0, 16, 16); // Adjusted coordinates for the first version
         this->sprite_loader.player_sprite.setTextureRect(textureRect);
+        this->sprite_loader.flower_sprite.setTextureRect(sf::IntRect(32, 0, 16, 16));
+
     }
     else if ((int)timer.getElapsedTime().asMilliseconds() % 3000 > 1000)
     {
-        sf::IntRect textureRect(16, 0, 16, 16); // Adjusted sprite for the second version
+        sf::IntRect textureRect(16, 0, 16, 16); // Adjusted coordinates for the second version
         this->sprite_loader.player_sprite.setTextureRect(textureRect);
+        this->sprite_loader.flower_sprite.setTextureRect(sf::IntRect(48, 0, 16, 16));
     }
     else
     {
-        sf::IntRect textureRect(0, 0, 16, 16); // Adjusted sprite for the third version
+        sf::IntRect textureRect(0, 0, 16, 16); // Adjusted coordinates for the third version
         this->sprite_loader.player_sprite.setTextureRect(textureRect);
+        this->sprite_loader.flower_sprite.setTextureRect(sf::IntRect(64, 0, 16, 16));
     }
 }
 
