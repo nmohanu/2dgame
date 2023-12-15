@@ -5,7 +5,8 @@
 
 struct Game_scene
 {
-    Level level_loader;
+    Level* level_1 = new Level(128, 128, 1);
+    Level* current_level = nullptr;
     Sprite_loader sprite_loader;
     void render_objects(sf::RenderWindow& window);
     void update_sprites(sf::Clock& timer, sf::RenderWindow& window);

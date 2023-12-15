@@ -16,13 +16,12 @@ void Game_scene::render_objects(sf::RenderWindow& window)
 // This is where the tiles are drawn.
 void Game_scene::draw_level(sf::RenderWindow& window)
 {
-    for (int y = 0; y < 16; y++)
+    for (int y = 0; y < current_level->LEVEL_HEIGHT; y++)
     {
-        for (int x = 0; x < 16; x++)
+        for (int x = 0; x < current_level->LEVEL_WIDTH; x++)
         {
-            int index = y * 16 + x;
 
-            if (level_loader.level_1_terrain[index] == '#')
+            if (current_level->level_1_terrain[x][y] == '#')
             {
                 sprite_loader.wall_sprite.setPosition(x * SCALE_FACTOR * TILE_SIZE + (SCREEN_WIDTH - (TILE_SIZE*TILE_SIZE*SCALE_FACTOR))/2, y * SCALE_FACTOR * TILE_SIZE + (SCREEN_HEIGHT - (TILE_SIZE*TILE_SIZE*SCALE_FACTOR))/2);
                 window.draw(sprite_loader.wall_sprite);
@@ -30,7 +29,7 @@ void Game_scene::draw_level(sf::RenderWindow& window)
                 // Save in collision sprites.
                 collision_sprites.push_back(sprite_loader.wall_sprite);
             }
-            else if (level_loader.level_1_terrain[index] == 'F')
+            else if (level_1->level_1_terrain[x][y] == 'F')
             {
                 sprite_loader.floor_sprite.setPosition(x * SCALE_FACTOR * TILE_SIZE + (SCREEN_WIDTH - (TILE_SIZE*TILE_SIZE*SCALE_FACTOR))/2, y * SCALE_FACTOR * TILE_SIZE + (SCREEN_HEIGHT - (TILE_SIZE*TILE_SIZE*SCALE_FACTOR))/2);
                 window.draw(sprite_loader.floor_sprite);
