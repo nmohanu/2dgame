@@ -2,7 +2,6 @@
 #include "sprites.h"
 #include "level.h"
 
-
 struct Game_scene
 {
     Level* level_1 = new Level(128, 128, 1);
@@ -13,4 +12,5 @@ struct Game_scene
     void draw_level(sf::RenderWindow& window);
     void move_player(float deltaTimeSeconds);
     bool check_collision();
+    sf::Vector2f get_velocity(float deltaTimeSeconds);
 };
