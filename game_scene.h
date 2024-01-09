@@ -10,7 +10,7 @@ struct Game_scene
     Sprite_loader sprite_loader;
     void render_objects(sf::RenderWindow& window);
     void update_sprites(sf::Clock& timer, sf::RenderWindow& window);
-    void draw_level(sf::RenderWindow& window);
+    void draw_level(sf::RenderWindow& window, sf::Vector2f mouse_position);
     void move_player(float deltaTimeSeconds);
     bool check_collision();
     sf::Vector2f get_velocity(float deltaTimeSeconds);

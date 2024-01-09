@@ -11,6 +11,7 @@ struct game_window
 
     int player_money = 100;
     sf::Text player_money_text;
+    sf::Vector2f mouse_position;
 
     sf::Font font;
     game_window() 

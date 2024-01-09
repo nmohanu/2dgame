@@ -29,12 +29,15 @@ void game_window::game_window_draw(sf::RenderWindow& window)
 {
     window.clear(BG_color);
 
+    // Get mouse location
+    mouse_position = sf::Vector2f(sf::Mouse::getPosition(window));
+
     // UI elements.
     window.draw(current_scene->sprite_loader.coin_sprite);
     window.draw(current_scene->sprite_loader.coin_sprite);
 
     // Draw level.
-    current_scene->draw_level(window);
+    current_scene->draw_level(window, mouse_position);
     current_scene->render_objects(window);
 
     // Update player money.

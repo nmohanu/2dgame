@@ -19,7 +19,7 @@ void Game_scene::render_objects(sf::RenderWindow& window)
 }
 
 // This is where the tiles are drawn.
-void Game_scene::draw_level(sf::RenderWindow& window)
+void Game_scene::draw_level(sf::RenderWindow& window, sf::Vector2f mouse_position)
 {
     for (int y = 0; y < current_level->LEVEL_HEIGHT; y++)
     {
@@ -203,6 +203,4 @@ void Game_scene::update_sprites(sf::Clock& timer, sf::RenderWindow& window)
         this->sprite_loader.player_sprite.setTextureRect(textureRect);
     }
 }
-
-
 
