@@ -10,7 +10,9 @@ void game_window::open_game_window()
 
     current_scene = &level_1;
     current_scene->current_level = current_scene->level_1;
-    sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Bruh");
+    sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Bruh", sf::Style::Titlebar | sf::Style::Close);
+    window.setFramerateLimit(60);
+    window.setVerticalSyncEnabled(true);
     game_window_loop(window);
 }
 

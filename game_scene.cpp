@@ -32,7 +32,7 @@ void Game_scene::draw_level(sf::RenderWindow& window, sf::Vector2f mouse_positio
             {
                 sprite_loader.edge_0_sprite.setPosition(position);
                 window.draw(sprite_loader.edge_0_sprite);
-
+                
                 collision_sprites.push_back(sprite_loader.edge_0_sprite);
             } // Edge 0
             else if (current_level->level_1_terrain[x][y] == '1')
@@ -89,11 +89,25 @@ void Game_scene::draw_level(sf::RenderWindow& window, sf::Vector2f mouse_positio
             {
                 sprite_loader.floor_sprite.setPosition(position);
                 window.draw(sprite_loader.floor_sprite);
+
+                sf::FloatRect sprite = sprite_loader.floor_sprite.getGlobalBounds();
+                if(sprite.contains(mouse_position))
+                {
+                    sprite_loader.selection_sprite.setPosition(position);
+                    window.draw(sprite_loader.selection_sprite);
+                }
             } // Floor 1 
             else if (level_1->level_1_terrain[x][y] == 'L')
             {
                 sprite_loader.floor2_sprite.setPosition(position);
                 window.draw(sprite_loader.floor2_sprite);
+
+                sf::FloatRect sprite = sprite_loader.floor2_sprite.getGlobalBounds();
+                if(sprite.contains(mouse_position))
+                {
+                    sprite_loader.selection_sprite.setPosition(position);
+                    window.draw(sprite_loader.selection_sprite);
+                }
             } // Floor 2
         }
     }

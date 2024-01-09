@@ -3,11 +3,11 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 
-const int SCREEN_WIDTH = 1920/2;
-const int SCREEN_HEIGHT = 1080/2;
-const float SCALE_FACTOR_X = 2;
-const float SCALE_FACTOR_Y = 1.75;
-const float PLAYER_SPEED = 2.f;
+const int SCREEN_WIDTH = 1920;
+const int SCREEN_HEIGHT = 1080;
+const float SCALE_FACTOR_X = 4;
+const float SCALE_FACTOR_Y = 3.5;
+const float PLAYER_SPEED = 3.f;
 
 struct Sprite_loader
 {
@@ -15,9 +15,13 @@ struct Sprite_loader
     sf::Texture player_texture;
     sf::Sprite player_sprite;
 
-    //UI elements
+    // UI elements
     sf::Texture UI_texture;
     sf::Sprite coin_sprite;
+
+    // Selection square
+    sf::Texture selection_texture;
+    sf::Sprite selection_sprite;
 
     // Floor tiles
     sf::Texture floor_texture;
