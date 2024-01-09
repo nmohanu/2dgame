@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.0)
 
 project(ghostgame)
 
+set(CMAKE_CXX_COMPILER "/usr/bin/g++")
+
 # Set the path to the SFML installation on your system
 set(SFML_DIR "path/to/SFML/cmake/modules" CACHE PATH "SFML CMake module path")
 
