@@ -74,7 +74,7 @@ void game_window::game_window_update(sf::RenderWindow& window)
     current_scene->move_player(deltaTimeSeconds);
 
     // Sprite frame update
-    current_scene->update_sprites(frame_clock, window);
+    current_scene->update_sprites(frame_clock, window, deltaTimeSeconds);
 }
 
 

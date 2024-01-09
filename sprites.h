@@ -28,6 +28,9 @@ struct Sprite_loader
     sf::Sprite floor_sprite;
     sf::Sprite floor2_sprite;
 
+    // Objects
+    sf::Sprite pumpkin_sprite;
+
     // Edges tiles.
     sf::Texture edges_texture;
     sf::Sprite edge_0_sprite;
