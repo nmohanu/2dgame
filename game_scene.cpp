@@ -200,21 +200,40 @@ bool Game_scene::check_collision()
 // Animations of sprites are handled here.
 void Game_scene::update_sprites(sf::Clock& timer, sf::RenderWindow& window)
 {
-    if ((int)timer.getElapsedTime().asMilliseconds() % 3000 > 2000)
-    {
-        sf::IntRect textureRect(32, 0, 16, 16); // Adjusted coordinates for the first version
-        this->sprite_loader.player_sprite.setTextureRect(textureRect);
+    int animation_offset = (int)timer.getElapsedTime().asMilliseconds() % 1500;
+    animation_offset -= animation_offset%100;
+    animation_offset -= animation_offset%10;
+    animation_offset /= 150;
+    animation_offset *= 16;
 
+    sf::IntRect textureRect(0, 0, 16, 16);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+    {
+        textureRect = sf::IntRect(80, 0, 16, 16); // Adjusted coordinates for the first version
+        
+    }
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+    {
+        textureRect = sf::IntRect(64, animation_offset, 16, 16); // Adjusted coordinates for the first version
+        
+    }
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+    {
+        textureRect = sf::IntRect(48, animation_offset, 16, 16); // Adjusted coordinates for the first version
+        
+    }
+    else if ((int)timer.getElapsedTime().asMilliseconds() % 3000 > 2000)
+    {
+        textureRect = sf::IntRect(32, 0, 16, 16); // Adjusted coordinates for the first version
     }
     else if ((int)timer.getElapsedTime().asMilliseconds() % 3000 > 1000)
     {
-        sf::IntRect textureRect(16, 0, 16, 16); // Adjusted coordinates for the second version
-        this->sprite_loader.player_sprite.setTextureRect(textureRect);
+        textureRect = sf::IntRect(16, 0, 16, 16); // Adjusted coordinates for the second version
     }
     else
     {
-        sf::IntRect textureRect(0, 0, 16, 16); // Adjusted coordinates for the third version
-        this->sprite_loader.player_sprite.setTextureRect(textureRect);
+        textureRect = sf::IntRect(0, 0, 16, 16); // Adjusted coordinates for the third version
     }
+    this->sprite_loader.player_sprite.setTextureRect(textureRect);
 }
 
