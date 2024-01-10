@@ -11,6 +11,7 @@ struct game_window
 
     int player_money = 100;
     sf::Text player_money_text;
+    sf::Vector2f mouse_position;
 
     sf::Font font;
     game_window() 
@@ -24,8 +25,8 @@ struct game_window
         player_money_text.setFont(font);
         player_money_text.setCharacterSize(100);
         player_money_text.setFillColor(sf::Color::White);
-        player_money_text.setPosition(32, 0);
-        player_money_text.setScale(0.24, 0.24);
+        player_money_text.setPosition(64, 0);
+        player_money_text.setScale(0.48, 0.48);
     }
 
 

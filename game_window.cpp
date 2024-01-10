@@ -10,7 +10,9 @@ void game_window::open_game_window()
 
     current_scene = &level_1;
     current_scene->current_level = current_scene->level_1;
-    sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Bruh");
+    sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Bruh", sf::Style::Titlebar | sf::Style::Close);
+    window.setFramerateLimit(60);
+    window.setVerticalSyncEnabled(true);
     game_window_loop(window);
 }
 
@@ -29,12 +31,15 @@ void game_window::game_window_draw(sf::RenderWindow& window)
 {
     window.clear(BG_color);
 
+    // Get mouse location
+    mouse_position = sf::Vector2f(sf::Mouse::getPosition(window));
+
     // UI elements.
     window.draw(current_scene->sprite_loader.coin_sprite);
     window.draw(current_scene->sprite_loader.coin_sprite);
 
     // Draw level.
-    current_scene->draw_level(window);
+    current_scene->draw_level(window, mouse_position);
     current_scene->render_objects(window);
 
     // Update player money.
@@ -69,7 +74,7 @@ void game_window::game_window_update(sf::RenderWindow& window)
     current_scene->move_player(deltaTimeSeconds);
 
     // Sprite frame update
-    current_scene->update_sprites(frame_clock, window);
+    current_scene->update_sprites(frame_clock, window, deltaTimeSeconds);
 }
 
 

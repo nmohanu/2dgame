@@ -7,6 +7,7 @@ const int TILE_SIZE = 16;
 
 // Save all sprites for which collision should be checked.
 std::vector<sf::Sprite> collision_sprites;
+std::vector<sf::Sprite> clickable_sprites;
 sf::Vector2f world_offset(0.f, 0.f);
 sf::Vector2f new_world_position(0.f, 0.f);
 sf::Vector2f original_world_positio(0.f, 0.f);
@@ -18,8 +19,31 @@ void Game_scene::render_objects(sf::RenderWindow& window)
     window.draw(sprite_loader.player_sprite);
 }
 
+void Game_scene::draw_level_objects(sf::Vector2f& position, int x, int y, sf::RenderWindow& window, sf::Vector2f mouse_position)
+{
+    // if (current_level->level_1_objects[x][y] == 'P')
+    // {
+    //     sprite_loader.pumpkin_sprite.setPosition(position);
+    //     window.draw(sprite_loader.pumpkin_sprite);
+    //     clickable_sprites.push_back(sprite_loader.pumpkin_sprite);
+    // }
+
+    // if(sf::Mouse::isButtonPressed)
+    // {
+    //     std::cout << "CLICK\n";
+    //     for(sf::Sprite sprite : clickable_sprites)
+    //     {
+    //         if(sprite.getGlobalBounds().contains(mouse_position))
+    //         {
+    //             current_level->level_1_objects[x][y] = '0';
+    //         }
+    //     }
+    // }
+
+}
+
 // This is where the tiles are drawn.
-void Game_scene::draw_level(sf::RenderWindow& window)
+void Game_scene::draw_level(sf::RenderWindow& window, sf::Vector2f mouse_position)
 {
     for (int y = 0; y < current_level->LEVEL_HEIGHT; y++)
     {
@@ -32,7 +56,7 @@ void Game_scene::draw_level(sf::RenderWindow& window)
             {
                 sprite_loader.edge_0_sprite.setPosition(position);
                 window.draw(sprite_loader.edge_0_sprite);
-
+                
                 collision_sprites.push_back(sprite_loader.edge_0_sprite);
             } // Edge 0
             else if (current_level->level_1_terrain[x][y] == '1')
@@ -89,12 +113,30 @@ void Game_scene::draw_level(sf::RenderWindow& window)
             {
                 sprite_loader.floor_sprite.setPosition(position);
                 window.draw(sprite_loader.floor_sprite);
+
+                sf::FloatRect sprite = sprite_loader.floor_sprite.getGlobalBounds();
+
+                // Draw selection square
+                if(sprite.contains(mouse_position))
+                {
+                    sprite_loader.selection_sprite.setPosition(position);
+                    window.draw(sprite_loader.selection_sprite);
+                }
             } // Floor 1 
             else if (level_1->level_1_terrain[x][y] == 'L')
             {
                 sprite_loader.floor2_sprite.setPosition(position);
                 window.draw(sprite_loader.floor2_sprite);
+
+                sf::FloatRect sprite = sprite_loader.floor2_sprite.getGlobalBounds();
+                if(sprite.contains(mouse_position))
+                {
+                    sprite_loader.selection_sprite.setPosition(position);
+                    window.draw(sprite_loader.selection_sprite);
+                }
             } // Floor 2
+
+            draw_level_objects(position, x, y, window, mouse_position);
         }
     }
 }
@@ -126,6 +168,7 @@ void Game_scene::move_player(float deltaTimeSeconds)
 
     // Clear walls
     collision_sprites.clear();
+    clickable_sprites.clear();
 }
 
 // Get player velocity
@@ -183,26 +226,43 @@ bool Game_scene::check_collision()
     return false; // No collision
 }
 
-// Animations of sprites are handled here.
-void Game_scene::update_sprites(sf::Clock& timer, sf::RenderWindow& window)
+// Animation logic.
+void Game_scene::update_sprites(sf::Clock& timer, sf::RenderWindow& window, float deltaTimeSeconds)
 {
-    if ((int)timer.getElapsedTime().asMilliseconds() % 3000 > 2000)
+    
+    if((int) timer.getElapsedTime().asMilliseconds()%200 > CHANGE_FRAME)
     {
-        sf::IntRect textureRect(32, 0, 16, 16); // Adjusted coordinates for the first version
-        this->sprite_loader.player_sprite.setTextureRect(textureRect);
-
+        tick++;
+        timer.restart();
+        
     }
-    else if ((int)timer.getElapsedTime().asMilliseconds() % 3000 > 1000)
+    tick %= 10;
+    frame_offset = tick;
+    frame_offset *= 16;
+
+    std::cout << frame_offset << '\n';
+
+    change_sprite_bounds(timer);
+}
+
+// Actually change the bounds of the sprite.
+void Game_scene::change_sprite_bounds(sf::Clock& timer)
+{
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
     {
-        sf::IntRect textureRect(16, 0, 16, 16); // Adjusted coordinates for the second version
-        this->sprite_loader.player_sprite.setTextureRect(textureRect);
+        this->sprite_loader.player_sprite.setTextureRect(sf::IntRect(80, 0, 16, 16));
+    }
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+    {
+        this->sprite_loader.player_sprite.setTextureRect(sf::IntRect(64, frame_offset, 16, 16));
+    }
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+    {
+        this->sprite_loader.player_sprite.setTextureRect(sf::IntRect(48, frame_offset, 16, 16));
     }
     else
     {
-        sf::IntRect textureRect(0, 0, 16, 16); // Adjusted coordinates for the third version
-        this->sprite_loader.player_sprite.setTextureRect(textureRect);
+        this->sprite_loader.player_sprite.setTextureRect(sf::IntRect(0, frame_offset, 16, 16));
     }
 }
-
-
 

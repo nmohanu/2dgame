@@ -14,7 +14,7 @@ void Sprite_loader::add_sprites()
         std::cout << "ERR" << '\n';
     }
     player_sprite.setTexture(player_texture);
-    player_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_Y);
+    player_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_X);
     player_sprite.setPosition(SCREEN_WIDTH/2-(16 * SCALE_FACTOR_X)/2, SCREEN_HEIGHT/2-(16 * SCALE_FACTOR_X)/2);
 
     // Add floor texture.
@@ -35,11 +35,27 @@ void Sprite_loader::add_sprites()
         std::cout << "ERR" << '\n';
     }
 
+    // Add UI texture.
+    if (!selection_texture.loadFromFile("../Assets/Tiles/selection.png")) {
+        // Error handling if the image fails to load
+        std::cout << "ERR" << '\n';
+    }
+
+    // Selection square
+    selection_sprite.setTexture(selection_texture);
+    selection_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_Y);
+
     // UI sprites
     coin_sprite.setTexture(UI_texture);
-    coin_sprite.setScale(2, 2);
+    coin_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_X);
     sf::IntRect coin_rect(0, 0, 16, 16);
     edge_0_sprite.setTextureRect(coin_rect);
+
+    // Objects
+    pumpkin_sprite.setTexture(floor_texture);
+    pumpkin_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_Y);
+    sf::IntRect pumpkin_rect(32, 0, 16, 16);
+    pumpkin_sprite.setTextureRect(pumpkin_rect);
 
     // Edges sprites
     edge_0_sprite.setTexture(edges_texture);
