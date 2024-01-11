@@ -5,6 +5,8 @@
 
 const int SCREEN_WIDTH = 1920;
 const int SCREEN_HEIGHT = 1080;
+const int CENTER_X = SCREEN_WIDTH/2;
+const int CENTER_Y = SCREEN_HEIGHT/2;
 const float SCALE_FACTOR_X = 4;
 const float SCALE_FACTOR_Y = 3.5;
 const float PLAYER_SPEED = 3.f;
@@ -15,9 +17,14 @@ struct Sprite_loader
     sf::Texture player_texture;
     sf::Sprite player_sprite;
 
+    // Old man npc
+    sf::Sprite old_man_npc;
+    sf::Vector2f original_position_old_man_npc = sf::Vector2f(CENTER_X-(16 * SCALE_FACTOR_X)/2 + 40*SCALE_FACTOR_X, CENTER_Y-(16 * SCALE_FACTOR_X)/2);
+
     // UI elements
     sf::Texture UI_texture;
     sf::Sprite coin_sprite;
+    sf::Sprite talk_icon_sprite;
 
     // Selection square
     sf::Texture selection_texture;

@@ -13,9 +13,6 @@ void Sprite_loader::add_sprites()
         // Error handling if the image fails to load
         std::cout << "ERR" << '\n';
     }
-    player_sprite.setTexture(player_texture);
-    player_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_X);
-    player_sprite.setPosition(SCREEN_WIDTH/2-(16 * SCALE_FACTOR_X)/2, SCREEN_HEIGHT/2-(16 * SCALE_FACTOR_X)/2);
 
     // Add floor texture.
     if (!floor_texture.loadFromFile("../Assets/Tiles/tile_sheet.png")) {
@@ -41,15 +38,42 @@ void Sprite_loader::add_sprites()
         std::cout << "ERR" << '\n';
     }
 
+    // Player sprite
+    player_sprite.setTexture(player_texture);
+    player_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_X);
+    player_sprite.setPosition(SCREEN_WIDTH/2-(16 * SCALE_FACTOR_X)/2, SCREEN_HEIGHT/2-(16 * SCALE_FACTOR_X)/2);
+    player_sprite.setTextureRect(sf::IntRect(0, 0, 16, 16));
+
+    // NPC Sprites ---------------------------------------------------
+
+    // Old man
+    old_man_npc.setTexture(player_texture);
+    old_man_npc.setScale(SCALE_FACTOR_X, SCALE_FACTOR_X);
+    old_man_npc.setTextureRect(sf::IntRect(96, 0, 16, 16));
+    old_man_npc.setPosition(CENTER_X-(16 * SCALE_FACTOR_X)/2 + 40*SCALE_FACTOR_X, CENTER_Y-(16 * SCALE_FACTOR_X)/2);
+
+    
+
+    // ---------------------------------------------------------------
     // Selection square
     selection_sprite.setTexture(selection_texture);
     selection_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_Y);
 
-    // UI sprites
+    // UI sprites ----------------------------------------------------
+
+    // Coin
     coin_sprite.setTexture(UI_texture);
     coin_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_X);
     sf::IntRect coin_rect(0, 0, 16, 16);
-    edge_0_sprite.setTextureRect(coin_rect);
+    coin_sprite.setTextureRect(coin_rect);
+
+    // Talk icon
+    talk_icon_sprite.setTexture(UI_texture);
+    talk_icon_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_X);
+    sf::IntRect talk_icon_rect(16, 0, 16, 16);
+    talk_icon_sprite.setTextureRect(talk_icon_rect);
+
+    //----------------------------------------------------------------
 
     // Objects
     pumpkin_sprite.setTexture(floor_texture);
