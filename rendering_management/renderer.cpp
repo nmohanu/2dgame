@@ -35,7 +35,7 @@ void Renderer::draw_level_tiles(sf::RenderWindow& window, sf::Vector2f mouse_pos
             sf::Vector2f position(x * SCALE_FACTOR_X * TILE_SIZE + (SCREEN_WIDTH  - (TILE_SIZE*TILE_SIZE*SCALE_FACTOR_X))/2 + current_level->LEVEL_WIDTH*SCALE_FACTOR_X*TILE_SIZE/2,
                                   y * SCALE_FACTOR_Y * TILE_SIZE + (SCREEN_HEIGHT - (TILE_SIZE*TILE_SIZE*SCALE_FACTOR_Y))/2 + current_level->LEVEL_HEIGHT*SCALE_FACTOR_Y*TILE_SIZE/2);
             position += world_offset;
-            
+
             if (current_level->level_1_terrain[x][y] == '0')
             {
                 animation_manager.sprite_loader.edge_0_sprite.setPosition(position);
@@ -169,13 +169,13 @@ void Renderer::move_player(float deltaTimeSeconds)
     if (check_collision())
     {
         // Restore position to previous working one.
-        world_offset = original_world_position;
+        // world_offset = original_world_position;
         std::cout << "COLLISION" << '\n';
     }
     // No collision, update camera position.
     else
     {
-        original_world_position = (sf::Vector2f(world_offset.x, world_offset.y));
+        original_world_position = world_offset;
         world_offset = new_world_position;
     }
 
@@ -222,13 +222,18 @@ bool Renderer::check_collision()
 {
     sf::FloatRect playerBounds = this->animation_manager.sprite_loader.player_sprite.getGlobalBounds();
 
-    playerBounds.height -= 12;
-    playerBounds.width -= 12;
+    playerBounds.height -= 4;
+    playerBounds.width -= 4;
     
     // Check collision with each wall sprite
     for (const sf::Sprite& wallSprite : collision_sprites)
     {
-        if (playerBounds.intersects(wallSprite.getGlobalBounds()))
+        sf::FloatRect new_position = wallSprite.getGlobalBounds();
+        new_position.left -= world_offset.x;
+        new_position.top -= world_offset.y;
+        new_position.left += new_world_position.x;
+        new_position.top += new_world_position.y;
+        if (playerBounds.intersects(new_position))
         {
             return true; // Collision detected
         }
