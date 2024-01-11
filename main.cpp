@@ -1,4 +1,4 @@
-#include "game_window.h"
+#include "window_management/game_window.h"
 
 int main() {
     game_window game_window;

@@ -1,13 +1,18 @@
 #include "game_window.h"
 #include <cmath>
-#include <iostream>
+
+// Background color
+const sf::Color BG_color(124, 116, 97);
 
 // This is where the window is created.
 void game_window::open_game_window()
 {
+
     current_scene = &level_1;
     current_scene->current_level = current_scene->level_1;
-    sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Bruh");
+    sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Bruh", sf::Style::Titlebar | sf::Style::Close);
+    window.setFramerateLimit(60);
+    window.setVerticalSyncEnabled(true);
     game_window_loop(window);
 }
 
@@ -24,9 +29,27 @@ void game_window::game_window_loop(sf::RenderWindow& window)
 // Draw objects.
 void game_window::game_window_draw(sf::RenderWindow& window)
 {
-    window.clear();
-    current_scene->draw_level(window);
+    window.clear(BG_color);
+
+    // Get mouse location
+    mouse_position = sf::Vector2f(sf::Mouse::getPosition(window));
+
+    // UI elements.
+    window.draw(current_scene->animation_manager.sprite_loader.coin_sprite);
+    window.draw(current_scene->animation_manager.sprite_loader.coin_sprite);
+
+    // Draw level.
+    current_scene->draw_level(window, mouse_position);
     current_scene->render_objects(window);
+
+    // Update player money.
+    std::string player_money_string = std::to_string(player_money);
+    player_money_text.setString(player_money_string);
+
+    // Draw player money
+    window.draw(player_money_text);
+
+    // Display window.
     window.display();
 }
 
@@ -51,7 +74,7 @@ void game_window::game_window_update(sf::RenderWindow& window)
     current_scene->move_player(deltaTimeSeconds);
 
     // Sprite frame update
-    current_scene->update_sprites(frame_clock, window);
+    current_scene->animation_manager.update_sprites(frame_clock, window, deltaTimeSeconds);
 }
 
 
