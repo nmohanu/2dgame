@@ -13,8 +13,10 @@ struct game_window
     int player_money = 100;
     sf::Text player_money_text;
     sf::Vector2f mouse_position;
+    Sprite_loader sprite_loader;
 
     sf::Font font;
+
     game_window() 
     {
         if (!font.loadFromFile("../Assets/fonts/pixels.ttf")) 
