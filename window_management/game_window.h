@@ -1,13 +1,14 @@
 #pragma once
 #include <SFML/Audio.hpp>
-#include "game_scene.h"
+#include "../rendering_management/renderer.h"
 
 struct game_window
 {
+    
     sf::Clock frame_clock;
     sf::Clock delta_clock;
-    Game_scene* current_scene = nullptr;
-    Game_scene level_1;
+    Renderer* current_scene = nullptr;
+    Renderer level_1;
 
     int player_money = 100;
     sf::Text player_money_text;

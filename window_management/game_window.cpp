@@ -35,8 +35,8 @@ void game_window::game_window_draw(sf::RenderWindow& window)
     mouse_position = sf::Vector2f(sf::Mouse::getPosition(window));
 
     // UI elements.
-    window.draw(current_scene->sprite_loader.coin_sprite);
-    window.draw(current_scene->sprite_loader.coin_sprite);
+    window.draw(current_scene->animation_manager.sprite_loader.coin_sprite);
+    window.draw(current_scene->animation_manager.sprite_loader.coin_sprite);
 
     // Draw level.
     current_scene->draw_level(window, mouse_position);
@@ -74,7 +74,7 @@ void game_window::game_window_update(sf::RenderWindow& window)
     current_scene->move_player(deltaTimeSeconds);
 
     // Sprite frame update
-    current_scene->update_sprites(frame_clock, window, deltaTimeSeconds);
+    current_scene->animation_manager.update_sprites(frame_clock, window, deltaTimeSeconds);
 }
 
 
