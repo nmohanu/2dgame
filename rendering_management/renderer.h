@@ -10,6 +10,8 @@ struct Renderer
     Level* level_1 = new Level(8, 8, 1);
     Level* current_level = nullptr;
     
+    void clean_up();
+    void handle_clicks(sf::RenderWindow& window, sf::Vector2f mouse_position);
     void render_mouse_icon(sf::RenderWindow& window, sf::Vector2f mouse_position);
     void render_nps(sf::RenderWindow& window);
     void render_objects(sf::RenderWindow& window);

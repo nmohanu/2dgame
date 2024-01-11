@@ -23,6 +23,7 @@ void game_window::game_window_loop(sf::RenderWindow& window)
     {
         game_window_update(window);
         game_window_draw(window);
+        
     }
 }
 
@@ -75,6 +76,10 @@ void game_window::game_window_update(sf::RenderWindow& window)
 
     // Sprite frame update
     current_scene->animation_manager.update_sprites(frame_clock, window, deltaTimeSeconds);
+
+    // Handle clicks
+    current_scene->handle_clicks(window, mouse_position);
+    current_scene->clean_up();
 }
 
 

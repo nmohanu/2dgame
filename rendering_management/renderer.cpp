@@ -4,6 +4,8 @@
 const int TILE_SIZE = 16;
 
 
+
+
 // Save all sprites for which collision should be checked.
 std::vector<sf::Sprite> collision_sprites;
 std::vector<sf::Sprite> npc_sprites;
@@ -139,19 +141,48 @@ void Renderer::render_nps(sf::RenderWindow& window)
 
 }
 void Renderer::render_mouse_icon(sf::RenderWindow& window, sf::Vector2f mouse_position)
-{  
-    // Check if talk icon needs to be rendered.
+{    
     for(sf::Sprite sprite : npc_sprites)
     {
         if(sprite.getGlobalBounds().contains(mouse_position))
         {
-            animation_manager.sprite_loader.talk_icon_sprite.setPosition(mouse_position);
-            window.draw(animation_manager.sprite_loader.talk_icon_sprite);            
+            if( sprite.getGlobalBounds().getPosition().x < SCREEN_WIDTH/2 + 100 && 
+                sprite.getGlobalBounds().getPosition().x > SCREEN_WIDTH/2 - 100 && 
+                sprite.getGlobalBounds().getPosition().y < SCREEN_HEIGHT/2 + 150 && 
+                sprite.getGlobalBounds().getPosition().y > SCREEN_HEIGHT/2 - 150 && 
+                sprite.getGlobalBounds().contains(mouse_position))
+            {
+                animation_manager.sprite_loader.talk_icon_sprite.setPosition(mouse_position);
+                window.draw(animation_manager.sprite_loader.talk_icon_sprite);  
+            }
+                      
         }
     }
 
     // Clear npc sprite vector when done.
     npc_sprites.clear();
+}
+
+void Renderer::handle_clicks(sf::RenderWindow& window, sf::Vector2f mouse_position)
+{
+    // Handle click
+    if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    {
+        sf::Vector2f mouse_click_location = mouse_position;
+        if(this->animation_manager.sprite_loader.old_man_npc.getGlobalBounds().contains(mouse_click_location))
+        {
+            std::cout << "OLD MAN CLICKED" << std::endl;
+        }
+    }
+
+    // Clear walls
+    
+}
+
+void Renderer::clean_up()
+{
+    collision_sprites.clear();
+    clickable_sprites.clear();
 }
 
 void Renderer::move_player(float deltaTimeSeconds)
@@ -179,9 +210,7 @@ void Renderer::move_player(float deltaTimeSeconds)
         world_offset = new_world_position;
     }
 
-    // Clear walls
-    collision_sprites.clear();
-    clickable_sprites.clear();
+    
 }
 
 // Get player velocity
