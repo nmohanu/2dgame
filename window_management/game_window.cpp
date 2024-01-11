@@ -78,7 +78,7 @@ void game_window::game_window_update(sf::RenderWindow& window)
     current_scene->animation_manager.update_sprites(frame_clock, window, deltaTimeSeconds, sprite_loader);
 
     // Handle clicks
-    current_scene->handle_clicks(window, mouse_position, sprite_loader);
+    handle_clicks(window, mouse_position, sprite_loader);
 
     // Move player.
     current_scene->player_movement(deltaTimeSeconds, sprite_loader);
