@@ -1,4 +1,5 @@
 #include "mechanics.h"
+#include <iostream>
 
 void clean_up(std::vector<sf::Sprite>& collision_sprites, std::vector<sf::Sprite>& clickable_sprites)
 {
@@ -89,4 +90,17 @@ bool check_collision(std::vector<sf::Sprite>& collision_sprites, sf::Vector2f& n
     }
 
     return false; // No collision
+}
+
+void handle_clicks(sf::RenderWindow& window, sf::Vector2f mouse_position, Sprite_loader& sprite_loader)
+{
+    // Handle click
+    if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    {
+        sf::Vector2f mouse_click_location = mouse_position;
+        if(sprite_loader.old_man_npc.getGlobalBounds().contains(mouse_click_location))
+        {
+            std::cout << "OLD MAN CLICKED" << std::endl;
+        }
+    }
 }

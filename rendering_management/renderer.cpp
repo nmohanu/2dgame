@@ -150,9 +150,8 @@ void Renderer::render_npc(sf::RenderWindow& window, Sprite_loader& sprite_loader
     window.draw(sprite_loader.old_man_npc);
     collision_sprites.push_back(sprite_loader.old_man_npc);
     npc_sprites.push_back(sprite_loader.old_man_npc);
-
-
 }
+
 void Renderer::render_mouse_icon(sf::RenderWindow& window, sf::Vector2f mouse_position, Sprite_loader& sprite_loader)
 {    
     for(sf::Sprite sprite : npc_sprites)
@@ -167,27 +166,12 @@ void Renderer::render_mouse_icon(sf::RenderWindow& window, sf::Vector2f mouse_po
             {
                 sprite_loader.talk_icon_sprite.setPosition(mouse_position);
                 window.draw(sprite_loader.talk_icon_sprite);  
-            }
-                      
+            }          
         }
     }
 }
 
-void Renderer::handle_clicks(sf::RenderWindow& window, sf::Vector2f mouse_position, Sprite_loader& sprite_loader)
-{
-    // Handle click
-    if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
-    {
-        sf::Vector2f mouse_click_location = mouse_position;
-        if(sprite_loader.old_man_npc.getGlobalBounds().contains(mouse_click_location))
-        {
-            std::cout << "OLD MAN CLICKED" << std::endl;
-        }
-    }
 
-    // Clear walls
-    
-}
 
 
 
