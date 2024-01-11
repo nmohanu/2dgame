@@ -10,8 +10,10 @@ struct Renderer
     Level* level_1 = new Level(8, 8, 1);
     Level* current_level = nullptr;
     
+    void render_mouse_icon(sf::RenderWindow& window, sf::Vector2f mouse_position);
+    void render_nps(sf::RenderWindow& window);
     void render_objects(sf::RenderWindow& window);
-    void draw_level(sf::RenderWindow& window, sf::Vector2f mouse_position);
+    void draw_level_tiles(sf::RenderWindow& window, sf::Vector2f mouse_position);
     void move_player(float deltaTimeSeconds);
     bool check_collision();
     sf::Vector2f get_velocity(float deltaTimeSeconds);

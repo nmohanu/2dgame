@@ -20,6 +20,7 @@ void Animation_manager::update_sprites(sf::Clock& timer, sf::RenderWindow& windo
 // Actually change the bounds of the sprite.
 void Animation_manager::change_sprite_bounds(sf::Clock& timer)
 {
+    // Player animations
     if(frame_offset != last_frame_offset)
         {
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
@@ -62,6 +63,9 @@ void Animation_manager::change_sprite_bounds(sf::Clock& timer)
             
         }
         last_frame_offset = frame_offset;
+
+        // NPC animations
+        this->sprite_loader.old_man_npc.setTextureRect(sf::IntRect(96, frame_offset, 16, 16));
     }
     
 

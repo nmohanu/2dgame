@@ -39,7 +39,7 @@ void game_window::game_window_draw(sf::RenderWindow& window)
     window.draw(current_scene->animation_manager.sprite_loader.coin_sprite);
 
     // Draw level.
-    current_scene->draw_level(window, mouse_position);
+    current_scene->draw_level_tiles(window, mouse_position);
     current_scene->render_objects(window);
 
     // Update player money.
