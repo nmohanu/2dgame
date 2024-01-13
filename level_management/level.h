@@ -1,4 +1,5 @@
 #include <vector>
+#include "../event_management/npc_events.h"
 #pragma once
 
 struct Level

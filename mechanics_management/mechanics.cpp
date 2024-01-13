@@ -92,15 +92,23 @@ bool check_collision(std::vector<sf::Sprite>& collision_sprites, sf::Vector2f& n
     return false; // No collision
 }
 
-void handle_clicks(sf::RenderWindow& window, sf::Vector2f mouse_position, Sprite_loader& sprite_loader)
+void handle_clicks(sf::RenderWindow& window, sf::Event& event,  sf::Vector2f mouse_position, Sprite_loader& sprite_loader, Dialogue_manager& manager)
 {
-    // Handle click
-    if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    
+    if(event.mouseButton.button == sf::Mouse::Left)
     {
         sf::Vector2f mouse_click_location = mouse_position;
         if(sprite_loader.old_man_npc.getGlobalBounds().contains(mouse_click_location))
         {
-            std::cout << "OLD MAN CLICKED" << std::endl;
+            std::cout << "Old man clicked\n";
+            // std::cout << manager.dialogues.size() << " dialogues in vector at click." <<'\n';
+            for(Dialogue& dialogue : manager.dialogues)
+            {
+                if(dialogue.ID == "SPORK_1")
+                {
+                    dialogue.in_dialogue = true;
+                }
+            }
         }
     }
 }

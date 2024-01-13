@@ -1,6 +1,5 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
 #include <vector>
 #include "../level_management/level.h"
 
@@ -26,6 +25,10 @@ struct Sprite_loader
     sf::Texture UI_texture;
     sf::Sprite coin_sprite;
     sf::Sprite talk_icon_sprite;
+
+    // Dialogue sprites
+    sf::Texture dialogue_texture;
+    sf::Sprite dialogue_sprite;
 
     // Selection square
     sf::Texture selection_texture;

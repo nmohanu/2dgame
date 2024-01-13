@@ -34,8 +34,8 @@ struct game_window
 
 
     void open_game_window();
-    void game_window_loop(sf::RenderWindow&);
-    void game_window_update(sf::RenderWindow&);
+    void game_window_loop(sf::RenderWindow&, Dialogue_manager& dialogue_manager);
+    void game_window_update(sf::RenderWindow&, Dialogue_manager& dialogue_manager);
     void game_window_draw(sf::RenderWindow&);
 };
 
