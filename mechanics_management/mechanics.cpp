@@ -100,7 +100,6 @@ void handle_clicks(sf::RenderWindow& window, sf::Event& event,  sf::Vector2f mou
         sf::Vector2f mouse_click_location = mouse_position;
         if(sprite_loader.old_man_npc.getGlobalBounds().contains(mouse_click_location))
         {
-            std::cout << "Old man clicked\n";
             // std::cout << manager.dialogues.size() << " dialogues in vector at click." <<'\n';
             for(Dialogue& dialogue : manager.dialogues)
             {
@@ -113,8 +112,13 @@ void handle_clicks(sf::RenderWindow& window, sf::Event& event,  sf::Vector2f mou
                     if(dialogue.ID == "SPORK_2" && dialogue.finished == false && dialogue.previous->finished == true)
                     {
                         dialogue.in_dialogue = true;
+                        
                     }
+                    std::cout << "dialogue 2 " << dialogue.previous->finished << '\n';
+                    std::cout << dialogue.finished << '\n';
+                    
                 }
+                std::cout << "previous: " << dialogue.previous;
             }
         }
     }

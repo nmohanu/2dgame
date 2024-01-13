@@ -28,7 +28,7 @@ struct Dialogue
     std::string ID;
     std::vector<Message> messages;
     int current_message = 0;
-    void render_dialogue_next_message(Sprite_loader& sprite_loader);
+    void render_dialogue_next_message(Sprite_loader& sprite_loader, Dialogue& dialogue);
     bool in_dialogue = false;
     std::string message_to_display;
     Dialogue* previous = nullptr;

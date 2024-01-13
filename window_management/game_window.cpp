@@ -13,22 +13,22 @@ void game_window::open_game_window()
     sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Bruh", sf::Style::Titlebar | sf::Style::Close);
     window.setFramerateLimit(60);
     window.setVerticalSyncEnabled(true);
-    game_window_loop(window, dialogue_manager);
+    game_window_loop(window);
 }
 
 // This is where the updates of the window are called.
-void game_window::game_window_loop(sf::RenderWindow& window, Dialogue_manager& dialogue_manager)
+void game_window::game_window_loop(sf::RenderWindow& window)
 {
     while (window.isOpen())
     {
-        game_window_update(window, dialogue_manager);
-        game_window_draw(window, dialogue_manager);
+        game_window_update(window);
+        game_window_draw(window);
         
     }
 }
 
 // Draw objects.
-void game_window::game_window_draw(sf::RenderWindow& window, Dialogue_manager& dialogue_manager)
+void game_window::game_window_draw(sf::RenderWindow& window)
 {
     // SFML stuffs -------------------------------------------------
 
@@ -46,7 +46,7 @@ void game_window::game_window_draw(sf::RenderWindow& window, Dialogue_manager& d
     window.draw(player_money_text);
 
     // Draw dialogue frame
-    dialogue_manager.render_dialogue_frame(window, sprite_loader);
+    dialogue_manager->render_dialogue_frame(window, sprite_loader);
 
     // Final SFML stuffs -------------------------------------------
     // Display window.
@@ -54,7 +54,7 @@ void game_window::game_window_draw(sf::RenderWindow& window, Dialogue_manager& d
 }
 
 // Update objects and events.
-void game_window::game_window_update(sf::RenderWindow& window, Dialogue_manager& dialogue_manager)
+void game_window::game_window_update(sf::RenderWindow& window)
 {
     // Get mouse location
     mouse_position = sf::Vector2f(sf::Mouse::getPosition(window));
@@ -73,7 +73,7 @@ void game_window::game_window_update(sf::RenderWindow& window, Dialogue_manager&
         // Handle clicks
         else if (event.type == sf::Event::MouseButtonReleased)
         {
-            handle_clicks(window, event, mouse_position, sprite_loader, dialogue_manager);
+            handle_clicks(window, event, mouse_position, sprite_loader, *dialogue_manager);
         }
         
     }
@@ -89,7 +89,7 @@ void game_window::game_window_update(sf::RenderWindow& window, Dialogue_manager&
     // Move player.
     current_scene->player_movement(deltaTimeSeconds, sprite_loader);
 
-    dialogue_manager.process_dialogues(event, sprite_loader);
+    dialogue_manager->process_dialogues(event, sprite_loader);
     
 }
 
