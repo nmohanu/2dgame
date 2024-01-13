@@ -4,6 +4,7 @@
 
 struct game_window
 {
+    Dialogue_manager dialogue_manager;
     
     sf::Clock frame_clock;
     sf::Clock delta_clock;
@@ -30,12 +31,18 @@ struct game_window
         player_money_text.setFillColor(sf::Color::White);
         player_money_text.setPosition(64, 0);
         player_money_text.setScale(0.48, 0.48);
+
+        dialogue_manager.message.setFont(font);
+        dialogue_manager.message.setCharacterSize(100);
+        dialogue_manager.message.setFillColor(sf::Color::White);
+        dialogue_manager.message.setPosition(990, 750);
+        dialogue_manager.message.setScale(0.48, 0.48);
     }
 
 
     void open_game_window();
     void game_window_loop(sf::RenderWindow&, Dialogue_manager& dialogue_manager);
     void game_window_update(sf::RenderWindow&, Dialogue_manager& dialogue_manager);
-    void game_window_draw(sf::RenderWindow&);
+    void game_window_draw(sf::RenderWindow&, Dialogue_manager& dialogue_manager);
 };
 

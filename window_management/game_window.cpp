@@ -7,7 +7,7 @@ const sf::Color BG_color(124, 116, 97);
 // This is where the window is created.
 void game_window::open_game_window()
 {
-    Dialogue_manager dialogue_manager;
+    
     current_scene = &level_1;
     current_scene->current_level = current_scene->level_1;
     sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Bruh", sf::Style::Titlebar | sf::Style::Close);
@@ -22,13 +22,13 @@ void game_window::game_window_loop(sf::RenderWindow& window, Dialogue_manager& d
     while (window.isOpen())
     {
         game_window_update(window, dialogue_manager);
-        game_window_draw(window);
+        game_window_draw(window, dialogue_manager);
         
     }
 }
 
 // Draw objects.
-void game_window::game_window_draw(sf::RenderWindow& window)
+void game_window::game_window_draw(sf::RenderWindow& window, Dialogue_manager& dialogue_manager)
 {
     // SFML stuffs -------------------------------------------------
 
@@ -44,6 +44,9 @@ void game_window::game_window_draw(sf::RenderWindow& window)
 
     // Draw player money
     window.draw(player_money_text);
+
+    // Draw dialogue frame
+    dialogue_manager.render_dialogue_frame(window, sprite_loader);
 
     // Final SFML stuffs -------------------------------------------
     // Display window.
@@ -86,7 +89,8 @@ void game_window::game_window_update(sf::RenderWindow& window, Dialogue_manager&
     // Move player.
     current_scene->player_movement(deltaTimeSeconds, sprite_loader);
 
-    dialogue_manager.process_dialogues(window, event);
+    dialogue_manager.process_dialogues(event, sprite_loader);
+    
 }
 
 

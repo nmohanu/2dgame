@@ -104,9 +104,16 @@ void handle_clicks(sf::RenderWindow& window, sf::Event& event,  sf::Vector2f mou
             // std::cout << manager.dialogues.size() << " dialogues in vector at click." <<'\n';
             for(Dialogue& dialogue : manager.dialogues)
             {
-                if(dialogue.ID == "SPORK_1")
+                if(dialogue.ID == "SPORK_1" && dialogue.finished == false)
                 {
                     dialogue.in_dialogue = true;
+                }
+                else if(dialogue.previous != nullptr)
+                {
+                    if(dialogue.ID == "SPORK_2" && dialogue.finished == false && dialogue.previous->finished == true)
+                    {
+                        dialogue.in_dialogue = true;
+                    }
                 }
             }
         }

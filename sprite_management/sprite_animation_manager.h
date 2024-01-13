@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "sprites.h"
+
+#include "../event_management/npc_events.h"
 
 
 

@@ -1,21 +1,33 @@
 #include "npc_events.h"
 
-void Dialogue_manager::process_dialogues(sf::RenderWindow& window, sf::Event& event)
+void Dialogue_manager::process_dialogues(sf::Event& event, Sprite_loader& sprite_loader)
 {
     for(Dialogue &current_dialogue : this->dialogues)
     {
         if(current_dialogue.in_dialogue && current_dialogue.print_next_message)
         {
-            current_dialogue.render_dialogue_next_message(window);
+            current_dialogue.render_dialogue_next_message(sprite_loader);
         }
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::E))
         {
             e_was_pressed = true;
         }
-        if(!sf::Keyboard::isKeyPressed(sf::Keyboard::E) && e_was_pressed)
+        else if(!sf::Keyboard::isKeyPressed(sf::Keyboard::E) && e_was_pressed)
         {
             current_dialogue.print_next_message = true;
             e_was_pressed = false;
+        }
+    }
+}
+
+void Dialogue_manager::render_dialogue_frame(sf::RenderWindow& window, Sprite_loader& sprite_loader)
+{
+    for(Dialogue &current_dialogue : this->dialogues)
+    {
+        if(current_dialogue.in_dialogue)
+        {
+            window.draw(sprite_loader.dialogue_sprite);
+            window.draw(*current_dialogue.message);
         }
     }
 }
@@ -29,20 +41,35 @@ void Dialogue_manager::initialize_dialogues()
     this->spork_npc_dialogue.messages.push_back(Message("Anyway... Welcome!"));
     this->spork_npc_dialogue.messages.push_back(Message("..."));
     this->spork_npc_dialogue.ID = "SPORK_1";
+    this->spork_npc_dialogue.message = &message;
     this->dialogues.push_back(this->spork_npc_dialogue);
-    std::cout << this->dialogues.size() << " dialogues in the dialogues vector at init." << '\n';
+
+    // Second conversation with Spork
+    this->spork_npc_dialogue2.messages.push_back(Message("What do you mean\nwhere are we?"));
+    this->spork_npc_dialogue2.messages.push_back(Message("Hehehe, got you again."));
+    this->spork_npc_dialogue2.messages.push_back(Message("Don't worry, it's \n completely normal for \n newcomers to be confused."));
+    this->spork_npc_dialogue2.messages.push_back(Message("Anyway... My name is Spork."));
+    this->spork_npc_dialogue2.ID = "SPORK_2";
+    this->spork_npc_dialogue2.message = &message;
+    this->dialogues.push_back(this->spork_npc_dialogue2);
+    this->spork_npc_dialogue2.previous = &spork_npc_dialogue;
+    
 }
 
-void Dialogue::render_dialogue_next_message(sf::RenderWindow& window)
+void Dialogue::render_dialogue_next_message(Sprite_loader& sprite_loader)
 {
     if(current_message < this->messages.size())
     {
         std::cout << this->messages[current_message].message << std::endl;
-
-        //window.draw();
-
-
+        message_to_display = this->messages[current_message].message;
+        message->setString(message_to_display);
         current_message++;
         this->print_next_message = false;
+    }
+    else
+    {
+        in_dialogue = false;
+        finished = true;
+        current_message = 0;
     }
 }

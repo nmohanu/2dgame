@@ -1,6 +1,7 @@
 #include <vector>
-#include "../event_management/npc_events.h"
+//#include "../event_management/npc_events.h"
 #pragma once
+#include "../sprite_management/sprites.h"
 
 struct Level
 {

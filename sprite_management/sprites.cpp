@@ -47,6 +47,7 @@ void Sprite_loader::add_sprites()
     // Dialogue sprites ----------------------------------------------
     dialogue_sprite.setTexture(dialogue_texture);
     dialogue_sprite.setScale(10, 10);
+    dialogue_sprite.setPosition(0,0);
 
 
     // Player sprite -------------------------------------------------
