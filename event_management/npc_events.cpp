@@ -56,6 +56,14 @@ void Dialogue_manager::initialize_dialogues()
     this->spork_npc_dialogue2->messages.push_back(Message("How do i put this\nlightly...\n"));
     this->spork_npc_dialogue2->messages.push_back(Message("I'm afraid you\nhave passed...\n"));
     this->spork_npc_dialogue2->messages.push_back(Message("Right now, we are\nin limbo.\n"));
+    this->spork_npc_dialogue2->messages.push_back(Message("But don't worry!\nyou see...\nRight next to you\nis what we call..."));
+    this->spork_npc_dialogue2->messages.push_back(Message("A zenith, just put in\nyour name and they will\ntransport you to\nthe afterlife!"));
+    this->spork_npc_dialogue2->messages.push_back(Message("It's quite a\nnice place..."));
+    this->spork_npc_dialogue2->messages.push_back(Message("Or so I've heard..."));
+    this->spork_npc_dialogue2->messages.push_back(Message("By the way, \nwhat is your name?"));
+    this->spork_npc_dialogue2->messages.push_back(Message("..."));
+   
+
     
     this->spork_npc_dialogue2->ID = "SPORK_2";
     this->spork_npc_dialogue2->message = &message;

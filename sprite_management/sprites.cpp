@@ -62,7 +62,7 @@ void Sprite_loader::add_sprites()
     old_man_npc.setTexture(player_texture);
     old_man_npc.setScale(SCALE_FACTOR_X, SCALE_FACTOR_X);
     old_man_npc.setTextureRect(sf::IntRect(96, 0, 16, 16));
-    old_man_npc.setPosition(CENTER_X-(16 * SCALE_FACTOR_X)/2 + 40*SCALE_FACTOR_X, CENTER_Y-(16 * SCALE_FACTOR_X)/2);
+    old_man_npc.setPosition(CENTER_X-(16 * SCALE_FACTOR_X)/2 + 16*SCALE_FACTOR_X, CENTER_Y-(16 * SCALE_FACTOR_X)/2);
 
     
     // Selection square ----------------------------------------------
@@ -93,7 +93,7 @@ void Sprite_loader::add_sprites()
 
     boat_sprite.setTexture(edges_texture);
     boat_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_Y);
-    boat_sprite.setTextureRect(sf::IntRect(48, 0, 48, 48));
+    boat_sprite.setTextureRect(sf::IntRect(48, 16, 16, 32));
 
     // Edges sprites
     edge_0_sprite.setTexture(edges_texture);

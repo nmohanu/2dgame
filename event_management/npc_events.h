@@ -55,6 +55,5 @@ struct Dialogue_manager
     Dialogue* spork_npc_dialogue2 = new Dialogue;
     Dialogue* current = spork_npc_dialogue;
 
-
 };
 

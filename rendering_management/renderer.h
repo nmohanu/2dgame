@@ -18,5 +18,12 @@ struct Renderer
     void render_npc(sf::RenderWindow& window, Sprite_loader& sprite_loader);
     void render_objects(sf::RenderWindow& window, Sprite_loader& sprite_loader);
     void draw_level_tiles(sf::RenderWindow& window, sf::Vector2f mouse_position, Sprite_loader& sprite_loader);
-    void draw_level_objects(sf::Vector2f& position, int x, int y, sf::RenderWindow& window, sf::Vector2f mouse_position);
+    void draw_level_objects(sf::RenderWindow& window, Sprite_loader& sprite_loader, int x, int y, sf::Vector2f position);
+
+    std::vector<sf::Sprite> collision_sprites;
+    std::vector<sf::Sprite> npc_sprites;
+    std::vector<sf::Sprite> clickable_sprites;
+    std::vector<sf::Sprite> render_tiles;
+    std::vector<sf::Sprite> render_object_sprites;
+    std::vector<sf::Sprite> render_tile_sprites;
 };
