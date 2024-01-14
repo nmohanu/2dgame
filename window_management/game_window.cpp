@@ -75,7 +75,7 @@ void game_window::game_window_update(sf::RenderWindow& window)
         // Handle clicks
         else if (event.type == sf::Event::MouseButtonReleased)
         {
-            handle_clicks(window, event, mouse_position, sprite_loader, *dialogue_manager);
+            handle_clicks(window, event, mouse_position, sprite_loader, *dialogue_manager, *current_scene->level_1);
         }
         
     }
@@ -85,7 +85,7 @@ void game_window::game_window_update(sf::RenderWindow& window)
     // Update game logic based on delta time
     float deltaTimeSeconds = deltaTime.asSeconds();
 
-    update_world(window, sprite_loader, *current_scene);
+    update_world(window, sprite_loader, *current_scene->level_1);
 
     // Sprite frame update
     current_scene->animation_manager.update_sprites(frame_clock, window, deltaTimeSeconds, sprite_loader);

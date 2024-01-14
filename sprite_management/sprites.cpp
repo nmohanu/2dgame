@@ -14,6 +14,12 @@ void Sprite_loader::add_sprites()
         std::cout << "ERR" << '\n';
     }
 
+    // Add inventory texture.
+    if (!inventory_texture.loadFromFile("../Assets/Tiles/inventory.png")) {
+        // Error handling if the image fails to load
+        std::cout << "ERR" << '\n';
+    }
+
     // Add player texture.
     if (!dialogue_texture.loadFromFile("../Assets/Tiles/dialogue_frame.png")) {
         // Error handling if the image fails to load
@@ -49,6 +55,10 @@ void Sprite_loader::add_sprites()
     dialogue_sprite.setScale(10*TEMP_SCALE, 10*TEMP_SCALE);
     dialogue_sprite.setPosition(0,0);
 
+    // Inventory sprite
+    inventory_sprite.setTexture(inventory_texture);
+    inventory_sprite.setScale(3, 3);
+    inventory_sprite.setPosition(SCREEN_WIDTH/2-(136)*3/2, SCREEN_HEIGHT-64);
 
     // Player sprite -------------------------------------------------
     player_sprite.setTexture(player_texture);

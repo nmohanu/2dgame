@@ -1,5 +1,7 @@
 #ifndef mechanics
-#include "../sprite_management/sprite_animation_manager.h"
+
+#include <cmath>
+#include "items.h"
 
 const int TILE_SIZE = 16;
 
@@ -13,7 +15,11 @@ sf::Vector2f get_velocity(float deltaTimeSeconds);
 
 bool check_collision(std::vector<sf::Sprite>& collision_sprites, sf::Vector2f& new_world_position, sf::Vector2f& world_offset, Sprite_loader& sprite_loader);
 
-void handle_clicks(sf::RenderWindow& window, sf::Event& event, sf::Vector2f mouse_position, Sprite_loader& sprite_loader, Dialogue_manager& manager);
+void handle_clicks(sf::RenderWindow& window, sf::Event& event, sf::Vector2f mouse_position, Sprite_loader& sprite_loader, Dialogue_manager& manager, Level& level);
 
+void update_world(sf::RenderWindow& window, Sprite_loader& sprite_loader, Level& level);
 
 #endif
+
+static Inventory* player_inventory = new Inventory;
+const sf::Vector2f hotbar_item_1_pos(SCREEN_WIDTH-(136)*2/3 + 2, SCREEN_HEIGHT-64+2);

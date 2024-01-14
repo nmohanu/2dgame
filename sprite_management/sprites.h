@@ -15,6 +15,13 @@ const float PLAYER_SPEED = 3.f;
 
 struct Sprite_loader
 {
+    int mouse_pos_x;
+    int mouse_pos_y;
+
+    // Inventory
+    sf::Texture inventory_texture;
+    sf::Sprite inventory_sprite;
+
     // Player
     sf::Texture player_texture;
     sf::Sprite player_sprite;

@@ -1,30 +1,11 @@
 #include "renderer.h"
 #include <iostream>
-#include <cmath>
+
 
 
 sf::Vector2f world_offset(0.f, 0.f);
 sf::Vector2f new_world_position(0.f, 0.f);
 sf::Vector2f original_world_position(world_offset);
-int random_num;
-
-void update_world(sf::RenderWindow& window, Sprite_loader& sprite_loader, Renderer& level)
-{
-    for(int y = 1; y < level.level_1->LEVEL_HEIGHT-1; y++)
-    {
-        for(int x = 1; x < level.level_1->LEVEL_WIDTH-1; x++)
-        {
-            random_num = std::rand() % 100000;
-            if(random_num > 99990)
-            {
-                
-                level.level_1->level_1_objects[y][x] = 'W';
-            }
-            std::cout<< random_num << std::endl;
-        }
-    }
-
-}
 
 void Renderer::player_movement(float deltaTimeSeconds, Sprite_loader& sprite_loader)
 {
@@ -51,12 +32,29 @@ void Renderer::render_everything(sf::RenderWindow& window, sf::Vector2f mouse_po
         window.draw(sprite);
     }
 
-    //render_npc(window, sprite_loader);
+    draw_player_hotbar(window, sprite_loader);
+
+    // render_npc(window, sprite_loader);
     render_objects(window, sprite_loader);
     render_mouse_icon(window, mouse_position, sprite_loader);
 
+    
+
     render_tile_sprites.clear();
     render_object_sprites.clear();
+}
+
+// Draw inventory hotbar.
+void Renderer::draw_player_hotbar(sf::RenderWindow& window, Sprite_loader& sprite_loader)
+{
+    window.draw(sprite_loader.inventory_sprite);
+    if(player_inventory->weed != nullptr && player_inventory->weed->amount > 0)
+    {
+        sprite_loader.weed_sprite.setPosition(hotbar_item_1_pos);
+        window.draw(sprite_loader.weed_sprite);
+        std::cout << "RENDER AMOUNT: " << player_inventory->weed->amount;
+    }
+    std::cout << &player_inventory->weed->amount << " IN R \n";
 }
 
 // Render objects that are not tiles.
@@ -64,7 +62,6 @@ void Renderer::render_objects(sf::RenderWindow& window, Sprite_loader& sprite_lo
 {
 
     window.draw(sprite_loader.player_sprite);
-    
 }
 
 void Renderer::draw_level_objects(sf::RenderWindow& window, Sprite_loader& sprite_loader, int x, int y, sf::Vector2f position)
@@ -162,6 +159,8 @@ void Renderer::draw_level_tiles(sf::RenderWindow& window, sf::Vector2f mouse_pos
                 {
                     sprite_loader.selection_sprite.setPosition(position);
                     render_tile_sprites.push_back(sprite_loader.selection_sprite);
+                    sprite_loader.mouse_pos_x = x;
+                    sprite_loader.mouse_pos_y = y;
                 }
             } // Floor 1 
             else if (level_1->level_1_terrain[y][x] == 'L')
@@ -174,6 +173,8 @@ void Renderer::draw_level_tiles(sf::RenderWindow& window, sf::Vector2f mouse_pos
                 {
                     sprite_loader.selection_sprite.setPosition(position);
                     render_tile_sprites.push_back(sprite_loader.selection_sprite);
+                    sprite_loader.mouse_pos_x = x;
+                    sprite_loader.mouse_pos_y = y;
                 }
             } // Floor 2
             draw_level_objects(window, sprite_loader, x, y, position);

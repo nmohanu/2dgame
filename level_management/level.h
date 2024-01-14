@@ -10,6 +10,7 @@ struct Level
 
     const int LEVEL_WIDTH;
     const int LEVEL_HEIGHT;
+    
     int level;
     char level_1_terrain[8][8] =
     {{'0', '1', '1', '1', '1', '1', '1', '2'}, 
