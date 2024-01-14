@@ -14,6 +14,12 @@ void Sprite_loader::add_sprites()
         std::cout << "ERR" << '\n';
     }
 
+    // Add player texture.
+    if (!dialogue_texture.loadFromFile("../Assets/Tiles/dialogue_frame.png")) {
+        // Error handling if the image fails to load
+        std::cout << "ERR" << '\n';
+    }
+
     // Add floor texture.
     if (!floor_texture.loadFromFile("../Assets/Tiles/tile_sheet.png")) {
         // Error handling if the image fails to load
@@ -38,7 +44,13 @@ void Sprite_loader::add_sprites()
         std::cout << "ERR" << '\n';
     }
 
-    // Player sprite
+    // Dialogue sprites ----------------------------------------------
+    dialogue_sprite.setTexture(dialogue_texture);
+    dialogue_sprite.setScale(10*TEMP_SCALE, 10*TEMP_SCALE);
+    dialogue_sprite.setPosition(0,0);
+
+
+    // Player sprite -------------------------------------------------
     player_sprite.setTexture(player_texture);
     player_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_X);
     player_sprite.setPosition(SCREEN_WIDTH/2-(16 * SCALE_FACTOR_X)/2, SCREEN_HEIGHT/2-(16 * SCALE_FACTOR_X)/2);
@@ -53,9 +65,7 @@ void Sprite_loader::add_sprites()
     old_man_npc.setPosition(CENTER_X-(16 * SCALE_FACTOR_X)/2 + 40*SCALE_FACTOR_X, CENTER_Y-(16 * SCALE_FACTOR_X)/2);
 
     
-
-    // ---------------------------------------------------------------
-    // Selection square
+    // Selection square ----------------------------------------------
     selection_sprite.setTexture(selection_texture);
     selection_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_Y);
 

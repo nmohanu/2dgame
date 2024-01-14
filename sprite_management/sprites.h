@@ -1,10 +1,12 @@
 #pragma once
-
 #include <SFML/Graphics.hpp>
 #include <vector>
+//#include "../level_management/level.h"
 
-const int SCREEN_WIDTH = 1920;
-const int SCREEN_HEIGHT = 1080;
+
+const float TEMP_SCALE = 0.8;
+const int SCREEN_WIDTH = 1920*TEMP_SCALE;
+const int SCREEN_HEIGHT = 1080*TEMP_SCALE;
 const int CENTER_X = SCREEN_WIDTH/2;
 const int CENTER_Y = SCREEN_HEIGHT/2;
 const float SCALE_FACTOR_X = 4;
@@ -25,6 +27,10 @@ struct Sprite_loader
     sf::Texture UI_texture;
     sf::Sprite coin_sprite;
     sf::Sprite talk_icon_sprite;
+
+    // Dialogue sprites
+    sf::Texture dialogue_texture;
+    sf::Sprite dialogue_sprite;
 
     // Selection square
     sf::Texture selection_texture;
