@@ -91,6 +91,10 @@ void Sprite_loader::add_sprites()
     sf::IntRect pumpkin_rect(32, 0, 16, 16);
     pumpkin_sprite.setTextureRect(pumpkin_rect);
 
+    boat_sprite.setTexture(edges_texture);
+    boat_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_Y);
+    boat_sprite.setTextureRect(sf::IntRect(48, 0, 48, 48));
+
     // Edges sprites
     edge_0_sprite.setTexture(edges_texture);
     edge_0_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_Y);
@@ -99,17 +103,17 @@ void Sprite_loader::add_sprites()
     
     edge_1_sprite.setTexture(edges_texture);
     edge_1_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_Y);
-    sf::IntRect edge_1_rect(0, 16, 16, 16);
+    sf::IntRect edge_1_rect(16, 0, 16, 16);
     edge_1_sprite.setTextureRect(edge_1_rect);
 
     edge_2_sprite.setTexture(edges_texture);
     edge_2_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_Y);
-    sf::IntRect edge_2_rect(0, 32, 16, 16);
+    sf::IntRect edge_2_rect(32, 0, 16, 16);
     edge_2_sprite.setTextureRect(edge_2_rect);
 
     edge_3_sprite.setTexture(edges_texture);
     edge_3_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_Y);
-    sf::IntRect edge_3_rect(16, 32, 16, 16);
+    sf::IntRect edge_3_rect(32, 16, 16, 16);
     edge_3_sprite.setTextureRect(edge_3_rect);
 
     edge_4_sprite.setTexture(edges_texture);
@@ -119,17 +123,17 @@ void Sprite_loader::add_sprites()
 
     edge_5_sprite.setTexture(edges_texture);
     edge_5_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_Y);
-    sf::IntRect edge_5_rect(32, 16, 16, 16);
+    sf::IntRect edge_5_rect(16, 32, 16, 16);
     edge_5_sprite.setTextureRect(edge_5_rect);
 
     edge_6_sprite.setTexture(edges_texture);
     edge_6_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_Y);
-    sf::IntRect edge_6_rect(32, 0, 16, 16);
+    sf::IntRect edge_6_rect(0, 32, 16, 16);
     edge_6_sprite.setTextureRect(edge_6_rect);
 
     edge_7_sprite.setTexture(edges_texture);
     edge_7_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_Y);
-    sf::IntRect edge_7_rect(16, 0, 16, 16);
+    sf::IntRect edge_7_rect(0, 16, 16, 16);
     edge_7_sprite.setTextureRect(edge_7_rect);
 
     // Floor 1 sprite

@@ -43,6 +43,7 @@ struct Sprite_loader
 
     // Objects
     sf::Sprite pumpkin_sprite;
+    sf::Sprite boat_sprite;
 
     // Edges tiles.
     sf::Texture edges_texture;
