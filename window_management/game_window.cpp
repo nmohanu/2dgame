@@ -85,6 +85,8 @@ void game_window::game_window_update(sf::RenderWindow& window)
     // Update game logic based on delta time
     float deltaTimeSeconds = deltaTime.asSeconds();
 
+    update_world(window, sprite_loader, *current_scene);
+
     // Sprite frame update
     current_scene->animation_manager.update_sprites(frame_clock, window, deltaTimeSeconds, sprite_loader);
 

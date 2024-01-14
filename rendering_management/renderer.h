@@ -6,6 +6,7 @@
 
 
 
+
 struct Renderer
 {   
     Animation_manager animation_manager;
@@ -27,3 +28,5 @@ struct Renderer
     std::vector<sf::Sprite> render_object_sprites;
     std::vector<sf::Sprite> render_tile_sprites;
 };
+
+void update_world(sf::RenderWindow& window, Sprite_loader& sprite_loader, Renderer& level);

@@ -95,6 +95,11 @@ void Sprite_loader::add_sprites()
     boat_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_Y);
     boat_sprite.setTextureRect(sf::IntRect(48, 16, 16, 32));
 
+    weed_sprite.setTexture(floor_texture);
+    weed_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_Y);
+    weed_sprite.setTextureRect(sf::IntRect(32, 0, 16, 16));
+
+
     // Edges sprites
     edge_0_sprite.setTexture(edges_texture);
     edge_0_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_Y);

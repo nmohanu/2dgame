@@ -1,12 +1,30 @@
 #include "renderer.h"
 #include <iostream>
+#include <cmath>
 
 
 sf::Vector2f world_offset(0.f, 0.f);
 sf::Vector2f new_world_position(0.f, 0.f);
 sf::Vector2f original_world_position(world_offset);
+int random_num;
 
+void update_world(sf::RenderWindow& window, Sprite_loader& sprite_loader, Renderer& level)
+{
+    for(int y = 1; y < level.level_1->LEVEL_HEIGHT-1; y++)
+    {
+        for(int x = 1; x < level.level_1->LEVEL_WIDTH-1; x++)
+        {
+            random_num = std::rand() % 100000;
+            if(random_num > 99990)
+            {
+                
+                level.level_1->level_1_objects[y][x] = 'W';
+            }
+            std::cout<< random_num << std::endl;
+        }
+    }
 
+}
 
 void Renderer::player_movement(float deltaTimeSeconds, Sprite_loader& sprite_loader)
 {
@@ -27,13 +45,14 @@ void Renderer::render_everything(sf::RenderWindow& window, sf::Vector2f mouse_po
     {
         window.draw(sprite);
     }
-    render_objects(window, sprite_loader);
+    
     for(sf::Sprite sprite : render_object_sprites)
     {
         window.draw(sprite);
     }
 
-    render_npc(window, sprite_loader);
+    //render_npc(window, sprite_loader);
+    render_objects(window, sprite_loader);
     render_mouse_icon(window, mouse_position, sprite_loader);
 
     render_tile_sprites.clear();
@@ -53,9 +72,13 @@ void Renderer::draw_level_objects(sf::RenderWindow& window, Sprite_loader& sprit
     if(current_level->level_1_objects[y][x] == 'Z')
     {
         sprite_loader.boat_sprite.setPosition(position);
-        window.draw(sprite_loader.boat_sprite);
         collision_sprites.push_back(sprite_loader.boat_sprite);
         render_object_sprites.push_back(sprite_loader.boat_sprite);
+    }
+    if(current_level->level_1_objects[y][x] == 'W')
+    {
+        sprite_loader.weed_sprite.setPosition(position);
+        render_object_sprites.push_back(sprite_loader.weed_sprite);
     }
 }
 
