@@ -4,9 +4,9 @@
 //#include "../level_management/level.h"
 
 
-
-const int SCREEN_WIDTH = 1920;
-const int SCREEN_HEIGHT = 1080;
+const float TEMP_SCALE = 0.8;
+const int SCREEN_WIDTH = 1920*TEMP_SCALE;
+const int SCREEN_HEIGHT = 1080*TEMP_SCALE;
 const int CENTER_X = SCREEN_WIDTH/2;
 const int CENTER_Y = SCREEN_HEIGHT/2;
 const float SCALE_FACTOR_X = 4;

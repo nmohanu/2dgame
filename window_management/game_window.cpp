@@ -14,6 +14,8 @@ void game_window::open_game_window()
     window.setFramerateLimit(60);
     window.setVerticalSyncEnabled(true);
     game_window_loop(window);
+    ladybug.play();
+    
 }
 
 // This is where the updates of the window are called.

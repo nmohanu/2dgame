@@ -50,7 +50,7 @@ void Dialogue_manager::initialize_dialogues()
     // Second conversation with Spork
     this->spork_npc_dialogue2->messages.push_back(Message("What do you mean\nwhere are we?"));
     this->spork_npc_dialogue2->messages.push_back(Message("Hehehe, got you\nagain."));
-    this->spork_npc_dialogue2->messages.push_back(Message("Don't worry, it's \n completely normal\nfor newcomers\n to be confused."));
+    this->spork_npc_dialogue2->messages.push_back(Message("Don't worry, it's\ncompletely normal\nfor newcomers\nto be confused."));
     this->spork_npc_dialogue2->messages.push_back(Message("Anyway... \nMy name is Spork."));
     
     this->spork_npc_dialogue2->ID = "SPORK_2";
