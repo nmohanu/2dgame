@@ -97,29 +97,42 @@ void handle_clicks(sf::RenderWindow& window, sf::Event& event,  sf::Vector2f mou
     
     if(event.mouseButton.button == sf::Mouse::Left)
     {
+        std::cout << "VECTOR MEM: " << &manager.spork_dialogues << std::endl;
         sf::Vector2f mouse_click_location = mouse_position;
         if(sprite_loader.old_man_npc.getGlobalBounds().contains(mouse_click_location))
         {
-            // std::cout << manager.dialogues.size() << " dialogues in vector at click." <<'\n';
-            for(Dialogue& dialogue : manager.dialogues)
+            if(manager.current != nullptr && manager.current->finished && manager.current->next != nullptr)
             {
-                if(dialogue.ID == "SPORK_1" && dialogue.finished == false)
+                manager.current = manager.current->next;
+            }
+            if(manager.current != nullptr && manager.current->finished != true)
+            {
+                manager.current->in_dialogue = true;
+                std::cout << &manager.current;
+            } else
+            {
+                manager.current = nullptr;
+            }
+            /*
+            for(Dialogue* dialogue : *manager.spork_dialogues)
+            {
+                std::cout << "MECHANICS MEMORY: " << &dialogue << '\n';
+                if(dialogue->ID == "SPORK_1" && dialogue->finished == false)
                 {
-                    dialogue.in_dialogue = true;
+                    dialogue->in_dialogue = true;
                 }
-                else if(dialogue.previous != nullptr)
+                else if(dialogue->ID == "SPORK_2" && dialogue->finished == false && dialogue->previous->finished)
                 {
-                    if(dialogue.ID == "SPORK_2" && dialogue.finished == false && dialogue.previous->finished == true)
-                    {
-                        dialogue.in_dialogue = true;
+                    dialogue->in_dialogue = true;
                         
-                    }
-                    std::cout << "dialogue 2 " << dialogue.previous->finished << '\n';
-                    std::cout << dialogue.finished << '\n';
+                
+                    
+                    std::cout << dialogue->finished << '\n';
                     
                 }
-                std::cout << "previous: " << dialogue.previous;
+                std::cout << "dialogue 2 PREVIOUS: " << &dialogue->previous << '\n';
             }
+            */
         }
     }
 }
