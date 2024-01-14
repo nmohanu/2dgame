@@ -94,7 +94,7 @@ bool check_collision(std::vector<sf::Sprite>& collision_sprites, sf::Vector2f& n
     return false; // No collision
 }
 
-void handle_clicks(sf::RenderWindow& window, sf::Event& event,  sf::Vector2f mouse_position, Sprite_loader& sprite_loader, Dialogue_manager& manager, Level& level)
+void handle_clicks(sf::RenderWindow& window, sf::Event& event,  sf::Vector2f mouse_position, Sprite_loader& sprite_loader, Dialogue_manager& manager, Level& level, Inventory& player_inventory)
 {
     
     if(event.mouseButton.button == sf::Mouse::Left)
@@ -140,13 +140,13 @@ void handle_clicks(sf::RenderWindow& window, sf::Event& event,  sf::Vector2f mou
         {
 
             level.level_1_objects[sprite_loader.mouse_pos_y][sprite_loader.mouse_pos_x] = '0';
-            if(player_inventory->weed != nullptr)
+            if(player_inventory.weed != nullptr)
             {
-                player_inventory->weed->amount++;
+                player_inventory.weed->amount++;
             }
             
-            std::cout << "WEED: " << player_inventory->weed->amount << std::endl;
-            std::cout << &player_inventory->weed->amount << " IN M \n";
+            std::cout << "WEED: " << player_inventory.weed->amount << std::endl;
+            std::cout << &player_inventory.weed->amount << " IN M \n";
         }
     }
 }

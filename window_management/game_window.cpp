@@ -40,7 +40,7 @@ void game_window::game_window_draw(sf::RenderWindow& window)
     // Render world ------------------------------------------------
 
     // Call renderer and render the world.
-    current_scene->render_everything(window, mouse_position, sprite_loader);
+    current_scene->render_everything(window, mouse_position, sprite_loader, *player_inventory);
 
     // Render UI elements ------------------------------------------
 
@@ -75,7 +75,7 @@ void game_window::game_window_update(sf::RenderWindow& window)
         // Handle clicks
         else if (event.type == sf::Event::MouseButtonReleased)
         {
-            handle_clicks(window, event, mouse_position, sprite_loader, *dialogue_manager, *current_scene->level_1);
+            handle_clicks(window, event, mouse_position, sprite_loader, *dialogue_manager, *current_scene->level_1, *player_inventory);
         }
         
     }

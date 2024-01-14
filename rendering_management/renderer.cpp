@@ -14,7 +14,7 @@ void Renderer::player_movement(float deltaTimeSeconds, Sprite_loader& sprite_loa
     clean_up(collision_sprites, npc_sprites);
 }
 
-void Renderer::render_everything(sf::RenderWindow& window, sf::Vector2f mouse_position, Sprite_loader& sprite_loader)
+void Renderer::render_everything(sf::RenderWindow& window, sf::Vector2f mouse_position, Sprite_loader& sprite_loader, Inventory& inventory)
 {
     // UI elements.
     window.draw(sprite_loader.coin_sprite);
@@ -32,7 +32,7 @@ void Renderer::render_everything(sf::RenderWindow& window, sf::Vector2f mouse_po
         window.draw(sprite);
     }
 
-    draw_player_hotbar(window, sprite_loader);
+    draw_player_hotbar(window, sprite_loader, inventory);
 
     // render_npc(window, sprite_loader);
     render_objects(window, sprite_loader);
@@ -45,16 +45,17 @@ void Renderer::render_everything(sf::RenderWindow& window, sf::Vector2f mouse_po
 }
 
 // Draw inventory hotbar.
-void Renderer::draw_player_hotbar(sf::RenderWindow& window, Sprite_loader& sprite_loader)
+void Renderer::draw_player_hotbar(sf::RenderWindow& window, Sprite_loader& sprite_loader, Inventory& player_inventory)
 {
     window.draw(sprite_loader.inventory_sprite);
-    if(player_inventory->weed != nullptr && player_inventory->weed->amount > 0)
+    if(player_inventory.weed != nullptr && player_inventory.weed->amount > 0)
     {
         sprite_loader.weed_sprite.setPosition(hotbar_item_1_pos);
-        window.draw(sprite_loader.weed_sprite);
-        std::cout << "RENDER AMOUNT: " << player_inventory->weed->amount;
+        sf::Sprite weed_item = sprite_loader.weed_sprite;
+        weed_item.setScale(SCALE_FACTOR_X*0.7, SCALE_FACTOR_X*0.7);
+        window.draw(weed_item);
+        std::cout << "RENDER AMOUNT: " << player_inventory.weed->amount;
     }
-    std::cout << &player_inventory->weed->amount << " IN R \n";
 }
 
 // Render objects that are not tiles.

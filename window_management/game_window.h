@@ -2,6 +2,7 @@
 #include <SFML/Audio.hpp>
 #include "../rendering_management/renderer.h"
 
+
 struct game_window
 {
     Dialogue_manager* dialogue_manager = new Dialogue_manager;
@@ -18,6 +19,8 @@ struct game_window
 
     sf::SoundBuffer ladybug_buffer;
     sf::Sound ladybug;
+    
+    Inventory* player_inventory = new Inventory;
 
 
     sf::Font font;
