@@ -52,6 +52,10 @@ void Dialogue_manager::initialize_dialogues()
     this->spork_npc_dialogue2->messages.push_back(Message("Hehehe, got you\nagain."));
     this->spork_npc_dialogue2->messages.push_back(Message("Don't worry, it's\ncompletely normal\nfor newcomers\nto be confused."));
     this->spork_npc_dialogue2->messages.push_back(Message("Anyway... \nMy name is Spork."));
+    this->spork_npc_dialogue2->messages.push_back(Message("And you see... Uhmm..."));
+    this->spork_npc_dialogue2->messages.push_back(Message("How do i put this\nlightly...\n"));
+    this->spork_npc_dialogue2->messages.push_back(Message("I'm afraid you\nhave passed...\n"));
+    this->spork_npc_dialogue2->messages.push_back(Message("Right now, we are\nin limbo.\n"));
     
     this->spork_npc_dialogue2->ID = "SPORK_2";
     this->spork_npc_dialogue2->message = &message;
@@ -59,7 +63,7 @@ void Dialogue_manager::initialize_dialogues()
 
     this->spork_npc_dialogue->next = spork_npc_dialogue2;
 
-    this->spork_dialogues->push_back(spork_npc_dialogue);
+    this->spork_dialogues->push_back(spork_npc_dialogue); 
     this->spork_dialogues->push_back(spork_npc_dialogue2);
 
     std::cout << "INIT MEMORY 1 " << &spork_npc_dialogue << '\n';
