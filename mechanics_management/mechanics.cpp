@@ -13,6 +13,9 @@ void move_player(float deltaTimeSeconds, sf::Vector2f& new_world_position, sf::V
     // New camera position.
     new_world_position = world_offset;
 
+    // Wether or not to update the world position.
+    bool update_world = false;
+
     // Move camera position.
     new_world_position -= get_velocity(deltaTimeSeconds);
 
@@ -22,17 +25,39 @@ void move_player(float deltaTimeSeconds, sf::Vector2f& new_world_position, sf::V
     // Check for collision after movement
     if (check_collision(collision_sprites, new_world_position, world_offset, sprite_loader))
     {
-        // Restore position to previous working one.
-        // world_offset = original_world_position;
-    }
-    // No collision, update camera position.
+        // Try if there is collision without one of the keys pressed.
+        new_world_position = original_world_position;
+        sf::Vector2f adjusted_velocity = get_velocity(deltaTimeSeconds);
+        new_world_position -= adjusted_velocity;
+        new_world_position.x = world_offset.x;
+        if(!check_collision(collision_sprites, new_world_position, world_offset, sprite_loader))
+        {
+            update_world = true;
+        }
+        // Try again but without y.
+        else
+        {
+            new_world_position = original_world_position;
+            adjusted_velocity = get_velocity(deltaTimeSeconds);
+            new_world_position -= adjusted_velocity;
+            new_world_position.y = world_offset.y;
+            if(!check_collision(collision_sprites, new_world_position, world_offset, sprite_loader))
+            {
+                update_world = true;
+            }
+        }
+    } 
     else
+    {
+        update_world = true;
+    }
+    
+    // No collision, update camera position.
+    if(update_world)
     {
         original_world_position = world_offset;
         world_offset = new_world_position;
     }
-
-    
 }
 
 // Get player velocity
