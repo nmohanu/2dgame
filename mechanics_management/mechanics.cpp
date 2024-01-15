@@ -101,20 +101,20 @@ void handle_clicks(sf::RenderWindow& window, sf::Event& event,  sf::Vector2f mou
     {
         std::cout << "VECTOR MEM: " << &manager.spork_dialogues << std::endl;
         sf::Vector2f mouse_click_location = mouse_position;
-        // if(sprite_loader.old_man_npc.getGlobalBounds().contains(mouse_click_location))
-        // {
-        //     if(manager.current != nullptr && manager.current->finished && manager.current->next != nullptr)
-        //     {
-        //         manager.current = manager.current->next;
-        //     }
-        //     if(manager.current != nullptr && manager.current->finished != true)
-        //     {
-        //         manager.current->in_dialogue = true;
-        //         std::cout << &manager.current;
-        //     } else
-        //     {
-        //         manager.current = nullptr;
-        //     }
+        if(sprite_loader.old_man_npc.getGlobalBounds().contains(mouse_click_location))
+        {
+            if(manager.current != nullptr && manager.current->finished && manager.current->next != nullptr)
+            {
+                manager.current = manager.current->next;
+            }
+            if(manager.current != nullptr && manager.current->finished != true)
+            {
+                manager.current->in_dialogue = true;
+                std::cout << &manager.current;
+            } else
+            {
+                manager.current = nullptr;
+            }
             /*
             for(Dialogue* dialogue : *manager.spork_dialogues)
             {
@@ -135,7 +135,7 @@ void handle_clicks(sf::RenderWindow& window, sf::Event& event,  sf::Vector2f mou
                 std::cout << "dialogue 2 PREVIOUS: " << &dialogue->previous << '\n';
             }
             */
-        //}
+        }
         if(level.level_1_objects[sprite_loader.mouse_pos_y][sprite_loader.mouse_pos_x] == 'W')
         {
 

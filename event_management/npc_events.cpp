@@ -39,29 +39,18 @@ void Dialogue_manager::initialize_dialogues()
 {
     std::cout << "dialogues initialized \n";
     // SPORK's messages.
-    this->spork_npc_dialogue->messages.push_back(Message("BOOO!!!!"));
-    this->spork_npc_dialogue->messages.push_back(Message("Hehehe, just kidding..."));
-    this->spork_npc_dialogue->messages.push_back(Message("Anyway... Welcome!"));
+    this->spork_npc_dialogue->messages.push_back(Message("Well... Here we are..."));
+    this->spork_npc_dialogue->messages.push_back(Message("I really don't\nsee why you\nwanted this place..."));
+    this->spork_npc_dialogue->messages.push_back(Message("It's small and\n catches a lot\nof garbage..."));
+    this->spork_npc_dialogue->messages.push_back(Message("Anyway...\nIt's yours now."));
     this->spork_npc_dialogue->messages.push_back(Message("..."));
     this->spork_npc_dialogue->ID = "SPORK_1";
     this->spork_npc_dialogue->message = &message;
     
 
     // Second conversation with Spork
-    this->spork_npc_dialogue2->messages.push_back(Message("What do you mean\nwhere are we?"));
-    this->spork_npc_dialogue2->messages.push_back(Message("Hehehe, got you\nagain."));
-    this->spork_npc_dialogue2->messages.push_back(Message("Don't worry, it's\ncompletely normal\nfor newcomers\nto be confused."));
-    this->spork_npc_dialogue2->messages.push_back(Message("Anyway... \nMy name is Spork."));
-    this->spork_npc_dialogue2->messages.push_back(Message("And you see... Uhmm..."));
-    this->spork_npc_dialogue2->messages.push_back(Message("How do i put this\nlightly...\n"));
-    this->spork_npc_dialogue2->messages.push_back(Message("I'm afraid you\nhave passed...\n"));
-    this->spork_npc_dialogue2->messages.push_back(Message("Right now, we are\nin limbo.\n"));
-    this->spork_npc_dialogue2->messages.push_back(Message("But don't worry!\nyou see...\nRight next to you\nis what we call..."));
-    this->spork_npc_dialogue2->messages.push_back(Message("A zenith, just put in\nyour name and they will\ntransport you to\nthe afterlife!"));
-    this->spork_npc_dialogue2->messages.push_back(Message("It's quite a\nnice place..."));
-    this->spork_npc_dialogue2->messages.push_back(Message("Or so I've heard..."));
-    this->spork_npc_dialogue2->messages.push_back(Message("By the way, \nwhat is your name?"));
-    this->spork_npc_dialogue2->messages.push_back(Message("..."));
+    this->spork_npc_dialogue2->messages.push_back(Message("Well, if you ever\nwant to expand this place\ncall me."));
+    
    
 
     

@@ -34,7 +34,7 @@ void Renderer::render_everything(sf::RenderWindow& window, sf::Vector2f mouse_po
 
     draw_player_hotbar(window, sprite_loader, inventory);
 
-    // render_npc(window, sprite_loader);
+    render_npc(window, sprite_loader);
     render_objects(window, sprite_loader);
     render_mouse_icon(window, mouse_position, sprite_loader);
 
@@ -54,7 +54,7 @@ void Renderer::draw_player_hotbar(sf::RenderWindow& window, Sprite_loader& sprit
         sf::Sprite weed_item = sprite_loader.weed_sprite;
         weed_item.setScale(SCALE_FACTOR_X*0.7, SCALE_FACTOR_X*0.7);
         window.draw(weed_item);
-        std::cout << "RENDER AMOUNT: " << player_inventory.weed->amount;
+        //std::cout << "RENDER AMOUNT: " << player_inventory.weed->amount;
     }
 }
 
@@ -77,6 +77,11 @@ void Renderer::draw_level_objects(sf::RenderWindow& window, Sprite_loader& sprit
     {
         sprite_loader.weed_sprite.setPosition(position);
         render_object_sprites.push_back(sprite_loader.weed_sprite);
+    }
+    if(current_level->level_1_objects[y][x] == 'G')
+    {
+        sprite_loader.gate_sprite.setPosition(position);
+        render_object_sprites.push_back(sprite_loader.gate_sprite);
     }
 }
 

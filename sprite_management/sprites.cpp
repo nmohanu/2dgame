@@ -101,6 +101,10 @@ void Sprite_loader::add_sprites()
     sf::IntRect pumpkin_rect(32, 0, 16, 16);
     pumpkin_sprite.setTextureRect(pumpkin_rect);
 
+    gate_sprite.setTexture(edges_texture);
+    gate_sprite.setTextureRect(sf::IntRect(48, 16, 32, 32));
+    gate_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_Y);
+
     boat_sprite.setTexture(edges_texture);
     boat_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_Y);
     boat_sprite.setTextureRect(sf::IntRect(48, 16, 16, 32));
