@@ -15,13 +15,20 @@ const float PLAYER_SPEED = 3.f;
 
 struct Sprite_loader
 {
+    int mouse_pos_x;
+    int mouse_pos_y;
+
+    // Inventory
+    sf::Texture inventory_texture;
+    sf::Sprite inventory_sprite;
+
     // Player
     sf::Texture player_texture;
     sf::Sprite player_sprite;
 
     // Old man npc
     sf::Sprite old_man_npc;
-    sf::Vector2f original_position_old_man_npc = sf::Vector2f(CENTER_X-(16 * SCALE_FACTOR_X)/2 + 40*SCALE_FACTOR_X, CENTER_Y-(16 * SCALE_FACTOR_X)/2);
+    sf::Vector2f original_position_old_man_npc = sf::Vector2f(CENTER_X-(16 * SCALE_FACTOR_X)/2 + 24*SCALE_FACTOR_X, CENTER_Y-(16 * SCALE_FACTOR_X)/2);
 
     // UI elements
     sf::Texture UI_texture;
@@ -43,6 +50,9 @@ struct Sprite_loader
 
     // Objects
     sf::Sprite pumpkin_sprite;
+    sf::Sprite boat_sprite;
+    sf::Sprite weed_sprite;
+    sf::Sprite gate_sprite;
 
     // Edges tiles.
     sf::Texture edges_texture;

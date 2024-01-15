@@ -1,6 +1,7 @@
 #include "mechanics.h"
 #include <iostream>
 
+
 void clean_up(std::vector<sf::Sprite>& collision_sprites, std::vector<sf::Sprite>& clickable_sprites)
 {
     collision_sprites.clear();
@@ -68,6 +69,7 @@ sf::Vector2f get_velocity(float deltaTimeSeconds)
 }
 
 
+
 bool check_collision(std::vector<sf::Sprite>& collision_sprites, sf::Vector2f& new_world_position, sf::Vector2f& world_offset, Sprite_loader& sprite_loader)
 {
     sf::FloatRect playerBounds = sprite_loader.player_sprite.getGlobalBounds();
@@ -92,7 +94,7 @@ bool check_collision(std::vector<sf::Sprite>& collision_sprites, sf::Vector2f& n
     return false; // No collision
 }
 
-void handle_clicks(sf::RenderWindow& window, sf::Event& event,  sf::Vector2f mouse_position, Sprite_loader& sprite_loader, Dialogue_manager& manager)
+void handle_clicks(sf::RenderWindow& window, sf::Event& event,  sf::Vector2f mouse_position, Sprite_loader& sprite_loader, Dialogue_manager& manager, Level& level, Inventory& player_inventory)
 {
     
     if(event.mouseButton.button == sf::Mouse::Left)
@@ -133,6 +135,35 @@ void handle_clicks(sf::RenderWindow& window, sf::Event& event,  sf::Vector2f mou
                 std::cout << "dialogue 2 PREVIOUS: " << &dialogue->previous << '\n';
             }
             */
+        }
+        if(level.level_1_objects[sprite_loader.mouse_pos_y][sprite_loader.mouse_pos_x] == 'W')
+        {
+
+            level.level_1_objects[sprite_loader.mouse_pos_y][sprite_loader.mouse_pos_x] = '0';
+            if(player_inventory.weed != nullptr)
+            {
+                player_inventory.weed->amount++;
+            }
+            
+            std::cout << "WEED: " << player_inventory.weed->amount << std::endl;
+            std::cout << &player_inventory.weed->amount << " IN M \n";
+        }
+    }
+}
+
+void update_world(sf::RenderWindow& window, Sprite_loader& sprite_loader, Level& level)
+{
+    for(int y = 1; y < level.LEVEL_HEIGHT-1; y++)
+    {
+        for(int x = 1; x < level.LEVEL_WIDTH-1; x++)
+        {
+            int random_num = std::rand() % 100000;
+            if(random_num > 99990 && level.level_1_objects[y][x] == '0')
+            {
+                
+                level.level_1_objects[y][x] = 'W';
+            }
+            //std::cout<< random_num << std::endl;
         }
     }
 }

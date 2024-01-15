@@ -16,6 +16,7 @@ struct Animation_manager{
     int last_frame_offset = 0;
     const int CHANGE_FRAME = 180;
     
+    
     void update_sprites(sf::Clock& timer, sf::RenderWindow& window, float deltaTimeSeconds, Sprite_loader& sprite_loader);
     void change_sprite_bounds(sf::Clock& timer, Sprite_loader& sprite_loader);
 };

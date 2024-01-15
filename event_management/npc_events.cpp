@@ -39,19 +39,20 @@ void Dialogue_manager::initialize_dialogues()
 {
     std::cout << "dialogues initialized \n";
     // SPORK's messages.
-    this->spork_npc_dialogue->messages.push_back(Message("BOOO!!!!"));
-    this->spork_npc_dialogue->messages.push_back(Message("Hehehe, just kidding..."));
-    this->spork_npc_dialogue->messages.push_back(Message("Anyway... Welcome!"));
+    this->spork_npc_dialogue->messages.push_back(Message("Well... Here we are..."));
+    this->spork_npc_dialogue->messages.push_back(Message("I really don't\nsee why you\nwanted this place..."));
+    this->spork_npc_dialogue->messages.push_back(Message("It's small and\n catches a lot\nof garbage..."));
+    this->spork_npc_dialogue->messages.push_back(Message("Anyway...\nIt's yours now."));
     this->spork_npc_dialogue->messages.push_back(Message("..."));
     this->spork_npc_dialogue->ID = "SPORK_1";
     this->spork_npc_dialogue->message = &message;
     
 
     // Second conversation with Spork
-    this->spork_npc_dialogue2->messages.push_back(Message("What do you mean\nwhere are we?"));
-    this->spork_npc_dialogue2->messages.push_back(Message("Hehehe, got you\nagain."));
-    this->spork_npc_dialogue2->messages.push_back(Message("Don't worry, it's\ncompletely normal\nfor newcomers\nto be confused."));
-    this->spork_npc_dialogue2->messages.push_back(Message("Anyway... \nMy name is Spork."));
+    this->spork_npc_dialogue2->messages.push_back(Message("Well, if you ever\nwant to expand this place\ncall me."));
+    
+   
+
     
     this->spork_npc_dialogue2->ID = "SPORK_2";
     this->spork_npc_dialogue2->message = &message;
@@ -59,7 +60,7 @@ void Dialogue_manager::initialize_dialogues()
 
     this->spork_npc_dialogue->next = spork_npc_dialogue2;
 
-    this->spork_dialogues->push_back(spork_npc_dialogue);
+    this->spork_dialogues->push_back(spork_npc_dialogue); 
     this->spork_dialogues->push_back(spork_npc_dialogue2);
 
     std::cout << "INIT MEMORY 1 " << &spork_npc_dialogue << '\n';
