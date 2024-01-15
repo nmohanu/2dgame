@@ -72,10 +72,15 @@ sf::Vector2f get_velocity(float deltaTimeSeconds)
 
 bool check_collision(std::vector<sf::Sprite>& collision_sprites, sf::Vector2f& new_world_position, sf::Vector2f& world_offset, Sprite_loader& sprite_loader)
 {
-    sf::FloatRect playerBounds = sprite_loader.player_sprite.getGlobalBounds();
+    sf::FloatRect player_bounds = sprite_loader.player_sprite.getGlobalBounds();
 
-    playerBounds.height -= 4;
-    playerBounds.width -= 4;
+    sf::FloatRect adjustedPlayerBounds(
+        player_bounds.left + 20,      // Adjust left
+        player_bounds.top + 46,       // Adjust top
+        player_bounds.width - 40,     // Adjust width
+        player_bounds.height - 60     // Adjust height
+    );
+
     
     // Check collision with each wall sprite
     for (const sf::Sprite& wallSprite : collision_sprites)
@@ -85,7 +90,7 @@ bool check_collision(std::vector<sf::Sprite>& collision_sprites, sf::Vector2f& n
         new_position.top -= world_offset.y;
         new_position.left += new_world_position.x;
         new_position.top += new_world_position.y;
-        if (playerBounds.intersects(new_position))
+        if (adjustedPlayerBounds.intersects(new_position))
         {
             return true; // Collision detected
         }
@@ -151,19 +156,26 @@ void handle_clicks(sf::RenderWindow& window, sf::Event& event,  sf::Vector2f mou
     }
 }
 
-void update_world(sf::RenderWindow& window, Sprite_loader& sprite_loader, Level& level)
+void update_world(sf::RenderWindow& window, Sprite_loader& sprite_loader, Level& level, sf::Clock& game_clock)
 {
-    for(int y = 1; y < level.LEVEL_HEIGHT-1; y++)
+    // Update world every 5 seconds
+    if((float) game_clock.getElapsedTime().asSeconds() >= 5)
     {
-        for(int x = 1; x < level.LEVEL_WIDTH-1; x++)
+        game_clock.restart();
+        int random_num = std::rand() % 100000;
+        for(int y = 1; y < level.LEVEL_HEIGHT-1; y++)
         {
-            int random_num = std::rand() % 100000;
-            if(random_num > 99990 && level.level_1_objects[y][x] == '0')
+            for(int x = 1; x < level.LEVEL_WIDTH-1; x++)
             {
                 
-                level.level_1_objects[y][x] = 'W';
+                if(random_num > 99990 && level.level_1_objects[y][x] == '0')
+                {
+                    // Spawn weeds
+                    level.level_1_objects[y][x] = 'W';
+                }
+                //std::cout<< random_num << std::endl;
             }
-            //std::cout<< random_num << std::endl;
         }
+        std::cout << "world updated" << '\n';
     }
 }

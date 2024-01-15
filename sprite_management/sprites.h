@@ -3,18 +3,34 @@
 #include <vector>
 //#include "../level_management/level.h"
 
-
+// Temporary scale stuff, for development.
 const float TEMP_SCALE = 0.8;
+
+// Screen width.
 const int SCREEN_WIDTH = 1920*TEMP_SCALE;
+
+// Screen height.
 const int SCREEN_HEIGHT = 1080*TEMP_SCALE;
+
+// Center of screen X.
 const int CENTER_X = SCREEN_WIDTH/2;
+
+// Center of screen Y.
 const int CENTER_Y = SCREEN_HEIGHT/2;
+
+// Scale factor, y is smaller for '3d-ish effect'
 const float SCALE_FACTOR_X = 4;
 const float SCALE_FACTOR_Y = 3.5;
+
+// Player movement speed.
 const float PLAYER_SPEED = 3.f;
+
+// Time period after which the world updates.
+const float UPDATE_TIME_AFTER = 5.0f;
 
 struct Sprite_loader
 {
+    // Where the mouse is positioned on the grid.
     int mouse_pos_x;
     int mouse_pos_y;
 
