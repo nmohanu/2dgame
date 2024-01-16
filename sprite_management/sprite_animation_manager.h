@@ -1,6 +1,9 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "sprites.h"
+
+#include "../event_management/npc_events.h"
+
+
 
 struct Animation_manager{
     bool blink;
@@ -12,7 +15,8 @@ struct Animation_manager{
     int frame_offset = 0;
     int last_frame_offset = 0;
     const int CHANGE_FRAME = 180;
-    Sprite_loader sprite_loader;
-    void update_sprites(sf::Clock& timer, sf::RenderWindow& window, float deltaTimeSeconds);
-    void change_sprite_bounds(sf::Clock& timer);
+    
+    
+    void update_sprites(sf::Clock& timer, sf::RenderWindow& window, float deltaTimeSeconds, Sprite_loader& sprite_loader);
+    void change_sprite_bounds(sf::Clock& timer, Sprite_loader& sprite_loader);
 };

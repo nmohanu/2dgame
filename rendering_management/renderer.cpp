@@ -1,34 +1,92 @@
 #include "renderer.h"
 #include <iostream>
 
-const int TILE_SIZE = 16;
 
 
-
-
-// Save all sprites for which collision should be checked.
-std::vector<sf::Sprite> collision_sprites;
-std::vector<sf::Sprite> npc_sprites;
-std::vector<sf::Sprite> clickable_sprites;
 sf::Vector2f world_offset(0.f, 0.f);
 sf::Vector2f new_world_position(0.f, 0.f);
-sf::Vector2f original_world_positio(0.f, 0.f);
 sf::Vector2f original_world_position(world_offset);
 
-// Render objects that are not tiles.
-void Renderer::render_objects(sf::RenderWindow& window)
+void Renderer::player_movement(float deltaTimeSeconds, Sprite_loader& sprite_loader)
 {
-    window.draw(animation_manager.sprite_loader.player_sprite);
+    // Move player.
+    move_player(deltaTimeSeconds, new_world_position, world_offset, original_world_position, collision_sprites, sprite_loader);
+    clean_up(collision_sprites, npc_sprites);
 }
 
-void Renderer::draw_level_objects(sf::Vector2f& position, int x, int y, sf::RenderWindow& window, sf::Vector2f mouse_position)
+void Renderer::render_everything(sf::RenderWindow& window, sf::Vector2f mouse_position, Sprite_loader& sprite_loader, Inventory& inventory)
 {
+    // UI elements.
+    window.draw(sprite_loader.coin_sprite);
+    window.draw(sprite_loader.coin_sprite);
+
+    // Draw level.
+    draw_level_tiles(window, mouse_position, sprite_loader);
+    for(sf::Sprite sprite : render_tile_sprites)
+    {
+        window.draw(sprite);
+    }
+    
+    for(sf::Sprite sprite : render_object_sprites)
+    {
+        window.draw(sprite);
+    }
+
+    draw_player_hotbar(window, sprite_loader, inventory);
+
+    render_npc(window, sprite_loader);
+    render_objects(window, sprite_loader);
+    render_mouse_icon(window, mouse_position, sprite_loader);
+
     
 
+    render_tile_sprites.clear();
+    render_object_sprites.clear();
+}
+
+// Draw inventory hotbar.
+void Renderer::draw_player_hotbar(sf::RenderWindow& window, Sprite_loader& sprite_loader, Inventory& player_inventory)
+{
+    window.draw(sprite_loader.inventory_sprite);
+    if(player_inventory.weed != nullptr && player_inventory.weed->amount > 0)
+    {
+        sprite_loader.weed_sprite.setPosition(hotbar_item_1_pos);
+        sf::Sprite weed_item = sprite_loader.weed_sprite;
+        weed_item.setScale(SCALE_FACTOR_X*0.7, SCALE_FACTOR_X*0.7);
+        window.draw(weed_item);
+        //std::cout << "RENDER AMOUNT: " << player_inventory.weed->amount;
+    }
+}
+
+// Render objects that are not tiles.
+void Renderer::render_objects(sf::RenderWindow& window, Sprite_loader& sprite_loader)
+{
+
+    window.draw(sprite_loader.player_sprite);
+}
+
+void Renderer::draw_level_objects(sf::RenderWindow& window, Sprite_loader& sprite_loader, int x, int y, sf::Vector2f position)
+{
+    if(current_level->level_1_objects[y][x] == 'Z')
+    {
+        sprite_loader.boat_sprite.setPosition(position);
+        collision_sprites.push_back(sprite_loader.boat_sprite);
+        render_object_sprites.push_back(sprite_loader.boat_sprite);
+    }
+    if(current_level->level_1_objects[y][x] == 'W')
+    {
+        sprite_loader.weed_sprite.setPosition(position);
+        render_object_sprites.push_back(sprite_loader.weed_sprite);
+    }
+    if(current_level->level_1_objects[y][x] == 'G')
+    {
+        sprite_loader.gate_sprite.setPosition(position);
+        render_object_sprites.push_back(sprite_loader.gate_sprite);
+    }
 }
 
 // This is where the tiles are drawn.
-void Renderer::draw_level_tiles(sf::RenderWindow& window, sf::Vector2f mouse_position)
+void Renderer::draw_level_tiles(sf::RenderWindow& window, sf::Vector2f mouse_position, Sprite_loader& sprite_loader)
 {
     for (int y = 0; y < current_level->LEVEL_HEIGHT; y++)
     {
@@ -38,238 +96,149 @@ void Renderer::draw_level_tiles(sf::RenderWindow& window, sf::Vector2f mouse_pos
                                   y * SCALE_FACTOR_Y * TILE_SIZE + (SCREEN_HEIGHT - (TILE_SIZE*TILE_SIZE*SCALE_FACTOR_Y))/2 + current_level->LEVEL_HEIGHT*SCALE_FACTOR_Y*TILE_SIZE/2);
             position += world_offset;
 
-            if (current_level->level_1_terrain[x][y] == '0')
+            if (current_level->level_1_terrain[y][x] == '0')
             {
-                animation_manager.sprite_loader.edge_0_sprite.setPosition(position);
-                window.draw(animation_manager.sprite_loader.edge_0_sprite);
+                sprite_loader.edge_0_sprite.setPosition(position);
+                render_tile_sprites.push_back(sprite_loader.edge_0_sprite);
                 
-                collision_sprites.push_back(animation_manager.sprite_loader.edge_0_sprite);
+                collision_sprites.push_back(sprite_loader.edge_0_sprite);
             } // Edge 0
-            else if (current_level->level_1_terrain[x][y] == '1')
+            else if (current_level->level_1_terrain[y][x] == '1')
             {
-                animation_manager.sprite_loader.edge_1_sprite.setPosition(position);
-                window.draw(animation_manager.sprite_loader.edge_1_sprite);
+                sprite_loader.edge_1_sprite.setPosition(position);
+                render_tile_sprites.push_back(sprite_loader.edge_1_sprite);
 
-                collision_sprites.push_back(animation_manager.sprite_loader.edge_1_sprite);
+                collision_sprites.push_back(sprite_loader.edge_1_sprite);
             } // Edge 1
-            else if (current_level->level_1_terrain[x][y] == '2')
+            else if (current_level->level_1_terrain[y][x] == '2')
             {
-                animation_manager.sprite_loader.edge_2_sprite.setPosition(position);
-                window.draw(animation_manager.sprite_loader.edge_2_sprite);
+                sprite_loader.edge_2_sprite.setPosition(position);
+                render_tile_sprites.push_back(sprite_loader.edge_2_sprite);
 
-                collision_sprites.push_back(animation_manager.sprite_loader.edge_2_sprite);
+                collision_sprites.push_back(sprite_loader.edge_2_sprite);
             } // Edge 2
-            else if (current_level->level_1_terrain[x][y] == '3')
+            else if (current_level->level_1_terrain[y][x] == '3')
             {
-                animation_manager.sprite_loader.edge_3_sprite.setPosition(position);
-                window.draw(animation_manager.sprite_loader.edge_3_sprite);
+                sprite_loader.edge_3_sprite.setPosition(position);
+                render_tile_sprites.push_back(sprite_loader.edge_3_sprite);
 
-                collision_sprites.push_back(animation_manager.sprite_loader.edge_3_sprite);
+                collision_sprites.push_back(sprite_loader.edge_3_sprite);
             } // Edge 3
-            else if (current_level->level_1_terrain[x][y] == '4')
+            else if (current_level->level_1_terrain[y][x] == '4')
             {
-                animation_manager.sprite_loader.edge_4_sprite.setPosition(position);
-                window.draw(animation_manager.sprite_loader.edge_4_sprite);
+                sprite_loader.edge_4_sprite.setPosition(position);
+                render_tile_sprites.push_back(sprite_loader.edge_4_sprite);
 
-                collision_sprites.push_back(animation_manager.sprite_loader.edge_4_sprite);
+                collision_sprites.push_back(sprite_loader.edge_4_sprite);
             } // Edge 4
-            else if (current_level->level_1_terrain[x][y] == '5')
+            else if (current_level->level_1_terrain[y][x] == '5')
             {
-                animation_manager.sprite_loader.edge_5_sprite.setPosition(position);
-                window.draw(animation_manager.sprite_loader.edge_5_sprite);
+                sprite_loader.edge_5_sprite.setPosition(position);
+                render_tile_sprites.push_back(sprite_loader.edge_5_sprite);
 
-                collision_sprites.push_back(animation_manager.sprite_loader.edge_5_sprite);
+                collision_sprites.push_back(sprite_loader.edge_5_sprite);
             } // Edge 5
-            else if (current_level->level_1_terrain[x][y] == '6')
+            else if (current_level->level_1_terrain[y][x] == '6')
             {
-                animation_manager.sprite_loader.edge_6_sprite.setPosition(position);
-                window.draw(animation_manager.sprite_loader.edge_6_sprite);
+                sprite_loader.edge_6_sprite.setPosition(position);
+                render_tile_sprites.push_back(sprite_loader.edge_6_sprite);
 
-                collision_sprites.push_back(animation_manager.sprite_loader.edge_6_sprite);
+                collision_sprites.push_back(sprite_loader.edge_6_sprite);
             } // Edge 6
-            else if (current_level->level_1_terrain[x][y] == '7')
+            else if (current_level->level_1_terrain[y][x] == '7')
             {
-                animation_manager.sprite_loader.edge_7_sprite.setPosition(position);
-                window.draw(animation_manager.sprite_loader.edge_7_sprite);
+                sprite_loader.edge_7_sprite.setPosition(position);
+                render_tile_sprites.push_back(sprite_loader.edge_7_sprite);
 
-                collision_sprites.push_back(animation_manager.sprite_loader.edge_7_sprite);
+                collision_sprites.push_back(sprite_loader.edge_7_sprite);
             } // Edge 7
             
-            else if (level_1->level_1_terrain[x][y] == 'F')
+            else if (level_1->level_1_terrain[y][x] == 'F')
             {
-                animation_manager.sprite_loader.floor_sprite.setPosition(position);
-                window.draw(animation_manager.sprite_loader.floor_sprite);
+                sprite_loader.floor_sprite.setPosition(position);
+                render_tile_sprites.push_back(sprite_loader.floor_sprite);
 
-                sf::FloatRect sprite = animation_manager.sprite_loader.floor_sprite.getGlobalBounds();
+                sf::FloatRect sprite = sprite_loader.floor_sprite.getGlobalBounds();
 
                 // Draw selection square
-                if(sprite.contains(mouse_position))
+                if(sprite.contains(mouse_position) && abs(mouse_position.x - CENTER_X) < PLAYER_REACH
+                    && abs(mouse_position.y - CENTER_Y) < PLAYER_REACH)
                 {
-                    animation_manager.sprite_loader.selection_sprite.setPosition(position);
-                    window.draw(animation_manager.sprite_loader.selection_sprite);
+                    sprite_loader.selection_sprite.setPosition(position);
+                    render_tile_sprites.push_back(sprite_loader.selection_sprite);
+                    sprite_loader.mouse_pos_x = x;
+                    sprite_loader.mouse_pos_y = y;
                 }
             } // Floor 1 
-            else if (level_1->level_1_terrain[x][y] == 'L')
+            else if (level_1->level_1_terrain[y][x] == 'L')
             {
-                animation_manager.sprite_loader.floor2_sprite.setPosition(position);
-                window.draw(animation_manager.sprite_loader.floor2_sprite);
+                sprite_loader.floor2_sprite.setPosition(position);
+                render_tile_sprites.push_back(sprite_loader.floor2_sprite);
 
-                sf::FloatRect sprite = animation_manager.sprite_loader.floor2_sprite.getGlobalBounds();
-                if(sprite.contains(mouse_position))
+                sf::FloatRect sprite = sprite_loader.floor2_sprite.getGlobalBounds();
+                if(sprite.contains(mouse_position) && abs(mouse_position.x - CENTER_X) < PLAYER_REACH
+                    && abs(mouse_position.y - CENTER_Y) < PLAYER_REACH)
                 {
-                    animation_manager.sprite_loader.selection_sprite.setPosition(position);
-                    window.draw(animation_manager.sprite_loader.selection_sprite);
+                    sprite_loader.selection_sprite.setPosition(position);
+                    render_tile_sprites.push_back(sprite_loader.selection_sprite);
+                    sprite_loader.mouse_pos_x = x;
+                    sprite_loader.mouse_pos_y = y;
                 }
             } // Floor 2
-
-            draw_level_objects(position, x, y, window, mouse_position);
+            draw_level_objects(window, sprite_loader, x, y, position);
         }
     }
-    render_nps(window);
-    render_mouse_icon(window, mouse_position);
 }
 
-void Renderer::render_nps(sf::RenderWindow& window)
+void Renderer::render_npc(sf::RenderWindow& window, Sprite_loader& sprite_loader)
 {
-    sf::Vector2f new_position = sf::Vector2f(animation_manager.sprite_loader.original_position_old_man_npc);
+    sf::Vector2f new_position = sf::Vector2f(sprite_loader.original_position_old_man_npc);
     new_position += world_offset;
-    animation_manager.sprite_loader.old_man_npc.setPosition(new_position);
-    window.draw(animation_manager.sprite_loader.old_man_npc);
-    collision_sprites.push_back(animation_manager.sprite_loader.old_man_npc);
-    npc_sprites.push_back(animation_manager.sprite_loader.old_man_npc);
-
-
+    sprite_loader.old_man_npc.setPosition(new_position);
+    window.draw(sprite_loader.old_man_npc);
+    collision_sprites.push_back(sprite_loader.old_man_npc);
+    npc_sprites.push_back(sprite_loader.old_man_npc);
 }
-void Renderer::render_mouse_icon(sf::RenderWindow& window, sf::Vector2f mouse_position)
+
+void Renderer::render_mouse_icon(sf::RenderWindow& window, sf::Vector2f mouse_position, Sprite_loader& sprite_loader)
 {    
+    bool cursor_drawn = false;
     for(sf::Sprite sprite : npc_sprites)
     {
         if(sprite.getGlobalBounds().contains(mouse_position))
         {
-            if( sprite.getGlobalBounds().getPosition().x < SCREEN_WIDTH/2 + 100 && 
-                sprite.getGlobalBounds().getPosition().x > SCREEN_WIDTH/2 - 100 && 
-                sprite.getGlobalBounds().getPosition().y < SCREEN_HEIGHT/2 + 150 && 
-                sprite.getGlobalBounds().getPosition().y > SCREEN_HEIGHT/2 - 150 && 
+            if( abs(mouse_position.x - CENTER_X) < PLAYER_REACH
+                && abs(mouse_position.y - CENTER_Y) < PLAYER_REACH && 
                 sprite.getGlobalBounds().contains(mouse_position))
             {
-                animation_manager.sprite_loader.talk_icon_sprite.setPosition(mouse_position);
-                window.draw(animation_manager.sprite_loader.talk_icon_sprite);  
-            }
-                      
+                sprite_loader.talk_icon_sprite.setPosition(mouse_position.x-8, mouse_position.y-8);
+                window.draw(sprite_loader.talk_icon_sprite);  
+                cursor_drawn = true;
+            }          
         }
     }
-
-    // Clear npc sprite vector when done.
-    npc_sprites.clear();
-}
-
-void Renderer::handle_clicks(sf::RenderWindow& window, sf::Vector2f mouse_position)
-{
-    // Handle click
-    if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    for(sf::Sprite sprite : render_object_sprites)
     {
-        sf::Vector2f mouse_click_location = mouse_position;
-        if(this->animation_manager.sprite_loader.old_man_npc.getGlobalBounds().contains(mouse_click_location))
+        if(sprite.getGlobalBounds().contains(mouse_position))
         {
-            std::cout << "OLD MAN CLICKED" << std::endl;
+            if( abs(mouse_position.x - CENTER_X) < PLAYER_REACH
+                && abs(mouse_position.y - CENTER_Y) < PLAYER_REACH&& 
+                sprite.getGlobalBounds().contains(mouse_position))
+            {
+                sprite_loader.grab_icon_sprite.setPosition(mouse_position.x-8, mouse_position.y-8);
+                window.draw(sprite_loader.grab_icon_sprite);  
+                cursor_drawn = true;
+            }          
         }
     }
-
-    // Clear walls
-    
-}
-
-void Renderer::clean_up()
-{
-    collision_sprites.clear();
-    clickable_sprites.clear();
-}
-
-void Renderer::move_player(float deltaTimeSeconds)
-{
-    // New camera position.
-    new_world_position = world_offset;
-
-    // Move camera position.
-    new_world_position -= get_velocity(deltaTimeSeconds);
-
-    // Print offset.
-    // std::cout << (int) world_offset.x << " " << (int) world_offset.y << '\n';
-
-    // Check for collision after movement
-    if (check_collision())
+    if(!cursor_drawn)
     {
-        // Restore position to previous working one.
-        // world_offset = original_world_position;
-        std::cout << "COLLISION" << '\n';
+        sprite_loader.default_mouse_icon_sprite.setPosition(mouse_position.x-8, mouse_position.y-8);
+        window.draw(sprite_loader.default_mouse_icon_sprite);
     }
-    // No collision, update camera position.
-    else
-    {
-        original_world_position = world_offset;
-        world_offset = new_world_position;
-    }
-
-    
-}
-
-// Get player velocity
-sf::Vector2f Renderer::get_velocity(float deltaTimeSeconds)
-{
-    sf::Vector2f player_velocity(0.f, 0.f);
-
-    // Set player velocity
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-    {
-        player_velocity += sf::Vector2f(0.f, -100.f * deltaTimeSeconds * PLAYER_SPEED);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-    {
-        player_velocity += sf::Vector2f(-100.f * deltaTimeSeconds * PLAYER_SPEED, 0.f);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-    {
-        player_velocity += sf::Vector2f(0.f, 100.f * deltaTimeSeconds * PLAYER_SPEED);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-    {
-        player_velocity += sf::Vector2f(100.f * deltaTimeSeconds * PLAYER_SPEED, 0.f);
-    }
-    // Correct velocity (pythagoras theorem approximation).
-    if ((sf::Keyboard::isKeyPressed(sf::Keyboard::W) && sf::Keyboard::isKeyPressed(sf::Keyboard::A)) ||
-        (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && sf::Keyboard::isKeyPressed(sf::Keyboard::D)) ||
-        (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && sf::Keyboard::isKeyPressed(sf::Keyboard::A)) ||
-        (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && sf::Keyboard::isKeyPressed(sf::Keyboard::D)))
-    {
-        player_velocity = sf::Vector2f(player_velocity.x/100*60, player_velocity.y/100*60);
-    }
-    return player_velocity;
 }
 
 
-bool Renderer::check_collision()
-{
-    sf::FloatRect playerBounds = this->animation_manager.sprite_loader.player_sprite.getGlobalBounds();
-
-    playerBounds.height -= 4;
-    playerBounds.width -= 4;
-    
-    // Check collision with each wall sprite
-    for (const sf::Sprite& wallSprite : collision_sprites)
-    {
-        sf::FloatRect new_position = wallSprite.getGlobalBounds();
-        new_position.left -= world_offset.x;
-        new_position.top -= world_offset.y;
-        new_position.left += new_world_position.x;
-        new_position.top += new_world_position.y;
-        if (playerBounds.intersects(new_position))
-        {
-            return true; // Collision detected
-        }
-    }
-
-    return false; // No collision
-}
 
 
 
