@@ -87,11 +87,23 @@ void Sprite_loader::add_sprites()
     sf::IntRect coin_rect(0, 0, 16, 16);
     coin_sprite.setTextureRect(coin_rect);
 
-    // Talk icon
+    // Mouse icons ---------------------------------------------------
+
+    // Dialogues
     talk_icon_sprite.setTexture(UI_texture);
     talk_icon_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_X);
     sf::IntRect talk_icon_rect(16, 0, 16, 16);
     talk_icon_sprite.setTextureRect(talk_icon_rect);
+
+    // Grab stuff
+    grab_icon_sprite.setTexture(UI_texture);
+    grab_icon_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_X);
+    grab_icon_sprite.setTextureRect(sf::IntRect(32, 0, 16, 16));
+
+    // Default
+    default_mouse_icon_sprite.setTexture(UI_texture);
+    default_mouse_icon_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_X);
+    default_mouse_icon_sprite.setTextureRect(sf::IntRect(48, 0, 16, 16));
 
     //----------------------------------------------------------------
 

@@ -13,6 +13,7 @@ void game_window::open_game_window()
     sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Bruh", sf::Style::Titlebar | sf::Style::Close);
     window.setFramerateLimit(60);
     window.setVerticalSyncEnabled(true);
+    window.setMouseCursorVisible(false);
     game_window_loop(window);
     ladybug.play();
     

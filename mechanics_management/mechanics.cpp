@@ -145,26 +145,6 @@ void handle_clicks(sf::RenderWindow& window, sf::Event& event,  sf::Vector2f mou
             {
                 manager.current = nullptr;
             }
-            /*
-            for(Dialogue* dialogue : *manager.spork_dialogues)
-            {
-                std::cout << "MECHANICS MEMORY: " << &dialogue << '\n';
-                if(dialogue->ID == "SPORK_1" && dialogue->finished == false)
-                {
-                    dialogue->in_dialogue = true;
-                }
-                else if(dialogue->ID == "SPORK_2" && dialogue->finished == false && dialogue->previous->finished)
-                {
-                    dialogue->in_dialogue = true;
-                        
-                
-                    
-                    std::cout << dialogue->finished << '\n';
-                    
-                }
-                std::cout << "dialogue 2 PREVIOUS: " << &dialogue->previous << '\n';
-            }
-            */
         }
         if(level.level_1_objects[sprite_loader.mouse_pos_y][sprite_loader.mouse_pos_x] == 'W')
         {

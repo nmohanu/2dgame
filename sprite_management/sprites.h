@@ -53,7 +53,11 @@ struct Sprite_loader
     // UI elements
     sf::Texture UI_texture;
     sf::Sprite coin_sprite;
+
+    // Mouse sprites (using UI texture)
     sf::Sprite talk_icon_sprite;
+    sf::Sprite grab_icon_sprite;
+    sf::Sprite default_mouse_icon_sprite;
 
     // Dialogue sprites
     sf::Texture dialogue_texture;
