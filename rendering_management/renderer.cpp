@@ -161,7 +161,8 @@ void Renderer::draw_level_tiles(sf::RenderWindow& window, sf::Vector2f mouse_pos
                 sf::FloatRect sprite = sprite_loader.floor_sprite.getGlobalBounds();
 
                 // Draw selection square
-                if(sprite.contains(mouse_position))
+                if(sprite.contains(mouse_position) && abs(mouse_position.x - CENTER_X) < PLAYER_REACH
+                    && abs(mouse_position.y - CENTER_Y) < PLAYER_REACH)
                 {
                     sprite_loader.selection_sprite.setPosition(position);
                     render_tile_sprites.push_back(sprite_loader.selection_sprite);
@@ -175,7 +176,8 @@ void Renderer::draw_level_tiles(sf::RenderWindow& window, sf::Vector2f mouse_pos
                 render_tile_sprites.push_back(sprite_loader.floor2_sprite);
 
                 sf::FloatRect sprite = sprite_loader.floor2_sprite.getGlobalBounds();
-                if(sprite.contains(mouse_position))
+                if(sprite.contains(mouse_position) && abs(mouse_position.x - CENTER_X) < PLAYER_REACH
+                    && abs(mouse_position.y - CENTER_Y) < PLAYER_REACH)
                 {
                     sprite_loader.selection_sprite.setPosition(position);
                     render_tile_sprites.push_back(sprite_loader.selection_sprite);

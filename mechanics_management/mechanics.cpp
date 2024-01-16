@@ -51,7 +51,7 @@ void move_player(float deltaTimeSeconds, sf::Vector2f& new_world_position, sf::V
     {
         update_world = true;
     }
-    
+
     // No collision, update camera position.
     if(update_world)
     {
@@ -187,13 +187,14 @@ void update_world(sf::RenderWindow& window, Sprite_loader& sprite_loader, Level&
     if((float) game_clock.getElapsedTime().asSeconds() >= 5)
     {
         game_clock.restart();
-        int random_num = std::rand() % 100000;
+        
         for(int y = 1; y < level.LEVEL_HEIGHT-1; y++)
         {
             for(int x = 1; x < level.LEVEL_WIDTH-1; x++)
             {
+                int random_num = std::rand() % 10000;
                 
-                if(random_num > 99990 && level.level_1_objects[y][x] == '0')
+                if(random_num > 9900 && level.level_1_objects[y][x] == '0')
                 {
                     // Spawn weeds
                     level.level_1_objects[y][x] = 'W';

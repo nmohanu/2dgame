@@ -28,6 +28,8 @@ const float PLAYER_SPEED = 3.f;
 // Time period after which the world updates.
 const float UPDATE_TIME_AFTER = 5.0f;
 
+const float PLAYER_REACH = 80.f;
+
 struct Sprite_loader
 {
     // Where the mouse is positioned on the grid.
@@ -41,6 +43,8 @@ struct Sprite_loader
     // Player
     sf::Texture player_texture;
     sf::Sprite player_sprite;
+
+    sf::IntRect* player_reach_rect = new sf::IntRect(CENTER_X - PLAYER_REACH, CENTER_Y- PLAYER_REACH, PLAYER_REACH*2, PLAYER_REACH*2);
 
     // Old man npc
     sf::Sprite old_man_npc;
