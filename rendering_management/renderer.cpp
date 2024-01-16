@@ -161,7 +161,8 @@ void Renderer::draw_level_tiles(sf::RenderWindow& window, sf::Vector2f mouse_pos
                 sf::FloatRect sprite = sprite_loader.floor_sprite.getGlobalBounds();
 
                 // Draw selection square
-                if(sprite.contains(mouse_position))
+                if(sprite.contains(mouse_position) && abs(mouse_position.x - CENTER_X) < PLAYER_REACH
+                    && abs(mouse_position.y - CENTER_Y) < PLAYER_REACH)
                 {
                     sprite_loader.selection_sprite.setPosition(position);
                     render_tile_sprites.push_back(sprite_loader.selection_sprite);
@@ -175,7 +176,8 @@ void Renderer::draw_level_tiles(sf::RenderWindow& window, sf::Vector2f mouse_pos
                 render_tile_sprites.push_back(sprite_loader.floor2_sprite);
 
                 sf::FloatRect sprite = sprite_loader.floor2_sprite.getGlobalBounds();
-                if(sprite.contains(mouse_position))
+                if(sprite.contains(mouse_position) && abs(mouse_position.x - CENTER_X) < PLAYER_REACH
+                    && abs(mouse_position.y - CENTER_Y) < PLAYER_REACH)
                 {
                     sprite_loader.selection_sprite.setPosition(position);
                     render_tile_sprites.push_back(sprite_loader.selection_sprite);
@@ -200,20 +202,39 @@ void Renderer::render_npc(sf::RenderWindow& window, Sprite_loader& sprite_loader
 
 void Renderer::render_mouse_icon(sf::RenderWindow& window, sf::Vector2f mouse_position, Sprite_loader& sprite_loader)
 {    
+    bool cursor_drawn = false;
     for(sf::Sprite sprite : npc_sprites)
     {
         if(sprite.getGlobalBounds().contains(mouse_position))
         {
-            if( sprite.getPosition().x < SCREEN_WIDTH/2 + 100 && 
-                sprite.getPosition().x > SCREEN_WIDTH/2 - 100 && 
-                sprite.getPosition().y < SCREEN_HEIGHT/2 + 150 && 
-                sprite.getPosition().y > SCREEN_HEIGHT/2 - 150 && 
+            if( abs(mouse_position.x - CENTER_X) < PLAYER_REACH
+                && abs(mouse_position.y - CENTER_Y) < PLAYER_REACH && 
                 sprite.getGlobalBounds().contains(mouse_position))
             {
-                sprite_loader.talk_icon_sprite.setPosition(mouse_position);
+                sprite_loader.talk_icon_sprite.setPosition(mouse_position.x-8, mouse_position.y-8);
                 window.draw(sprite_loader.talk_icon_sprite);  
+                cursor_drawn = true;
             }          
         }
+    }
+    for(sf::Sprite sprite : render_object_sprites)
+    {
+        if(sprite.getGlobalBounds().contains(mouse_position))
+        {
+            if( abs(mouse_position.x - CENTER_X) < PLAYER_REACH
+                && abs(mouse_position.y - CENTER_Y) < PLAYER_REACH&& 
+                sprite.getGlobalBounds().contains(mouse_position))
+            {
+                sprite_loader.grab_icon_sprite.setPosition(mouse_position.x-8, mouse_position.y-8);
+                window.draw(sprite_loader.grab_icon_sprite);  
+                cursor_drawn = true;
+            }          
+        }
+    }
+    if(!cursor_drawn)
+    {
+        sprite_loader.default_mouse_icon_sprite.setPosition(mouse_position.x-8, mouse_position.y-8);
+        window.draw(sprite_loader.default_mouse_icon_sprite);
     }
 }
 

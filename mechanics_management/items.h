@@ -9,7 +9,7 @@ struct Item
 
 struct Inventory
 {
-    Item* weed = new Item;  // No need for dynamic allocation here
+    Item* weed = new Item; 
     std::vector<Item*> items;
 
     Inventory()
@@ -19,7 +19,6 @@ struct Inventory
 
     ~Inventory()
     {
-        // Don't forget to free the allocated memory in the destructor
         delete weed;
     }
 };

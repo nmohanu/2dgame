@@ -6,6 +6,8 @@
 struct game_window
 {
     Dialogue_manager* dialogue_manager = new Dialogue_manager;
+
+    sf::Clock* game_clock = new sf::Clock;
     
     sf::Clock frame_clock;
     sf::Clock delta_clock;

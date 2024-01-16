@@ -13,6 +13,9 @@ void move_player(float deltaTimeSeconds, sf::Vector2f& new_world_position, sf::V
     // New camera position.
     new_world_position = world_offset;
 
+    // Wether or not to update the world position.
+    bool update_world = false;
+
     // Move camera position.
     new_world_position -= get_velocity(deltaTimeSeconds);
 
@@ -22,17 +25,39 @@ void move_player(float deltaTimeSeconds, sf::Vector2f& new_world_position, sf::V
     // Check for collision after movement
     if (check_collision(collision_sprites, new_world_position, world_offset, sprite_loader))
     {
-        // Restore position to previous working one.
-        // world_offset = original_world_position;
-    }
-    // No collision, update camera position.
+        // Try if there is collision without one of the keys pressed.
+        new_world_position = original_world_position;
+        sf::Vector2f adjusted_velocity = get_velocity(deltaTimeSeconds);
+        new_world_position -= adjusted_velocity;
+        new_world_position.x = world_offset.x;
+        if(!check_collision(collision_sprites, new_world_position, world_offset, sprite_loader))
+        {
+            update_world = true;
+        }
+        // Try again but without y.
+        else
+        {
+            new_world_position = original_world_position;
+            adjusted_velocity = get_velocity(deltaTimeSeconds);
+            new_world_position -= adjusted_velocity;
+            new_world_position.y = world_offset.y;
+            if(!check_collision(collision_sprites, new_world_position, world_offset, sprite_loader))
+            {
+                update_world = true;
+            }
+        }
+    } 
     else
+    {
+        update_world = true;
+    }
+
+    // No collision, update camera position.
+    if(update_world)
     {
         original_world_position = world_offset;
         world_offset = new_world_position;
     }
-
-    
 }
 
 // Get player velocity
@@ -72,10 +97,15 @@ sf::Vector2f get_velocity(float deltaTimeSeconds)
 
 bool check_collision(std::vector<sf::Sprite>& collision_sprites, sf::Vector2f& new_world_position, sf::Vector2f& world_offset, Sprite_loader& sprite_loader)
 {
-    sf::FloatRect playerBounds = sprite_loader.player_sprite.getGlobalBounds();
+    sf::FloatRect player_bounds = sprite_loader.player_sprite.getGlobalBounds();
 
-    playerBounds.height -= 4;
-    playerBounds.width -= 4;
+    sf::FloatRect adjustedPlayerBounds(
+        player_bounds.left + 20,      // Adjust left
+        player_bounds.top + 46,       // Adjust top
+        player_bounds.width - 40,     // Adjust width
+        player_bounds.height - 60     // Adjust height
+    );
+
     
     // Check collision with each wall sprite
     for (const sf::Sprite& wallSprite : collision_sprites)
@@ -85,7 +115,7 @@ bool check_collision(std::vector<sf::Sprite>& collision_sprites, sf::Vector2f& n
         new_position.top -= world_offset.y;
         new_position.left += new_world_position.x;
         new_position.top += new_world_position.y;
-        if (playerBounds.intersects(new_position))
+        if (adjustedPlayerBounds.intersects(new_position))
         {
             return true; // Collision detected
         }
@@ -115,26 +145,6 @@ void handle_clicks(sf::RenderWindow& window, sf::Event& event,  sf::Vector2f mou
             {
                 manager.current = nullptr;
             }
-            /*
-            for(Dialogue* dialogue : *manager.spork_dialogues)
-            {
-                std::cout << "MECHANICS MEMORY: " << &dialogue << '\n';
-                if(dialogue->ID == "SPORK_1" && dialogue->finished == false)
-                {
-                    dialogue->in_dialogue = true;
-                }
-                else if(dialogue->ID == "SPORK_2" && dialogue->finished == false && dialogue->previous->finished)
-                {
-                    dialogue->in_dialogue = true;
-                        
-                
-                    
-                    std::cout << dialogue->finished << '\n';
-                    
-                }
-                std::cout << "dialogue 2 PREVIOUS: " << &dialogue->previous << '\n';
-            }
-            */
         }
         if(level.level_1_objects[sprite_loader.mouse_pos_y][sprite_loader.mouse_pos_x] == 'W')
         {
@@ -151,19 +161,27 @@ void handle_clicks(sf::RenderWindow& window, sf::Event& event,  sf::Vector2f mou
     }
 }
 
-void update_world(sf::RenderWindow& window, Sprite_loader& sprite_loader, Level& level)
+void update_world(sf::RenderWindow& window, Sprite_loader& sprite_loader, Level& level, sf::Clock& game_clock)
 {
-    for(int y = 1; y < level.LEVEL_HEIGHT-1; y++)
+    // Update world every 5 seconds
+    if((float) game_clock.getElapsedTime().asSeconds() >= 5)
     {
-        for(int x = 1; x < level.LEVEL_WIDTH-1; x++)
+        game_clock.restart();
+        
+        for(int y = 1; y < level.LEVEL_HEIGHT-1; y++)
         {
-            int random_num = std::rand() % 100000;
-            if(random_num > 99990 && level.level_1_objects[y][x] == '0')
+            for(int x = 1; x < level.LEVEL_WIDTH-1; x++)
             {
+                int random_num = std::rand() % 10000;
                 
-                level.level_1_objects[y][x] = 'W';
+                if(random_num > 9900 && level.level_1_objects[y][x] == '0')
+                {
+                    // Spawn weeds
+                    level.level_1_objects[y][x] = 'W';
+                }
+                //std::cout<< random_num << std::endl;
             }
-            //std::cout<< random_num << std::endl;
         }
+        std::cout << "world updated" << '\n';
     }
 }

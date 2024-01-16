@@ -40,8 +40,8 @@ void Dialogue_manager::initialize_dialogues()
     std::cout << "dialogues initialized \n";
     // SPORK's messages.
     this->spork_npc_dialogue->messages.push_back(Message("Well... Here we are..."));
-    this->spork_npc_dialogue->messages.push_back(Message("I really don't\nsee why you\nwanted this place..."));
-    this->spork_npc_dialogue->messages.push_back(Message("It's small and\n catches a lot\nof garbage..."));
+    this->spork_npc_dialogue->messages.push_back(Message("I really don't\nsee why you\nwanted this\nplace..."));
+    this->spork_npc_dialogue->messages.push_back(Message("It's small and\ncatches a lot\nof garbage..."));
     this->spork_npc_dialogue->messages.push_back(Message("Anyway...\nIt's yours now."));
     this->spork_npc_dialogue->messages.push_back(Message("..."));
     this->spork_npc_dialogue->ID = "SPORK_1";
@@ -49,7 +49,7 @@ void Dialogue_manager::initialize_dialogues()
     
 
     // Second conversation with Spork
-    this->spork_npc_dialogue2->messages.push_back(Message("Well, if you ever\nwant to expand this place\ncall me."));
+    this->spork_npc_dialogue2->messages.push_back(Message("Well, if you ever\nwant to expand\nthis place call\nme."));
     
    
 

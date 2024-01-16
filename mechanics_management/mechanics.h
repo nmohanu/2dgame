@@ -5,7 +5,7 @@
 
 const int TILE_SIZE = 16;
 
-// Save all sprites for which collision should be checked.
+// Save all sprites for which collision should be checked.\
 
 void clean_up(std::vector<sf::Sprite>& collision_sprites, std::vector<sf::Sprite>& clickable_sprites);
 
@@ -17,7 +17,7 @@ bool check_collision(std::vector<sf::Sprite>& collision_sprites, sf::Vector2f& n
 
 void handle_clicks(sf::RenderWindow& window, sf::Event& event, sf::Vector2f mouse_position, Sprite_loader& sprite_loader, Dialogue_manager& manager, Level& level, Inventory& inventory);
 
-void update_world(sf::RenderWindow& window, Sprite_loader& sprite_loader, Level& level);
+void update_world(sf::RenderWindow& window, Sprite_loader& sprite_loader, Level& level, sf::Clock& game_clock);
 
 #endif
 
