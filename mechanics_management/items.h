@@ -4,6 +4,7 @@
 struct Item
 {
     std::string name;
+    sf::Sprite sprite;
     int amount = 0;
     int ID;
 };
@@ -22,9 +23,10 @@ struct Inventory
 
     int current_selection = 0;
 
-    Inventory()
+    Inventory(Sprite_loader& sprite_loader)
     {
         weed->ID = 001;
+        weed->sprite = sprite_loader.weed_sprite;
         items.push_back(weed);
 
         

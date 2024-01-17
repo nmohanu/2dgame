@@ -22,7 +22,7 @@ struct game_window
     sf::SoundBuffer ladybug_buffer;
     sf::Sound ladybug;
     
-    Inventory* player_inventory = new Inventory;
+    Inventory* player_inventory = new Inventory(sprite_loader);
 
 
     sf::Font font;

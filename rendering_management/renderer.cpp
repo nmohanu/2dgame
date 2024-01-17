@@ -54,21 +54,22 @@ void Renderer::draw_player_hotbar(sf::RenderWindow& window, Sprite_loader& sprit
         if(player_inventory.hotbar[i] != 0)
         {
             // Render the item found in the hotbar.
-
-            // Item is leafs.
-            if(player_inventory.hotbar[i] == 001)
+            
+            for(Item* item : player_inventory.items)
             {
-                int x_position = hotbar_item_1_pos.x + 16*i*INV_SCALE + i*INV_SCALE;
-                sprite_loader.weed_sprite.setPosition(x_position, hotbar_item_1_pos.y);
-                sf::Sprite weed_item = sprite_loader.weed_sprite;
-                weed_item.setScale(INV_SCALE, INV_SCALE);
+                if(item->ID == player_inventory.hotbar[i])
+                {
+                    int x_position = hotbar_item_1_pos.x + 16*i*INV_SCALE + i*INV_SCALE;
+                    item->sprite.setPosition(x_position, hotbar_item_1_pos.y);
+                    item->sprite.setScale(INV_SCALE, INV_SCALE);
 
-                // Display the amount.
-                player_inventory.amount.setPosition(x_position + 38, hotbar_item_1_pos.y + 18);
-                player_inventory.amount.setString(std::to_string(player_inventory.weed->amount));
+                    // Display the amount.
+                    player_inventory.amount.setPosition(x_position + 38, hotbar_item_1_pos.y + 18);
+                    player_inventory.amount.setString(std::to_string(item->amount));
 
-                window.draw(weed_item);
-                window.draw(player_inventory.amount);
+                    window.draw(item->sprite);
+                    window.draw(player_inventory.amount);
+                }
             }
         }
     }
