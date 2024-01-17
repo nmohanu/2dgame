@@ -153,6 +153,7 @@ void handle_clicks(sf::RenderWindow& window, sf::Event& event,  sf::Vector2f mou
     
     if(event.mouseButton.button == sf::Mouse::Left)
     {
+        
         std::cout << "VECTOR MEM: " << &manager.spork_dialogues << std::endl;
         sf::Vector2f mouse_click_location = mouse_position;
         if(sprite_loader.old_man_npc.getGlobalBounds().contains(mouse_click_location))

@@ -85,7 +85,7 @@ void game_window::game_window_update(sf::RenderWindow& window)
         if (event.type == sf::Event::Closed)
             window.close();
         // Handle clicks
-        else if (event.type == sf::Event::MouseButtonReleased)
+        else if (event.type == sf::Event::MouseButtonPressed)
         {
             handle_clicks(window, event, mouse_position, sprite_loader, *dialogue_manager, *current_scene->level_1, *player_inventory);
         }
