@@ -153,6 +153,7 @@ void handle_clicks(sf::RenderWindow& window, sf::Event& event,  sf::Vector2f mou
     
     if(event.mouseButton.button == sf::Mouse::Left)
     {
+        
         std::cout << "VECTOR MEM: " << &manager.spork_dialogues << std::endl;
         sf::Vector2f mouse_click_location = mouse_position;
         if(sprite_loader.old_man_npc.getGlobalBounds().contains(mouse_click_location))
@@ -170,22 +171,32 @@ void handle_clicks(sf::RenderWindow& window, sf::Event& event,  sf::Vector2f mou
                 manager.current = nullptr;
             }
         }
-        if(level.level_1_objects[sprite_loader.mouse_pos_y][sprite_loader.mouse_pos_x] == 'W')
+        if(level.level_1_objects[sprite_loader.mouse_pos_y][sprite_loader.mouse_pos_x] != "00000000")
         {
+            std::string tile_ID = level.level_1_objects[sprite_loader.mouse_pos_y][sprite_loader.mouse_pos_x];
+
+            Item* item_clicked;
+            for(Item* item: player_inventory.items)
+            {
+                if(item->ID == tile_ID)
+                {
+                    item_clicked = item;
+                }
+            }
 
             level.level_1_objects[sprite_loader.mouse_pos_y][sprite_loader.mouse_pos_x] = '0';
-            if(player_inventory.leafs != nullptr)
+            if(item_clicked != nullptr)
             {
-                player_inventory.leafs->amount++;
-                if(player_inventory.leafs->amount == 1)
+                item_clicked->amount++;
+                if(item_clicked->amount == 1)
                 {
                     for(int i  = 0; i < 9; i++)
                     {
                         // Find first empty spot.
-                        if(player_inventory.hotbar[i] == 0)
+                        if(player_inventory.hotbar[i] == "00000000")
                         {
                             // Set spot to item code.
-                            player_inventory.hotbar[i] = 001;
+                            player_inventory.hotbar[i] = tile_ID;
                             break;
                             
                         }
@@ -213,10 +224,10 @@ void update_world(sf::RenderWindow& window, Sprite_loader& sprite_loader, Level&
             {
                 int random_num = std::rand() % 10000;
                 
-                if(random_num > 9900 && level.level_1_objects[y][x] == '0')
+                if(random_num > 9900 && level.level_1_objects[y][x] == "00000000")
                 {
                     // Spawn weeds
-                    level.level_1_objects[y][x] = 'W';
+                    level.level_1_objects[y][x] = "0000LEAF";
                 }
                 //std::cout<< random_num << std::endl;
             }

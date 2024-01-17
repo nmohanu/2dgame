@@ -51,7 +51,7 @@ void Renderer::draw_player_hotbar(sf::RenderWindow& window, Sprite_loader& sprit
 
     for(int i = 0; i < 9; i++)
     {
-        if(player_inventory.hotbar[i] != 0)
+        if(player_inventory.hotbar[i] != "00000000")
         {
             // Render the item found in the hotbar.
             
@@ -86,21 +86,10 @@ void Renderer::render_objects(sf::RenderWindow& window, Sprite_loader& sprite_lo
 
 void Renderer::draw_level_objects(sf::RenderWindow& window, Sprite_loader& sprite_loader, int x, int y, sf::Vector2f position)
 {
-    if(current_level->level_1_objects[y][x] == 'Z')
-    {
-        sprite_loader.boat_sprite.setPosition(position);
-        collision_sprites.push_back(sprite_loader.boat_sprite);
-        render_object_sprites.push_back(sprite_loader.boat_sprite);
-    }
-    if(current_level->level_1_objects[y][x] == 'W')
+    if(current_level->level_1_objects[y][x] == "0000LEAF")
     {
         sprite_loader.weed_sprite.setPosition(position);
         render_object_sprites.push_back(sprite_loader.weed_sprite);
-    }
-    if(current_level->level_1_objects[y][x] == 'G')
-    {
-        sprite_loader.gate_sprite.setPosition(position);
-        render_object_sprites.push_back(sprite_loader.gate_sprite);
     }
 }
 

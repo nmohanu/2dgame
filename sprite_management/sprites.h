@@ -55,6 +55,7 @@ struct Sprite_loader
     sf::Texture UI_texture;
     sf::Sprite coin_sprite;
     sf::Sprite hotbar_selection_sprite;
+    sf::Sprite progress_bar_sprite;
 
     // Mouse sprites (using UI texture)
     sf::Sprite talk_icon_sprite;

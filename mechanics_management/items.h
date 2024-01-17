@@ -6,7 +6,7 @@ struct Item
     std::string name;
     sf::Sprite sprite;
     int amount = 0;
-    int ID;
+    std::string ID;
 };
 
 struct Inventory
@@ -19,13 +19,15 @@ struct Inventory
     sf::Font font;
     
     std::vector<Item*> items;
-    int hotbar[9] = {};
+    std::string hotbar[9] = {"00000000","00000000","00000000","00000000","00000000","00000000","00000000","00000000"};
+
+    sf::Time progress_bar_clock;
 
     int current_selection = 0;
 
     Inventory(Sprite_loader& sprite_loader)
     {
-        leafs->ID = 001;
+        leafs->ID = "0000LEAF";
         leafs->sprite = sprite_loader.weed_sprite;
         items.push_back(leafs);
 
