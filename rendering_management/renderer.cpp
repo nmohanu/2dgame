@@ -48,7 +48,6 @@ void Renderer::render_everything(sf::RenderWindow& window, sf::Vector2f mouse_po
 void Renderer::draw_player_hotbar(sf::RenderWindow& window, Sprite_loader& sprite_loader, Inventory& player_inventory)
 {
     window.draw(sprite_loader.inventory_sprite);
-    
 
     for(int i = 0; i < 9; i++)
     {
@@ -65,7 +64,7 @@ void Renderer::draw_player_hotbar(sf::RenderWindow& window, Sprite_loader& sprit
                 weed_item.setScale(INV_SCALE, INV_SCALE);
 
                 // Display the amount.
-                player_inventory.amount.setPosition(x_position +24, hotbar_item_1_pos.y + 16);
+                player_inventory.amount.setPosition(x_position + 38, hotbar_item_1_pos.y + 18);
                 player_inventory.amount.setString(std::to_string(player_inventory.weed->amount));
 
                 window.draw(weed_item);
@@ -73,6 +72,8 @@ void Renderer::draw_player_hotbar(sf::RenderWindow& window, Sprite_loader& sprit
             }
         }
     }
+    sprite_loader.hotbar_selection_sprite.setPosition(hotbar_item_1_pos.x + 17*player_inventory.current_selection*INV_SCALE - INV_SCALE, sprite_loader.inventory_sprite.getPosition().y);
+    window.draw(sprite_loader.hotbar_selection_sprite);
 }
 
 // Render objects that are not tiles.

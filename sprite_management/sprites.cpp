@@ -58,7 +58,7 @@ void Sprite_loader::add_sprites()
     // Inventory sprite
     inventory_sprite.setTexture(inventory_texture);
     inventory_sprite.setScale(INV_SCALE, INV_SCALE);
-    inventory_sprite.setPosition(SCREEN_WIDTH/2-(154)*3/2, SCREEN_HEIGHT-64);
+    inventory_sprite.setPosition(SCREEN_WIDTH/2-(154)*INV_SCALE/2, SCREEN_HEIGHT-18*INV_SCALE - 22);
 
     // Player sprite -------------------------------------------------
     player_sprite.setTexture(player_texture);
@@ -86,6 +86,11 @@ void Sprite_loader::add_sprites()
     coin_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_X);
     sf::IntRect coin_rect(0, 0, 16, 16);
     coin_sprite.setTextureRect(coin_rect);
+
+    // Hotbar selection
+    hotbar_selection_sprite.setTexture(UI_texture);
+    hotbar_selection_sprite.setScale(INV_SCALE, INV_SCALE);
+    hotbar_selection_sprite.setTextureRect(sf::IntRect(64, 0, 18, 18));
 
     // Mouse icons ---------------------------------------------------
 

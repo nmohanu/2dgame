@@ -95,6 +95,8 @@ void game_window::game_window_update(sf::RenderWindow& window)
     current_scene->player_movement(deltaTimeSeconds, sprite_loader);
 
     dialogue_manager->process_dialogues(event, sprite_loader);
+
+    update_hotbar(sprite_loader, *player_inventory);
     
 }
 

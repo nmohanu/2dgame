@@ -19,17 +19,12 @@ void handle_clicks(sf::RenderWindow& window, sf::Event& event, sf::Vector2f mous
 
 void update_world(sf::RenderWindow& window, Sprite_loader& sprite_loader, Level& level, sf::Clock& game_clock);
 
+void update_hotbar(Sprite_loader& sprite_loader, Inventory& inventory);
+
 
 // Hotbar render positions.
-const sf::Vector2f hotbar_item_1_pos(SCREEN_WIDTH/2-(154)*INV_SCALE/2 + 1*INV_SCALE, SCREEN_HEIGHT-64+2);
-const sf::Vector2f hotbar_item_2_pos(hotbar_item_1_pos.x + 16, SCREEN_HEIGHT-64+2);
-const sf::Vector2f hotbar_item_3_pos(hotbar_item_2_pos.x + 16, SCREEN_HEIGHT-64+2);
-const sf::Vector2f hotbar_item_4_pos(hotbar_item_3_pos.x + 16, SCREEN_HEIGHT-64+2);
-const sf::Vector2f hotbar_item_5_pos(hotbar_item_4_pos.x + 16, SCREEN_HEIGHT-64+2);
-const sf::Vector2f hotbar_item_6_pos(hotbar_item_5_pos.x + 16, SCREEN_HEIGHT-64+2);
-const sf::Vector2f hotbar_item_7_pos(hotbar_item_6_pos.x + 16, SCREEN_HEIGHT-64+2);
-const sf::Vector2f hotbar_item_8_pos(hotbar_item_7_pos.x + 16, SCREEN_HEIGHT-64+2);
-const sf::Vector2f hotbar_item_9_pos(hotbar_item_8_pos.x + 16, SCREEN_HEIGHT-64+2);
+const sf::Vector2f hotbar_item_1_pos(SCREEN_WIDTH/2-(154)*INV_SCALE/2 + 1*INV_SCALE, SCREEN_HEIGHT-18*INV_SCALE - 20);
+
 
 
 

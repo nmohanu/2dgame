@@ -8,6 +8,30 @@ void clean_up(std::vector<sf::Sprite>& collision_sprites, std::vector<sf::Sprite
     clickable_sprites.clear();
 }
 
+void update_hotbar(Sprite_loader& sprite_loader, Inventory& inventory)
+{
+    
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
+        inventory.current_selection = 0;
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
+        inventory.current_selection = 1;
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
+        inventory.current_selection = 2;
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num4))
+        inventory.current_selection = 3;
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num5))
+        inventory.current_selection = 4;
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num6))
+        inventory.current_selection = 5;
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num7))
+        inventory.current_selection = 6;
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num8))
+        inventory.current_selection = 7;
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num9))
+        inventory.current_selection = 8;
+        
+}
+
 void move_player(float deltaTimeSeconds, sf::Vector2f& new_world_position, sf::Vector2f& world_offset, sf::Vector2f& original_world_position, std::vector<sf::Sprite>& collision_sprites, Sprite_loader& sprite_loader)
 {
     // New camera position.

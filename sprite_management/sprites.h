@@ -21,7 +21,7 @@ const int CENTER_Y = SCREEN_HEIGHT/2;
 // Scale factor, y is smaller for '3d-ish effect'
 const float SCALE_FACTOR_X = 4.f;
 const float SCALE_FACTOR_Y = 3.5f;
-const float INV_SCALE = 3.f;
+const float INV_SCALE = 4.f;
 
 // Player movement speed.
 const float PLAYER_SPEED = 3.f;
@@ -54,6 +54,7 @@ struct Sprite_loader
     // UI elements
     sf::Texture UI_texture;
     sf::Sprite coin_sprite;
+    sf::Sprite hotbar_selection_sprite;
 
     // Mouse sprites (using UI texture)
     sf::Sprite talk_icon_sprite;

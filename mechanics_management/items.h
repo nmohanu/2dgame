@@ -20,10 +20,14 @@ struct Inventory
     std::vector<Item*> items;
     int hotbar[9] = {};
 
+    int current_selection = 0;
+
     Inventory()
     {
         weed->ID = 001;
         items.push_back(weed);
+
+        
 
         // Text properties.
         amount.scale(0.1*INV_SCALE, 0.1*INV_SCALE);
@@ -35,6 +39,7 @@ struct Inventory
             std::cout << "ERR\n";
         }
         amount.setFont(font);
+        
     }
 
     ~Inventory()
