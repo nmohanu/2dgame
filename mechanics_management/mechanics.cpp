@@ -170,14 +170,24 @@ void handle_clicks(sf::RenderWindow& window, sf::Event& event,  sf::Vector2f mou
                 manager.current = nullptr;
             }
         }
-        if(level.level_1_objects[sprite_loader.mouse_pos_y][sprite_loader.mouse_pos_x] == "0000LEAF")
+        if(level.level_1_objects[sprite_loader.mouse_pos_y][sprite_loader.mouse_pos_x] != "00000000")
         {
-            
-            level.level_1_objects[sprite_loader.mouse_pos_y][sprite_loader.mouse_pos_x] = '0';
-            if(player_inventory.leafs != nullptr)
+            std::string tile_ID = level.level_1_objects[sprite_loader.mouse_pos_y][sprite_loader.mouse_pos_x];
+
+            Item* item_clicked;
+            for(Item* item: player_inventory.items)
             {
-                player_inventory.leafs->amount++;
-                if(player_inventory.leafs->amount == 1)
+                if(item->ID == tile_ID)
+                {
+                    item_clicked = item;
+                }
+            }
+
+            level.level_1_objects[sprite_loader.mouse_pos_y][sprite_loader.mouse_pos_x] = '0';
+            if(item_clicked != nullptr)
+            {
+                item_clicked->amount++;
+                if(item_clicked->amount == 1)
                 {
                     for(int i  = 0; i < 9; i++)
                     {
@@ -185,7 +195,7 @@ void handle_clicks(sf::RenderWindow& window, sf::Event& event,  sf::Vector2f mou
                         if(player_inventory.hotbar[i] == "00000000")
                         {
                             // Set spot to item code.
-                            player_inventory.hotbar[i] = "0000LEAF";
+                            player_inventory.hotbar[i] = tile_ID;
                             break;
                             
                         }
