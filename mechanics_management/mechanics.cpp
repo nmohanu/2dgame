@@ -170,9 +170,9 @@ void handle_clicks(sf::RenderWindow& window, sf::Event& event,  sf::Vector2f mou
                 manager.current = nullptr;
             }
         }
-        if(level.level_1_objects[sprite_loader.mouse_pos_y][sprite_loader.mouse_pos_x] == 'W')
+        if(level.level_1_objects[sprite_loader.mouse_pos_y][sprite_loader.mouse_pos_x] == "0000LEAF")
         {
-
+            
             level.level_1_objects[sprite_loader.mouse_pos_y][sprite_loader.mouse_pos_x] = '0';
             if(player_inventory.leafs != nullptr)
             {
@@ -182,10 +182,10 @@ void handle_clicks(sf::RenderWindow& window, sf::Event& event,  sf::Vector2f mou
                     for(int i  = 0; i < 9; i++)
                     {
                         // Find first empty spot.
-                        if(player_inventory.hotbar[i] == 0)
+                        if(player_inventory.hotbar[i] == "00000000")
                         {
                             // Set spot to item code.
-                            player_inventory.hotbar[i] = 001;
+                            player_inventory.hotbar[i] = "0000LEAF";
                             break;
                             
                         }
@@ -213,10 +213,10 @@ void update_world(sf::RenderWindow& window, Sprite_loader& sprite_loader, Level&
             {
                 int random_num = std::rand() % 10000;
                 
-                if(random_num > 9900 && level.level_1_objects[y][x] == '0')
+                if(random_num > 9900 && level.level_1_objects[y][x] == "00000000")
                 {
                     // Spawn weeds
-                    level.level_1_objects[y][x] = 'W';
+                    level.level_1_objects[y][x] = "0000LEAF";
                 }
                 //std::cout<< random_num << std::endl;
             }

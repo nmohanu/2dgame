@@ -81,6 +81,10 @@ void Sprite_loader::add_sprites()
 
     // UI sprites ----------------------------------------------------
 
+    progress_bar_sprite.setTexture(UI_texture);
+    progress_bar_sprite.setScale(INV_SCALE, INV_SCALE);
+    progress_bar_sprite.setTextureRect(sf::IntRect(0, 32, 16, 16));
+
     // Coin
     coin_sprite.setTexture(UI_texture);
     coin_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_X);
