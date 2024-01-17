@@ -57,8 +57,8 @@ void Sprite_loader::add_sprites()
 
     // Inventory sprite
     inventory_sprite.setTexture(inventory_texture);
-    inventory_sprite.setScale(3, 3);
-    inventory_sprite.setPosition(SCREEN_WIDTH/2-(136)*3/2, SCREEN_HEIGHT-64);
+    inventory_sprite.setScale(INV_SCALE, INV_SCALE);
+    inventory_sprite.setPosition(SCREEN_WIDTH/2-(154)*3/2, SCREEN_HEIGHT-64);
 
     // Player sprite -------------------------------------------------
     player_sprite.setTexture(player_texture);

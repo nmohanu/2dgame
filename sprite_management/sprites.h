@@ -19,8 +19,9 @@ const int CENTER_X = SCREEN_WIDTH/2;
 const int CENTER_Y = SCREEN_HEIGHT/2;
 
 // Scale factor, y is smaller for '3d-ish effect'
-const float SCALE_FACTOR_X = 4;
-const float SCALE_FACTOR_Y = 3.5;
+const float SCALE_FACTOR_X = 4.f;
+const float SCALE_FACTOR_Y = 3.5f;
+const float INV_SCALE = 3.f;
 
 // Player movement speed.
 const float PLAYER_SPEED = 3.f;

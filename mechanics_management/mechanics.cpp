@@ -153,10 +153,25 @@ void handle_clicks(sf::RenderWindow& window, sf::Event& event,  sf::Vector2f mou
             if(player_inventory.weed != nullptr)
             {
                 player_inventory.weed->amount++;
+                if(player_inventory.weed->amount == 1)
+                {
+                    for(int i  = 0; i < 9; i++)
+                    {
+                        // Find first empty spot.
+                        if(player_inventory.hotbar[i] == 0)
+                        {
+                            // Set spot to item code.
+                            player_inventory.hotbar[i] = 001;
+                            break;
+                            
+                        }
+                        std::cout << "INVENTORY SPOT: " << i << " ITEM: " << player_inventory.hotbar[i] << '\n';
+                    }
+                }
             }
             
             std::cout << "WEED: " << player_inventory.weed->amount << std::endl;
-            std::cout << &player_inventory.weed->amount << " IN M \n";
+            // std::cout << &player_inventory.weed->amount << " IN M \n";
         }
     }
 }

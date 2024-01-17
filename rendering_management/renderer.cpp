@@ -48,13 +48,23 @@ void Renderer::render_everything(sf::RenderWindow& window, sf::Vector2f mouse_po
 void Renderer::draw_player_hotbar(sf::RenderWindow& window, Sprite_loader& sprite_loader, Inventory& player_inventory)
 {
     window.draw(sprite_loader.inventory_sprite);
-    if(player_inventory.weed != nullptr && player_inventory.weed->amount > 0)
+    
+
+    for(int i = 0; i < 9; i++)
     {
-        sprite_loader.weed_sprite.setPosition(hotbar_item_1_pos);
-        sf::Sprite weed_item = sprite_loader.weed_sprite;
-        weed_item.setScale(SCALE_FACTOR_X*0.7, SCALE_FACTOR_X*0.7);
-        window.draw(weed_item);
-        //std::cout << "RENDER AMOUNT: " << player_inventory.weed->amount;
+        if(player_inventory.hotbar[i] != 0)
+        {
+            // Render the item found in the hotbar.
+
+            // Item is leafs.
+            if(player_inventory.hotbar[i] == 001)
+            {
+                sprite_loader.weed_sprite.setPosition(hotbar_item_1_pos.x + 16*i*INV_SCALE + i*INV_SCALE, hotbar_item_1_pos.y);
+                sf::Sprite weed_item = sprite_loader.weed_sprite;
+                weed_item.setScale(INV_SCALE, INV_SCALE);
+                window.draw(weed_item);
+            }
+        }
     }
 }
 
@@ -190,6 +200,7 @@ void Renderer::draw_level_tiles(sf::RenderWindow& window, sf::Vector2f mouse_pos
     }
 }
 
+// Render the npcs.
 void Renderer::render_npc(sf::RenderWindow& window, Sprite_loader& sprite_loader)
 {
     sf::Vector2f new_position = sf::Vector2f(sprite_loader.original_position_old_man_npc);
@@ -200,6 +211,8 @@ void Renderer::render_npc(sf::RenderWindow& window, Sprite_loader& sprite_loader
     npc_sprites.push_back(sprite_loader.old_man_npc);
 }
 
+
+// Render the mouse.
 void Renderer::render_mouse_icon(sf::RenderWindow& window, sf::Vector2f mouse_position, Sprite_loader& sprite_loader)
 {    
     bool cursor_drawn = false;
