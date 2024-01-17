@@ -174,10 +174,10 @@ void handle_clicks(sf::RenderWindow& window, sf::Event& event,  sf::Vector2f mou
         {
 
             level.level_1_objects[sprite_loader.mouse_pos_y][sprite_loader.mouse_pos_x] = '0';
-            if(player_inventory.weed != nullptr)
+            if(player_inventory.leafs != nullptr)
             {
-                player_inventory.weed->amount++;
-                if(player_inventory.weed->amount == 1)
+                player_inventory.leafs->amount++;
+                if(player_inventory.leafs->amount == 1)
                 {
                     for(int i  = 0; i < 9; i++)
                     {
@@ -194,7 +194,7 @@ void handle_clicks(sf::RenderWindow& window, sf::Event& event,  sf::Vector2f mou
                 }
             }
             
-            std::cout << "WEED: " << player_inventory.weed->amount << std::endl;
+            std::cout << "WEED: " << player_inventory.leafs->amount << std::endl;
             // std::cout << &player_inventory.weed->amount << " IN M \n";
         }
     }

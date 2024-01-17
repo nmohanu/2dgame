@@ -12,7 +12,7 @@ struct Item
 struct Inventory
 {
     // Declare item types.
-    Item* weed = new Item; 
+    Item* leafs = new Item; 
 
     // Text for displaying item amount.
     sf::Text amount;
@@ -25,9 +25,9 @@ struct Inventory
 
     Inventory(Sprite_loader& sprite_loader)
     {
-        weed->ID = 001;
-        weed->sprite = sprite_loader.weed_sprite;
-        items.push_back(weed);
+        leafs->ID = 001;
+        leafs->sprite = sprite_loader.weed_sprite;
+        items.push_back(leafs);
 
         
 
@@ -46,7 +46,7 @@ struct Inventory
 
     ~Inventory()
     {
-        delete weed;
+        delete leafs;
     }
 };
 
