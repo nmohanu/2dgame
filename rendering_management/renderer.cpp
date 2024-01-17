@@ -48,14 +48,33 @@ void Renderer::render_everything(sf::RenderWindow& window, sf::Vector2f mouse_po
 void Renderer::draw_player_hotbar(sf::RenderWindow& window, Sprite_loader& sprite_loader, Inventory& player_inventory)
 {
     window.draw(sprite_loader.inventory_sprite);
-    if(player_inventory.weed != nullptr && player_inventory.weed->amount > 0)
+
+    for(int i = 0; i < 9; i++)
     {
-        sprite_loader.weed_sprite.setPosition(hotbar_item_1_pos);
-        sf::Sprite weed_item = sprite_loader.weed_sprite;
-        weed_item.setScale(SCALE_FACTOR_X*0.7, SCALE_FACTOR_X*0.7);
-        window.draw(weed_item);
-        //std::cout << "RENDER AMOUNT: " << player_inventory.weed->amount;
+        if(player_inventory.hotbar[i] != "00000000")
+        {
+            // Render the item found in the hotbar.
+            
+            for(Item* item : player_inventory.items)
+            {
+                if(item->ID == player_inventory.hotbar[i])
+                {
+                    int x_position = hotbar_item_1_pos.x + 16*i*INV_SCALE + i*INV_SCALE;
+                    item->sprite.setPosition(x_position, hotbar_item_1_pos.y);
+                    item->sprite.setScale(INV_SCALE, INV_SCALE);
+
+                    // Display the amount.
+                    player_inventory.amount.setPosition(x_position + 38, hotbar_item_1_pos.y + 18);
+                    player_inventory.amount.setString(std::to_string(item->amount));
+
+                    window.draw(item->sprite);
+                    window.draw(player_inventory.amount);
+                }
+            }
+        }
     }
+    sprite_loader.hotbar_selection_sprite.setPosition(hotbar_item_1_pos.x + 17*player_inventory.current_selection*INV_SCALE - INV_SCALE, sprite_loader.inventory_sprite.getPosition().y);
+    window.draw(sprite_loader.hotbar_selection_sprite);
 }
 
 // Render objects that are not tiles.
@@ -67,21 +86,10 @@ void Renderer::render_objects(sf::RenderWindow& window, Sprite_loader& sprite_lo
 
 void Renderer::draw_level_objects(sf::RenderWindow& window, Sprite_loader& sprite_loader, int x, int y, sf::Vector2f position)
 {
-    if(current_level->level_1_objects[y][x] == 'Z')
-    {
-        sprite_loader.boat_sprite.setPosition(position);
-        collision_sprites.push_back(sprite_loader.boat_sprite);
-        render_object_sprites.push_back(sprite_loader.boat_sprite);
-    }
-    if(current_level->level_1_objects[y][x] == 'W')
+    if(current_level->level_1_objects[y][x] == "0000LEAF")
     {
         sprite_loader.weed_sprite.setPosition(position);
         render_object_sprites.push_back(sprite_loader.weed_sprite);
-    }
-    if(current_level->level_1_objects[y][x] == 'G')
-    {
-        sprite_loader.gate_sprite.setPosition(position);
-        render_object_sprites.push_back(sprite_loader.gate_sprite);
     }
 }
 
@@ -190,6 +198,7 @@ void Renderer::draw_level_tiles(sf::RenderWindow& window, sf::Vector2f mouse_pos
     }
 }
 
+// Render the npcs.
 void Renderer::render_npc(sf::RenderWindow& window, Sprite_loader& sprite_loader)
 {
     sf::Vector2f new_position = sf::Vector2f(sprite_loader.original_position_old_man_npc);
@@ -200,6 +209,8 @@ void Renderer::render_npc(sf::RenderWindow& window, Sprite_loader& sprite_loader
     npc_sprites.push_back(sprite_loader.old_man_npc);
 }
 
+
+// Render the mouse.
 void Renderer::render_mouse_icon(sf::RenderWindow& window, sf::Vector2f mouse_position, Sprite_loader& sprite_loader)
 {    
     bool cursor_drawn = false;

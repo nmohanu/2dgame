@@ -16,7 +16,7 @@ void game_window::open_game_window()
     window.setMouseCursorVisible(false);
     game_window_loop(window);
     ladybug.play();
-    
+
 }
 
 // This is where the updates of the window are called.
@@ -26,6 +26,17 @@ void game_window::game_window_loop(sf::RenderWindow& window)
     {
         game_window_update(window);
         game_window_draw(window);
+
+
+        // cout the fps every 10 sec.
+        elapsedTime = fps_clock.restart();
+        timeSinceLastPrint += elapsedTime;
+
+        if (timeSinceLastPrint >= printInterval) {
+            float fps = 1.0f / elapsedTime.asSeconds();
+            std::cout << "FPS: " << fps << std::endl;
+            timeSinceLastPrint = sf::Time::Zero; // Reset the timer
+        }
         
     }
 }
@@ -74,7 +85,7 @@ void game_window::game_window_update(sf::RenderWindow& window)
         if (event.type == sf::Event::Closed)
             window.close();
         // Handle clicks
-        else if (event.type == sf::Event::MouseButtonReleased)
+        else if (event.type == sf::Event::MouseButtonPressed)
         {
             handle_clicks(window, event, mouse_position, sprite_loader, *dialogue_manager, *current_scene->level_1, *player_inventory);
         }
@@ -95,6 +106,8 @@ void game_window::game_window_update(sf::RenderWindow& window)
     current_scene->player_movement(deltaTimeSeconds, sprite_loader);
 
     dialogue_manager->process_dialogues(event, sprite_loader);
+
+    update_hotbar(sprite_loader, *player_inventory);
     
 }
 

@@ -8,6 +8,12 @@ struct game_window
     Dialogue_manager* dialogue_manager = new Dialogue_manager;
 
     sf::Clock* game_clock = new sf::Clock;
+
+    // For fps monitoring
+    sf::Clock fps_clock;
+    sf::Time elapsedTime;
+    sf::Time printInterval = sf::seconds(10.0f); 
+    sf::Time timeSinceLastPrint = sf::Time::Zero;
     
     sf::Clock frame_clock;
     sf::Clock delta_clock;
@@ -22,7 +28,7 @@ struct game_window
     sf::SoundBuffer ladybug_buffer;
     sf::Sound ladybug;
     
-    Inventory* player_inventory = new Inventory;
+    Inventory* player_inventory = new Inventory(sprite_loader);
 
 
     sf::Font font;

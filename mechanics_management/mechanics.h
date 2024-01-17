@@ -19,6 +19,13 @@ void handle_clicks(sf::RenderWindow& window, sf::Event& event, sf::Vector2f mous
 
 void update_world(sf::RenderWindow& window, Sprite_loader& sprite_loader, Level& level, sf::Clock& game_clock);
 
-#endif
+void update_hotbar(Sprite_loader& sprite_loader, Inventory& inventory);
 
-const sf::Vector2f hotbar_item_1_pos(SCREEN_WIDTH/2-(136)*3/2 + 2, SCREEN_HEIGHT-64+2);
+
+// Hotbar render positions.
+const sf::Vector2f hotbar_item_1_pos(SCREEN_WIDTH/2-(154)*INV_SCALE/2 + 1*INV_SCALE, SCREEN_HEIGHT-18*INV_SCALE - 20);
+
+
+
+
+#endif

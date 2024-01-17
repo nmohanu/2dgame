@@ -8,6 +8,30 @@ void clean_up(std::vector<sf::Sprite>& collision_sprites, std::vector<sf::Sprite
     clickable_sprites.clear();
 }
 
+void update_hotbar(Sprite_loader& sprite_loader, Inventory& inventory)
+{
+    
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
+        inventory.current_selection = 0;
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
+        inventory.current_selection = 1;
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
+        inventory.current_selection = 2;
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num4))
+        inventory.current_selection = 3;
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num5))
+        inventory.current_selection = 4;
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num6))
+        inventory.current_selection = 5;
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num7))
+        inventory.current_selection = 6;
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num8))
+        inventory.current_selection = 7;
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num9))
+        inventory.current_selection = 8;
+        
+}
+
 void move_player(float deltaTimeSeconds, sf::Vector2f& new_world_position, sf::Vector2f& world_offset, sf::Vector2f& original_world_position, std::vector<sf::Sprite>& collision_sprites, Sprite_loader& sprite_loader)
 {
     // New camera position.
@@ -129,6 +153,7 @@ void handle_clicks(sf::RenderWindow& window, sf::Event& event,  sf::Vector2f mou
     
     if(event.mouseButton.button == sf::Mouse::Left)
     {
+        
         std::cout << "VECTOR MEM: " << &manager.spork_dialogues << std::endl;
         sf::Vector2f mouse_click_location = mouse_position;
         if(sprite_loader.old_man_npc.getGlobalBounds().contains(mouse_click_location))
@@ -146,17 +171,42 @@ void handle_clicks(sf::RenderWindow& window, sf::Event& event,  sf::Vector2f mou
                 manager.current = nullptr;
             }
         }
-        if(level.level_1_objects[sprite_loader.mouse_pos_y][sprite_loader.mouse_pos_x] == 'W')
+        if(level.level_1_objects[sprite_loader.mouse_pos_y][sprite_loader.mouse_pos_x] != "00000000")
         {
+            std::string tile_ID = level.level_1_objects[sprite_loader.mouse_pos_y][sprite_loader.mouse_pos_x];
+
+            Item* item_clicked;
+            for(Item* item: player_inventory.items)
+            {
+                if(item->ID == tile_ID)
+                {
+                    item_clicked = item;
+                }
+            }
 
             level.level_1_objects[sprite_loader.mouse_pos_y][sprite_loader.mouse_pos_x] = '0';
-            if(player_inventory.weed != nullptr)
+            if(item_clicked != nullptr)
             {
-                player_inventory.weed->amount++;
+                item_clicked->amount++;
+                if(item_clicked->amount == 1)
+                {
+                    for(int i  = 0; i < 9; i++)
+                    {
+                        // Find first empty spot.
+                        if(player_inventory.hotbar[i] == "00000000")
+                        {
+                            // Set spot to item code.
+                            player_inventory.hotbar[i] = tile_ID;
+                            break;
+                            
+                        }
+                        std::cout << "INVENTORY SPOT: " << i << " ITEM: " << player_inventory.hotbar[i] << '\n';
+                    }
+                }
             }
             
-            std::cout << "WEED: " << player_inventory.weed->amount << std::endl;
-            std::cout << &player_inventory.weed->amount << " IN M \n";
+            std::cout << "WEED: " << player_inventory.leafs->amount << std::endl;
+            // std::cout << &player_inventory.weed->amount << " IN M \n";
         }
     }
 }
@@ -174,10 +224,10 @@ void update_world(sf::RenderWindow& window, Sprite_loader& sprite_loader, Level&
             {
                 int random_num = std::rand() % 10000;
                 
-                if(random_num > 9900 && level.level_1_objects[y][x] == '0')
+                if(random_num > 9900 && level.level_1_objects[y][x] == "00000000")
                 {
                     // Spawn weeds
-                    level.level_1_objects[y][x] = 'W';
+                    level.level_1_objects[y][x] = "0000LEAF";
                 }
                 //std::cout<< random_num << std::endl;
             }

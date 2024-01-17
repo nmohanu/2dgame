@@ -1,0 +1,7 @@
+/home/naat/Documents/dev/farmory/2dgame/build/CMakeFiles/ghostgame.dir
+/home/naat/Documents/dev/farmory/2dgame/build/CMakeFiles/edit_cache.dir
+/home/naat/Documents/dev/farmory/2dgame/build/CMakeFiles/rebuild_cache.dir
+/home/naat/Documents/dev/farmory/2dgame/build/CMakeFiles/list_install_components.dir
+/home/naat/Documents/dev/farmory/2dgame/build/CMakeFiles/install.dir
+/home/naat/Documents/dev/farmory/2dgame/build/CMakeFiles/install/local.dir
+/home/naat/Documents/dev/farmory/2dgame/build/CMakeFiles/install/strip.dir
