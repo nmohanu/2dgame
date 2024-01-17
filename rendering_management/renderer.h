@@ -29,5 +29,7 @@ struct Renderer
     std::vector<sf::Sprite> render_object_sprites;
     std::vector<sf::Sprite> render_tile_sprites;
 
+    
+
 };
 

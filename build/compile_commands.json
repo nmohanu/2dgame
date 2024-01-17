@@ -1,0 +1,42 @@
+[
+{
+  "directory": "/home/naat/Documents/dev/farmory/2dgame/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/ghostgame.dir/main.cpp.o -c /home/naat/Documents/dev/farmory/2dgame/main.cpp",
+  "file": "/home/naat/Documents/dev/farmory/2dgame/main.cpp"
+},
+{
+  "directory": "/home/naat/Documents/dev/farmory/2dgame/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/ghostgame.dir/window_management/game_window.cpp.o -c /home/naat/Documents/dev/farmory/2dgame/window_management/game_window.cpp",
+  "file": "/home/naat/Documents/dev/farmory/2dgame/window_management/game_window.cpp"
+},
+{
+  "directory": "/home/naat/Documents/dev/farmory/2dgame/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/ghostgame.dir/rendering_management/renderer.cpp.o -c /home/naat/Documents/dev/farmory/2dgame/rendering_management/renderer.cpp",
+  "file": "/home/naat/Documents/dev/farmory/2dgame/rendering_management/renderer.cpp"
+},
+{
+  "directory": "/home/naat/Documents/dev/farmory/2dgame/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/ghostgame.dir/event_management/npc_events.cpp.o -c /home/naat/Documents/dev/farmory/2dgame/event_management/npc_events.cpp",
+  "file": "/home/naat/Documents/dev/farmory/2dgame/event_management/npc_events.cpp"
+},
+{
+  "directory": "/home/naat/Documents/dev/farmory/2dgame/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/ghostgame.dir/mechanics_management/mechanics.cpp.o -c /home/naat/Documents/dev/farmory/2dgame/mechanics_management/mechanics.cpp",
+  "file": "/home/naat/Documents/dev/farmory/2dgame/mechanics_management/mechanics.cpp"
+},
+{
+  "directory": "/home/naat/Documents/dev/farmory/2dgame/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/ghostgame.dir/sprite_management/sprite_animation_manager.cpp.o -c /home/naat/Documents/dev/farmory/2dgame/sprite_management/sprite_animation_manager.cpp",
+  "file": "/home/naat/Documents/dev/farmory/2dgame/sprite_management/sprite_animation_manager.cpp"
+},
+{
+  "directory": "/home/naat/Documents/dev/farmory/2dgame/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/ghostgame.dir/sprite_management/sprites.cpp.o -c /home/naat/Documents/dev/farmory/2dgame/sprite_management/sprites.cpp",
+  "file": "/home/naat/Documents/dev/farmory/2dgame/sprite_management/sprites.cpp"
+},
+{
+  "directory": "/home/naat/Documents/dev/farmory/2dgame/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/ghostgame.dir/level_management/level.cpp.o -c /home/naat/Documents/dev/farmory/2dgame/level_management/level.cpp",
+  "file": "/home/naat/Documents/dev/farmory/2dgame/level_management/level.cpp"
+}
+]

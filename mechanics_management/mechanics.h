@@ -31,4 +31,6 @@ const sf::Vector2f hotbar_item_7_pos(hotbar_item_6_pos.x + 16, SCREEN_HEIGHT-64+
 const sf::Vector2f hotbar_item_8_pos(hotbar_item_7_pos.x + 16, SCREEN_HEIGHT-64+2);
 const sf::Vector2f hotbar_item_9_pos(hotbar_item_8_pos.x + 16, SCREEN_HEIGHT-64+2);
 
+
+
 #endif

@@ -59,10 +59,17 @@ void Renderer::draw_player_hotbar(sf::RenderWindow& window, Sprite_loader& sprit
             // Item is leafs.
             if(player_inventory.hotbar[i] == 001)
             {
-                sprite_loader.weed_sprite.setPosition(hotbar_item_1_pos.x + 16*i*INV_SCALE + i*INV_SCALE, hotbar_item_1_pos.y);
+                int x_position = hotbar_item_1_pos.x + 16*i*INV_SCALE + i*INV_SCALE;
+                sprite_loader.weed_sprite.setPosition(x_position, hotbar_item_1_pos.y);
                 sf::Sprite weed_item = sprite_loader.weed_sprite;
                 weed_item.setScale(INV_SCALE, INV_SCALE);
+
+                // Display the amount.
+                player_inventory.amount.setPosition(x_position +24, hotbar_item_1_pos.y + 16);
+                player_inventory.amount.setString(std::to_string(player_inventory.weed->amount));
+
                 window.draw(weed_item);
+                window.draw(player_inventory.amount);
             }
         }
     }
