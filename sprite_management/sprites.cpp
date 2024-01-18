@@ -138,6 +138,10 @@ void Sprite_loader::add_sprites()
     tree1_sprite.setTexture(floor_texture);
     tree1_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_Y);
     tree1_sprite.setTextureRect(sf::IntRect(80, 0, 48, 48));
+
+    tree2_sprite.setTexture(floor_texture);
+    tree2_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_Y);
+    tree2_sprite.setTextureRect(sf::IntRect(0, 16, 16, 16));
     
 
 

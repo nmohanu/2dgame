@@ -81,6 +81,7 @@ struct Sprite_loader
     sf::Sprite weed_sprite;
     sf::Sprite gate_sprite;
     sf::Sprite tree1_sprite;
+    sf::Sprite tree2_sprite;
 
     // Edges tiles.
     sf::Texture edges_texture;

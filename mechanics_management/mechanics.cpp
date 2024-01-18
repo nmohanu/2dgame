@@ -173,6 +173,7 @@ void handle_clicks(sf::RenderWindow& window, sf::Event& event,  sf::Vector2f mou
         player_inventory.progress_bar_clock.restart();
         player_inventory.progress_x_clock.restart();
         player_inventory.progress_counter = 0;
+        player_inventory.draw_progress = false;
     }
     // Button is clicked but needs to be checked each frame.
     else

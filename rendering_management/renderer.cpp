@@ -92,7 +92,7 @@ void Renderer::draw_level_objects(sf::RenderWindow& window, Sprite_loader& sprit
         render_object_sprites.push_back(sprite_loader.weed_sprite);
     }
 
-    if(current_level->level_1_objects[y][x] == "0000TREE")
+    else if(current_level->level_1_objects[y][x] == "000TREE1")
     {
         sprite_loader.tree1_sprite.setPosition(position.x - 16*SCALE_FACTOR_X, position.y - 32*SCALE_FACTOR_Y);
         
@@ -105,7 +105,11 @@ void Renderer::draw_level_objects(sf::RenderWindow& window, Sprite_loader& sprit
             tree1_sprite_bounds.height - 16*SCALE_FACTOR_Y     // Adjust height
         );
         collision_sprites.push_back(adjustedTreeBounds);
-
+    }
+    else if(current_level->level_1_objects[y][x] == "000TREE2")
+    {
+        sprite_loader.tree2_sprite.setPosition(position);
+        render_object_sprites.push_back(sprite_loader.tree2_sprite);
     }
 }
 
