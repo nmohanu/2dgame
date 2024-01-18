@@ -3,10 +3,34 @@
 
 #include "../level_management/level.h"
 
+struct Path_Node
+{
+    sf::Vector2f position;
+    int x;
+    int y;
+    bool is_visited;
+    Path_Node* parent;
+    Path_Node(sf::Vector2f position) : position(position)
+    {
+        
+    }
+    Path_Node(int x, int y) : x(x), y(y)
+    {
+        
+    }
+};
+
+struct Path
+{
+    std::vector<Path_Node*> path;
+};
 
 struct NPC
 {
     std::string name;
+    sf::Vector2f position;
+    sf::Vector2f goal_position;
+    Path* path = nullptr;
 };
 
 struct Message
@@ -36,6 +60,8 @@ struct Dialogue
 
 struct Dialogue_manager
 {
+    Level* current_level = nullptr;
+
     sf::Text message;
     
     bool e_was_pressed = false;
@@ -44,10 +70,16 @@ struct Dialogue_manager
     void initialize_dialogues();
     void render_dialogue_frame(sf::RenderWindow& window, Sprite_loader& sprite_loader);
     
+    NPC* spork = new NPC;
+    std::vector<NPC*>* npcs= new std::vector<NPC*>;
 
     Dialogue_manager()
     {
         initialize_dialogues();
+        
+        spork->position = sf::Vector2f(CENTER_X-(16 * SCALE_FACTOR_X)/2 + 24*SCALE_FACTOR_X, CENTER_Y-(16 * SCALE_FACTOR_X)/2);
+        spork->goal_position = spork->position;
+        npcs->push_back(spork);
     }
 
     // Dialogues

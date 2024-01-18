@@ -1,5 +1,6 @@
 #include "mechanics.h"
 #include <iostream>
+#include <cmath>
 
 
 void clean_up(std::vector<sf::FloatRect>& collision_sprites, std::vector<sf::Sprite>& clickable_sprites)
@@ -269,4 +270,140 @@ void update_world(sf::RenderWindow& window, Sprite_loader& sprite_loader, Level&
         }
         std::cout << "world updated" << '\n';
     }
+}
+
+// Get the cords of a tile based on the x and y position relative to the map.
+sf::Vector2f get_tile_cords(int x, int y, sf::Vector2f& world_offset, Dialogue_manager& manager)
+{
+    sf::Vector2f position(x * SCALE_FACTOR_X * TILE_SIZE + (SCREEN_WIDTH  - (TILE_SIZE*TILE_SIZE*SCALE_FACTOR_X))/2 + manager.current_level->LEVEL_WIDTH*SCALE_FACTOR_X*TILE_SIZE/2,
+                                  y * SCALE_FACTOR_Y * TILE_SIZE + (SCREEN_HEIGHT - (TILE_SIZE*TILE_SIZE*SCALE_FACTOR_Y))/2 + manager.current_level->LEVEL_HEIGHT*SCALE_FACTOR_Y*TILE_SIZE/2);
+    position += world_offset;
+    return position;
+}
+
+void get_xy_cord(sf::Vector2f position, int& xcord, int& ycord, sf::Vector2f& world_offset, Dialogue_manager& manager)
+{
+
+    // Subtract the world offset
+    position -= world_offset;
+
+    // Reverse the scaling and translation operations
+    xcord = (float)(position.x - (SCREEN_WIDTH - (TILE_SIZE * TILE_SIZE * SCALE_FACTOR_X)) / 2 - manager.current_level->LEVEL_WIDTH * SCALE_FACTOR_X * TILE_SIZE / 2) / (SCALE_FACTOR_X * TILE_SIZE);
+    ycord = (float)(position.y - (SCREEN_HEIGHT - (TILE_SIZE * TILE_SIZE * SCALE_FACTOR_Y)) / 2 - manager.current_level->LEVEL_HEIGHT * SCALE_FACTOR_Y * TILE_SIZE / 2) / (SCALE_FACTOR_Y * TILE_SIZE);
+
+}
+
+void update_npc_locations(Dialogue_manager& manager)
+{
+    for(NPC* npc : *manager.npcs)
+    {
+        if(npc->position != npc->goal_position)
+        {
+            if(npc->path == nullptr)
+            {
+                npc->path = generate_npc_path();
+            }
+        }
+    }
+}
+
+bool cast_collision(sf::Vector2f& current_position)
+{
+    
+}
+
+std::vector<Path_Node*> generate_npc_path(sf::Vector2f& current_position, sf::Vector2f& goal_position, Dialogue_manager& manager, NPC& npc, sf::Vector2f& world_offset)
+{
+    
+    bool not_finished = true;
+    int current_x;
+    int current_y;
+
+    int start_x;
+    int start_y;
+    
+    int goal_x;
+    int goal_y;
+
+    get_xy_cord(current_position, start_x, start_y, world_offset, manager);
+    get_xy_cord(current_position, start_x, start_y, world_offset, manager);
+
+    current_x = start_x;
+    current_y = start_y;
+
+    bool is_finished = false;
+    
+    std::vector<Path_Node*> path;
+    std::vector<Path_Node*> winning_path;
+    Path_Node *starting_node;
+    starting_node->x = start_x;
+    starting_node->y = start_y;
+    path.push_back(starting_node);
+
+    std::vector<Path_Node> available = generate_npc_path_nodes(current_position, goal_position, manager, npc, world_offset);
+    Path_Node* winner = look_around(path, is_finished, *starting_node, goal_x, goal_y);
+    if(winner != nullptr)
+    {
+        Path_Node* walk = winner;
+        winning_path.push_back(walk);
+        while (walk->parent != nullptr)
+        {
+            walk = walk->parent;
+            winning_path.push_back(walk);
+        }
+    }
+    for(Path_Node* node : path)
+    {
+        delete node;
+    }
+    return winning_path;
+}
+
+Path_Node* look_around(std::vector<Path_Node*>& path, bool& is_finished, Path_Node& parent, int goal_x, int goal_y)
+{
+    
+    for(int i = 0; i < 2; i++)
+    {
+        for(int j = 0; j < 2; j++)
+        {
+            // TO DO: CHECK IF X AND Y ARE ALREADY CHECKED.
+            Path_Node* node;
+            node->parent = &parent;
+            node->x = node->parent->x + j;
+            node->y = node->parent->y + i;
+            
+            if(node->x == goal_x && node->y == goal_y || path.size() > 300)
+            {
+                return node;
+            }
+            else
+            {
+                look_around(path, is_finished, parent, goal_x, goal_y);
+            }
+        }
+    }
+}
+
+
+
+
+std::vector<Path_Node> generate_npc_path_nodes(sf::Vector2f& current_position, sf::Vector2f& goal_position, Dialogue_manager& manager, NPC& npc, sf::Vector2f& world_offset)
+{
+    std::vector<Path_Node> all_nodes;
+    for(int y = 0; y < manager.current_level->LEVEL_HEIGHT; y++)
+    {
+        for(int x = 0; x < manager.current_level->LEVEL_WIDTH; x++)
+        {
+            if(manager.current_level->level_1_objects[y][x] != "00000000" || manager.current_level->level_1_objects[y][x] != "0000LEAF")
+            {
+                all_nodes.push_back(Path_Node(get_tile_cords(x, y, world_offset, manager)));
+            }
+        }
+    }
+    return all_nodes;
+}
+
+bool is_free(Dialogue_manager& manager, int x, int y)
+{
+    return (manager.current_level->level_1_objects[y][x] == "00000000" && manager.current_level->level_1_objects[y][x] == "0000LEAF");
 }

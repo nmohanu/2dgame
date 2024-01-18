@@ -9,7 +9,7 @@ void game_window::open_game_window()
 {
     
     current_scene = &level_1;
-    current_scene->current_level = current_scene->level_1;
+    this->dialogue_manager->current_level = current_scene->level_1;
     sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Bruh", sf::Style::Titlebar | sf::Style::Close);
     window.setFramerateLimit(120);
     // window.setVerticalSyncEnabled(true);
@@ -52,7 +52,7 @@ void game_window::game_window_draw(sf::RenderWindow& window)
     // Render world ------------------------------------------------
 
     // Call renderer and render the world.
-    current_scene->render_everything(window, mouse_position, sprite_loader, *player_inventory);
+    current_scene->render_everything(window, mouse_position, sprite_loader, *player_inventory, *dialogue_manager);
 
     // Render UI elements ------------------------------------------
 
@@ -110,6 +110,8 @@ void game_window::game_window_update(sf::RenderWindow& window)
     dialogue_manager->process_dialogues(event, sprite_loader);
 
     update_hotbar(sprite_loader, *player_inventory);
+
+    update_npc_locations(*dialogue_manager);
 
     if(!sf::Mouse::isButtonPressed(sf::Mouse::Left))
     {

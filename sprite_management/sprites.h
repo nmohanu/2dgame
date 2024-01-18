@@ -33,6 +33,8 @@ const float PLAYER_REACH = 80.f;
 
 struct Sprite_loader
 {
+    std::vector<sf::Sprite> render_tile_sprites;
+    
     // Where the mouse is positioned on the grid.
     int mouse_pos_x;
     int mouse_pos_y;
@@ -49,7 +51,6 @@ struct Sprite_loader
 
     // Old man npc
     sf::Sprite old_man_npc;
-    sf::Vector2f original_position_old_man_npc = sf::Vector2f(CENTER_X-(16 * SCALE_FACTOR_X)/2 + 24*SCALE_FACTOR_X, CENTER_Y-(16 * SCALE_FACTOR_X)/2);
 
     // UI elements
     sf::Texture UI_texture;

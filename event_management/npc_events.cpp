@@ -19,9 +19,9 @@ void Dialogue_manager::process_dialogues(sf::Event& event, Sprite_loader& sprite
             e_was_pressed = false;
         }
     }
-    
-    
 }
+
+
 
 void Dialogue_manager::render_dialogue_frame(sf::RenderWindow& window, Sprite_loader& sprite_loader)
 {

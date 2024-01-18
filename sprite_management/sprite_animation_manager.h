@@ -6,6 +6,7 @@
 
 
 struct Animation_manager{
+    Level* current_level = nullptr;
     bool blink;
     bool yawn;
     sf::Clock idle_animation_timer;
