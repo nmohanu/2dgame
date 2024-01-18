@@ -1,3 +1,6 @@
+// Copyright (c) [2024] [Nathanael Mohanu]
+// All rights reserved.
+
 #include "window_management/game_window.h"
 
 int main() {
