@@ -148,13 +148,11 @@ bool check_collision(std::vector<sf::Sprite>& collision_sprites, sf::Vector2f& n
     return false; // No collision
 }
 
-void handle_clicks(sf::RenderWindow& window, sf::Event& event,  sf::Vector2f mouse_position, Sprite_loader& sprite_loader, Dialogue_manager& manager, Level& level, Inventory& player_inventory)
+void handle_clicks(sf::RenderWindow& window, sf::Event& event,  sf::Vector2f mouse_position, Sprite_loader& sprite_loader, Dialogue_manager& manager, Level& level, Inventory& player_inventory, bool click)
 {
-    
-    if(event.mouseButton.button == sf::Mouse::Left)
+    // Only check once after a click.
+    if(event.mouseButton.button == sf::Mouse::Left && click)
     {
-        
-        std::cout << "VECTOR MEM: " << &manager.spork_dialogues << std::endl;
         sf::Vector2f mouse_click_location = mouse_position;
         if(sprite_loader.old_man_npc.getGlobalBounds().contains(mouse_click_location))
         {
@@ -171,11 +169,20 @@ void handle_clicks(sf::RenderWindow& window, sf::Event& event,  sf::Vector2f mou
                 manager.current = nullptr;
             }
         }
-        if(level.level_1_objects[sprite_loader.mouse_pos_y][sprite_loader.mouse_pos_x] != "00000000")
+
+        player_inventory.progress_bar_clock.restart();
+        player_inventory.progress_x_clock.restart();
+        player_inventory.progress_counter = 0;
+    }
+    // Button is clicked but needs to be checked each frame.
+    else
+    {
+        if(sf::Mouse::isButtonPressed(sf::Mouse::Left) && level.level_1_objects[sprite_loader.mouse_pos_y][sprite_loader.mouse_pos_x] != "00000000")
         {
             std::string tile_ID = level.level_1_objects[sprite_loader.mouse_pos_y][sprite_loader.mouse_pos_x];
-
             Item* item_clicked;
+
+            // Figure out what item belongs to the clicked tile.
             for(Item* item: player_inventory.items)
             {
                 if(item->ID == tile_ID)
@@ -184,29 +191,56 @@ void handle_clicks(sf::RenderWindow& window, sf::Event& event,  sf::Vector2f mou
                 }
             }
 
-            level.level_1_objects[sprite_loader.mouse_pos_y][sprite_loader.mouse_pos_x] = '0';
-            if(item_clicked != nullptr)
+            // Player is picking up.
+            if(player_inventory.progress_bar_clock.getElapsedTime().asMilliseconds() > item_clicked->ms_to_pick_up)
             {
-                item_clicked->amount++;
-                if(item_clicked->amount == 1)
+                level.level_1_objects[sprite_loader.mouse_pos_y][sprite_loader.mouse_pos_x] = '0';
+                if(item_clicked != nullptr)
                 {
-                    for(int i  = 0; i < 9; i++)
+                    item_clicked->amount++;
+
+                    // Item is added to inventory.
+                    if(item_clicked->amount == 1)
                     {
-                        // Find first empty spot.
-                        if(player_inventory.hotbar[i] == "00000000")
+                        for(int i  = 0; i < 9; i++)
                         {
-                            // Set spot to item code.
-                            player_inventory.hotbar[i] = tile_ID;
-                            break;
-                            
+                            // Find first empty spot.
+                            if(player_inventory.hotbar[i] == "00000000")
+                            {
+                                // Set spot to item code.
+                                player_inventory.hotbar[i] = tile_ID;
+                                
+                                return;
+                                
+                            }
                         }
-                        std::cout << "INVENTORY SPOT: " << i << " ITEM: " << player_inventory.hotbar[i] << '\n';
                     }
                 }
+                player_inventory.progress_bar_clock.restart();
+                player_inventory.progress_x_clock.restart();
+                player_inventory.progress_counter = 0;
             }
-            
-            std::cout << "WEED: " << player_inventory.leafs->amount << std::endl;
-            // std::cout << &player_inventory.weed->amount << " IN M \n";
+            else
+            {
+                if(player_inventory.progress_x_clock.getElapsedTime().asMilliseconds() >= item_clicked->ms_to_pick_up/16)
+                {
+                    player_inventory.progress_counter++;
+                    if(player_inventory.progress_counter >= 15)
+                    {
+                        player_inventory.progress_counter = 0;
+                    }
+                    player_inventory.progress_x_clock.restart();
+                }
+                sprite_loader.progress_bar_sprite.setTextureRect(sf::IntRect(player_inventory.progress_counter*16, 32, 16, 16));
+                sprite_loader.progress_bar_sprite.setPosition(mouse_position.x, mouse_position.y + 8*SCALE_FACTOR_X);
+                player_inventory.draw_progress = true;
+            }         
+        }
+        else if(level.level_1_objects[sprite_loader.mouse_pos_y][sprite_loader.mouse_pos_x] == "00000000")
+        {
+            player_inventory.progress_bar_clock.restart();
+            player_inventory.progress_x_clock.restart();
+            player_inventory.progress_counter = 0;
         }
     }
 }

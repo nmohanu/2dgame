@@ -11,8 +11,8 @@ void game_window::open_game_window()
     current_scene = &level_1;
     current_scene->current_level = current_scene->level_1;
     sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Bruh", sf::Style::Titlebar | sf::Style::Close);
-    window.setFramerateLimit(60);
-    window.setVerticalSyncEnabled(true);
+    window.setFramerateLimit(120);
+    // window.setVerticalSyncEnabled(true);
     window.setMouseCursorVisible(false);
     game_window_loop(window);
     ladybug.play();
@@ -87,10 +87,12 @@ void game_window::game_window_update(sf::RenderWindow& window)
         // Handle clicks
         else if (event.type == sf::Event::MouseButtonPressed)
         {
-            handle_clicks(window, event, mouse_position, sprite_loader, *dialogue_manager, *current_scene->level_1, *player_inventory);
-        }
-        
+            handle_clicks(window, event, mouse_position, sprite_loader, *dialogue_manager, *current_scene->level_1, *player_inventory, true);
+        } 
     }
+
+    handle_clicks(window, event, mouse_position, sprite_loader, *dialogue_manager, *current_scene->level_1, *player_inventory, false);   
+
     // Calculate delta time
     sf::Time deltaTime = delta_clock.restart();
 
@@ -108,7 +110,11 @@ void game_window::game_window_update(sf::RenderWindow& window)
     dialogue_manager->process_dialogues(event, sprite_loader);
 
     update_hotbar(sprite_loader, *player_inventory);
-    
+
+    if(!sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    {
+        
+    }
 }
 
 
