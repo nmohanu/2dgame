@@ -22,7 +22,7 @@ struct Renderer
     void draw_level_objects(sf::RenderWindow& window, Sprite_loader& sprite_loader, int x, int y, sf::Vector2f position);
     void draw_player_hotbar(sf::RenderWindow& window, Sprite_loader& sprite_loader, Inventory& player_inventory);
 
-    std::vector<sf::Sprite> collision_sprites;
+    std::vector<sf::FloatRect> collision_sprites;
     std::vector<sf::Sprite> npc_sprites;
     std::vector<sf::Sprite> clickable_sprites;
     std::vector<sf::Sprite> render_tiles;

@@ -134,6 +134,13 @@ void Sprite_loader::add_sprites()
     weed_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_Y);
     weed_sprite.setTextureRect(sf::IntRect(32, 0, 16, 16));
 
+    // Trees.
+    tree1_sprite.setTexture(floor_texture);
+    tree1_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_Y);
+    tree1_sprite.setTextureRect(sf::IntRect(80, 0, 48, 48));
+    
+
+
 
     // Edges sprites
     edge_0_sprite.setTexture(edges_texture);

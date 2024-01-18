@@ -2,7 +2,7 @@
 #include <iostream>
 
 
-void clean_up(std::vector<sf::Sprite>& collision_sprites, std::vector<sf::Sprite>& clickable_sprites)
+void clean_up(std::vector<sf::FloatRect>& collision_sprites, std::vector<sf::Sprite>& clickable_sprites)
 {
     collision_sprites.clear();
     clickable_sprites.clear();
@@ -32,7 +32,7 @@ void update_hotbar(Sprite_loader& sprite_loader, Inventory& inventory)
         
 }
 
-void move_player(float deltaTimeSeconds, sf::Vector2f& new_world_position, sf::Vector2f& world_offset, sf::Vector2f& original_world_position, std::vector<sf::Sprite>& collision_sprites, Sprite_loader& sprite_loader)
+void move_player(float deltaTimeSeconds, sf::Vector2f& new_world_position, sf::Vector2f& world_offset, sf::Vector2f& original_world_position, std::vector<sf::FloatRect>& collision_sprites, Sprite_loader& sprite_loader)
 {
     // New camera position.
     new_world_position = world_offset;
@@ -119,7 +119,7 @@ sf::Vector2f get_velocity(float deltaTimeSeconds)
 
 
 
-bool check_collision(std::vector<sf::Sprite>& collision_sprites, sf::Vector2f& new_world_position, sf::Vector2f& world_offset, Sprite_loader& sprite_loader)
+bool check_collision(std::vector<sf::FloatRect>& collision_sprites, sf::Vector2f& new_world_position, sf::Vector2f& world_offset, Sprite_loader& sprite_loader)
 {
     sf::FloatRect player_bounds = sprite_loader.player_sprite.getGlobalBounds();
 
@@ -132,9 +132,9 @@ bool check_collision(std::vector<sf::Sprite>& collision_sprites, sf::Vector2f& n
 
     
     // Check collision with each wall sprite
-    for (const sf::Sprite& wallSprite : collision_sprites)
+    for (const sf::FloatRect& COL : collision_sprites)
     {
-        sf::FloatRect new_position = wallSprite.getGlobalBounds();
+        sf::FloatRect new_position = COL;
         new_position.left -= world_offset.x;
         new_position.top -= world_offset.y;
         new_position.left += new_world_position.x;
