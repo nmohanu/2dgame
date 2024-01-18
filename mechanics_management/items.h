@@ -7,6 +7,7 @@ struct Item
     sf::Sprite sprite;
     int amount = 0;
     std::string ID;
+    float ms_to_pick_up = 0.f;
 };
 
 struct Inventory
@@ -21,7 +22,10 @@ struct Inventory
     std::vector<Item*> items;
     std::string hotbar[9] = {"00000000","00000000","00000000","00000000","00000000","00000000","00000000","00000000"};
 
-    sf::Time progress_bar_clock;
+    sf::Clock progress_bar_clock;
+    sf::Clock progress_x_clock;
+    int progress_counter = 0;
+    bool draw_progress = false;
 
     int current_selection = 0;
 
@@ -29,6 +33,7 @@ struct Inventory
     {
         leafs->ID = "0000LEAF";
         leafs->sprite = sprite_loader.weed_sprite;
+        leafs->ms_to_pick_up = 1024.f;
         items.push_back(leafs);
 
         
