@@ -14,6 +14,7 @@ struct Inventory
 {
     // Declare item types.
     Item* leafs = new Item; 
+    Item* tree1 = new Item; 
 
     // Text for displaying item amount.
     sf::Text amount;
@@ -35,6 +36,11 @@ struct Inventory
         leafs->sprite = sprite_loader.weed_sprite;
         leafs->ms_to_pick_up = 1024.f;
         items.push_back(leafs);
+
+        tree1->ID = "000TREE1";
+        tree1->sprite = sprite_loader.tree1_sprite;
+        tree1->ms_to_pick_up = 5120.f;
+        items.push_back(tree1);
 
         
 
