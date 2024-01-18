@@ -142,6 +142,11 @@ void Sprite_loader::add_sprites()
     tree2_sprite.setTexture(floor_texture);
     tree2_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_Y);
     tree2_sprite.setTextureRect(sf::IntRect(0, 16, 16, 16));
+
+    // Grave stones
+    grave1_sprite.setTexture(floor_texture);
+    grave1_sprite.setScale(SCALE_FACTOR_X, SCALE_FACTOR_Y);
+    grave1_sprite.setTextureRect(sf::IntRect(48, 16, 16, 32));
     
 
 

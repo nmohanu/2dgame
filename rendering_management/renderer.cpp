@@ -110,6 +110,13 @@ void Renderer::draw_level_objects(sf::RenderWindow& window, Sprite_loader& sprit
     {
         sprite_loader.tree2_sprite.setPosition(position);
         render_object_sprites.push_back(sprite_loader.tree2_sprite);
+        collision_sprites.push_back(sprite_loader.tree2_sprite.getGlobalBounds());
+    }
+    else if(current_level->level_1_objects[y][x] == "00GRAVE1")
+    {
+        sprite_loader.grave1_sprite.setPosition(position);
+        render_object_sprites.push_back(sprite_loader.grave1_sprite);
+        collision_sprites.push_back(sprite_loader.grave1_sprite.getGlobalBounds());
     }
 }
 

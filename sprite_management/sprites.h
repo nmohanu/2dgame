@@ -80,8 +80,13 @@ struct Sprite_loader
     sf::Sprite boat_sprite;
     sf::Sprite weed_sprite;
     sf::Sprite gate_sprite;
+
+    // Plants
     sf::Sprite tree1_sprite;
     sf::Sprite tree2_sprite;
+
+    // Gravestones
+    sf::Sprite grave1_sprite;
 
     // Edges tiles.
     sf::Texture edges_texture;
