@@ -14,7 +14,7 @@ void Renderer::player_movement(float deltaTimeSeconds, Sprite_loader& sprite_loa
     clean_up(collision_sprites, npc_sprites);
 }
 
-void Renderer::render_everything(sf::RenderWindow& window, sf::Vector2f mouse_position, Sprite_loader& sprite_loader, Inventory& inventory)
+void Renderer::render_everything(sf::RenderWindow& window, sf::Vector2f mouse_position, Sprite_loader& sprite_loader, Inventory& player_inventory)
 {
     // UI elements.
     window.draw(sprite_loader.coin_sprite);
@@ -32,11 +32,11 @@ void Renderer::render_everything(sf::RenderWindow& window, sf::Vector2f mouse_po
         window.draw(sprite);
     }
 
-    draw_player_hotbar(window, sprite_loader, inventory);
+    draw_player_hotbar(window, sprite_loader, player_inventory);
 
     render_npc(window, sprite_loader);
     render_objects(window, sprite_loader);
-    render_mouse_icon(window, mouse_position, sprite_loader);
+    render_mouse_icon(window, mouse_position, sprite_loader, player_inventory);
 
     
 
@@ -211,7 +211,7 @@ void Renderer::render_npc(sf::RenderWindow& window, Sprite_loader& sprite_loader
 
 
 // Render the mouse.
-void Renderer::render_mouse_icon(sf::RenderWindow& window, sf::Vector2f mouse_position, Sprite_loader& sprite_loader)
+void Renderer::render_mouse_icon(sf::RenderWindow& window, sf::Vector2f mouse_position, Sprite_loader& sprite_loader, Inventory& player_inventory)
 {    
     bool cursor_drawn = false;
     for(sf::Sprite sprite : npc_sprites)
@@ -246,6 +246,11 @@ void Renderer::render_mouse_icon(sf::RenderWindow& window, sf::Vector2f mouse_po
     {
         sprite_loader.default_mouse_icon_sprite.setPosition(mouse_position.x-8, mouse_position.y-8);
         window.draw(sprite_loader.default_mouse_icon_sprite);
+    }
+    if(player_inventory.draw_progress)
+    {
+        window.draw(sprite_loader.progress_bar_sprite);
+        player_inventory.draw_progress = false;
     }
 }
 
