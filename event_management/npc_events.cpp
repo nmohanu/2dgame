@@ -56,6 +56,8 @@ void Dialogue_manager::initialize_dialogues()
     
     this->spork_npc_dialogue2->ID = "SPORK_2";
     this->spork_npc_dialogue2->message = &message;
+    this->spork_npc_dialogue2->walk_to = new Walk_Event(sf::Vector2f(3, 0));
+    this->spork_npc_dialogue2->npc = spork;
 
 
     this->spork_npc_dialogue->next = spork_npc_dialogue2;
@@ -89,6 +91,11 @@ void Dialogue::render_dialogue_next_message(Sprite_loader& sprite_loader, Dialog
     {
         this->in_dialogue = false;
         this->finished = true;
+        if(this->npc != nullptr && this->walk_to != nullptr)
+        {
+            this->npc->goal_position = this->walk_to->walk_to_pos;
+            this->npc->current_event = dialogue.walk_to;
+        }
         this->current_message = 0;
         std::cout << "finished dialogue 1" << ": " << this->finished << '\n';
     }

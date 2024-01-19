@@ -111,7 +111,7 @@ void game_window::game_window_update(sf::RenderWindow& window)
 
     update_hotbar(sprite_loader, *player_inventory);
 
-    update_npc_locations(*dialogue_manager);
+    update_npc_locations(*dialogue_manager, current_scene->world_offset, deltaTimeSeconds);
 
     if(!sf::Mouse::isButtonPressed(sf::Mouse::Left))
     {

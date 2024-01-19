@@ -293,7 +293,7 @@ void get_xy_cord(sf::Vector2f position, int& xcord, int& ycord, sf::Vector2f& wo
 
 }
 
-void update_npc_locations(Dialogue_manager& manager)
+void update_npc_locations(Dialogue_manager& manager, sf::Vector2f& world_offset, float delta_time)
 {
     for(NPC* npc : *manager.npcs)
     {
@@ -301,7 +301,49 @@ void update_npc_locations(Dialogue_manager& manager)
         {
             if(npc->path == nullptr)
             {
-                npc->path = generate_npc_path();
+                npc->path = new Path;
+                npc->path->path = generate_npc_path(npc->position, npc->goal_position, manager, *npc, world_offset);
+                npc->next_destination_vec = npc->path->path[npc->path->path.size()-1]->position;
+                npc->next_destination_x = npc->path->path[npc->path->path.size()-1]->x;
+                npc->next_destination_y = npc->path->path[npc->path->path.size()-1]->y;
+            }
+            else if(npc->position == npc->next_destination_vec)
+            {
+                npc->path->path[npc->path->path.size()-1]->is_visited = true;
+                for(int i = npc->path->path.size()-1; i > 0; i--)
+                {
+                    if(npc->path->path[i] != nullptr && !npc->path->path[i]->is_visited)
+                    {
+                        npc->next_destination_vec = npc->path->path[i]->position;
+                        npc->next_destination_x = npc->path->path[i]->x;
+                        npc->next_destination_y = npc->path->path[i]->y;
+                    }
+                }
+            }
+            float move_distance = 20.f * PLAYER_SPEED * delta_time;
+            if(&npc->next_destination_vec != nullptr)
+            {
+                sf::Vector2f vec_new = npc->next_destination_vec;
+
+                if(std::abs(npc->next_destination_vec.x - npc->position.x) > move_distance)
+                {
+                    npc->position.x += (npc->next_destination_vec.x > npc->position.x) ? move_distance : -move_distance;
+                }
+                else
+                {
+                    npc->position.x = npc->next_destination_vec.x;
+                }
+                if(npc->position.x == npc->next_destination_vec.x)
+                {
+                    if(std::abs(npc->next_destination_vec.y - npc->position.y) > move_distance)
+                    {
+                        npc->position.y += (npc->next_destination_vec.y > npc->position.y) ? move_distance : -move_distance;
+                    }
+                    else
+                    {
+                        npc->position.y = npc->next_destination_vec.y;
+                    }
+                }
             }
         }
     }
@@ -322,63 +364,127 @@ std::vector<Path_Node*> generate_npc_path(sf::Vector2f& current_position, sf::Ve
     int start_x;
     int start_y;
     
-    int goal_x;
-    int goal_y;
+    int goal_x = npc.current_event->walk_to_pos.x;
+    int goal_y = npc.current_event->walk_to_pos.y;
 
-    get_xy_cord(current_position, start_x, start_y, world_offset, manager);
     get_xy_cord(current_position, start_x, start_y, world_offset, manager);
 
     current_x = start_x;
     current_y = start_y;
 
+    int counter = 0;
+
     bool is_finished = false;
     
     std::vector<Path_Node*> path;
+    std::vector<Path_Node*> board;
+
     std::vector<Path_Node*> winning_path;
-    Path_Node *starting_node;
+    Path_Node *starting_node = new Path_Node;
+    Path_Node *finish_node = new Path_Node;
     starting_node->x = start_x;
     starting_node->y = start_y;
     path.push_back(starting_node);
 
-    std::vector<Path_Node> available = generate_npc_path_nodes(current_position, goal_position, manager, npc, world_offset);
-    Path_Node* winner = look_around(path, is_finished, *starting_node, goal_x, goal_y);
-    if(winner != nullptr)
+    for(int y = 0; y < manager.current_level->LEVEL_HEIGHT; y++)
     {
-        Path_Node* walk = winner;
-        winning_path.push_back(walk);
-        while (walk->parent != nullptr)
+        for(int x = 0; x < manager.current_level->LEVEL_WIDTH; x++)
         {
-            walk = walk->parent;
-            winning_path.push_back(walk);
+            Path_Node* node = new Path_Node(x, y);
+            board.push_back(node);
+            if(y == start_y && x == start_x)
+            {
+                starting_node = node;
+            }
+            else if (y == goal_y &&  x == goal_x)
+            {
+                finish_node = node;
+            }
         }
+    }
+
+    // std::vector<Path_Node> available = generate_npc_path_nodes(current_position, goal_position, manager, npc, world_offset);
+    Path_Node winner;
+    look_around(path, is_finished, *starting_node, goal_x, goal_y, board, manager, winner);
+    if(&winner != nullptr)
+    {
+        Path_Node* walk = &winner;
+        if(walk != nullptr)
+        {
+            while (walk->parent != nullptr && counter < 100)
+            {
+                Path_Node* new_walk = new Path_Node();
+                new_walk->position = get_tile_cords(walk->x, walk->y, world_offset, manager);
+                new_walk->x = walk->x;
+                new_walk->y = walk->y;
+                new_walk->is_visited = false;
+                winning_path.push_back(new_walk);
+                counter++;
+                walk = walk->parent;
+            }
+        }
+        
     }
     for(Path_Node* node : path)
     {
-        delete node;
+        if(node != nullptr)
+            delete node;
     }
+    for(Path_Node* node : board)
+    {
+        if(node != nullptr)
+            delete node;
+    }
+
+    npc.goal_position = get_tile_cords(npc.goal_position.x, npc.goal_position.y, world_offset, manager);
+
     return winning_path;
 }
 
-Path_Node* look_around(std::vector<Path_Node*>& path, bool& is_finished, Path_Node& parent, int goal_x, int goal_y)
+void look_around(std::vector<Path_Node*>& path, bool& is_finished, Path_Node& parent, int goal_x, int goal_y, std::vector<Path_Node*>& board, Dialogue_manager& manager, Path_Node& winner)
 {
     
-    for(int i = 0; i < 2; i++)
+    for(int i = -1; i < 1; i++)
     {
-        for(int j = 0; j < 2; j++)
+        for(int j = -1; j < 1; j++)
         {
-            // TO DO: CHECK IF X AND Y ARE ALREADY CHECKED.
-            Path_Node* node;
-            node->parent = &parent;
-            node->x = node->parent->x + j;
-            node->y = node->parent->y + i;
-            
-            if(node->x == goal_x && node->y == goal_y || path.size() > 300)
-            {
-                return node;
-            }
-            else
-            {
-                look_around(path, is_finished, parent, goal_x, goal_y);
+            if(parent.x + j <= manager.current_level->LEVEL_WIDTH && parent.x + j >= 0 && parent.y + i <= manager.current_level->LEVEL_HEIGHT && parent.y + i >= 0
+                && is_free(manager, parent.x + j, parent.y + i))
+                {
+                    // TO DO: CHECK IF X AND Y ARE ALREADY CHECKED.
+                Path_Node* node = new Path_Node();
+
+                if(&parent != nullptr)
+                {
+                    node->parent = &parent;
+                
+                    node->x = node->parent->x + j;
+                    node->y = node->parent->y + i;
+                }
+                if(node->x == goal_x && node->y == goal_y)
+                {
+                    winner.x = node->x;
+                    winner.y = node->y;
+                    winner.parent = node->parent;
+                    return;
+                }
+                bool is_visited = false;
+                Path_Node* board_node;
+                for(Path_Node* check_node : board)
+                {
+                    if(check_node->x == node->x && check_node->y == node->y)
+                    {
+                        board_node = check_node;
+                    }
+                }
+                
+                if(board_node != nullptr && !board_node->is_visited)
+                {
+                    node->is_visited = true;
+                    board_node->is_visited = true;
+                    path.push_back(node);
+                    look_around(path, is_finished, *node, goal_x, goal_y, board, manager, winner);
+                }
             }
         }
     }
@@ -386,7 +492,7 @@ Path_Node* look_around(std::vector<Path_Node*>& path, bool& is_finished, Path_No
 
 
 
-
+/*
 std::vector<Path_Node> generate_npc_path_nodes(sf::Vector2f& current_position, sf::Vector2f& goal_position, Dialogue_manager& manager, NPC& npc, sf::Vector2f& world_offset)
 {
     std::vector<Path_Node> all_nodes;
@@ -402,8 +508,9 @@ std::vector<Path_Node> generate_npc_path_nodes(sf::Vector2f& current_position, s
     }
     return all_nodes;
 }
+*/
 
 bool is_free(Dialogue_manager& manager, int x, int y)
 {
-    return (manager.current_level->level_1_objects[y][x] == "00000000" && manager.current_level->level_1_objects[y][x] == "0000LEAF");
+    return (manager.current_level->level_1_objects[y][x] == "00000000" || manager.current_level->level_1_objects[y][x] == "0000LEAF");
 }

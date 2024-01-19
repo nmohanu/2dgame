@@ -8,13 +8,17 @@ struct Path_Node
     sf::Vector2f position;
     int x;
     int y;
-    bool is_visited;
-    Path_Node* parent;
+    bool is_visited = false;
+    Path_Node* parent = nullptr;
     Path_Node(sf::Vector2f position) : position(position)
     {
         
     }
     Path_Node(int x, int y) : x(x), y(y)
+    {
+        
+    }
+    Path_Node()
     {
         
     }
@@ -25,12 +29,25 @@ struct Path
     std::vector<Path_Node*> path;
 };
 
+struct Walk_Event
+{
+    sf::Vector2f walk_to_pos;
+    Walk_Event(sf::Vector2f walk_to_pos) : walk_to_pos(walk_to_pos)
+    {
+
+    }
+};
+
 struct NPC
 {
     std::string name;
     sf::Vector2f position;
     sf::Vector2f goal_position;
     Path* path = nullptr;
+    Walk_Event* current_event = nullptr;
+    sf::Vector2f next_destination_vec;
+    int next_destination_x;
+    int next_destination_y;
 };
 
 struct Message
@@ -42,6 +59,8 @@ struct Message
     std::string message;
     NPC* npc = new NPC;
 };
+
+
 
 struct Dialogue
 {
@@ -56,6 +75,8 @@ struct Dialogue
     bool in_dialogue = false;
     std::string message_to_display;
     Dialogue* next = nullptr;
+    Walk_Event* walk_to = nullptr;
+    NPC* npc = nullptr;
 };
 
 struct Dialogue_manager
