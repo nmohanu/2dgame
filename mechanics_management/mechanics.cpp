@@ -303,51 +303,72 @@ sf::Vector2i get_xy_cord(sf::Vector2f position, sf::Vector2f& world_offset, Dial
 
 void update_npc_locations(Dialogue_manager& manager, sf::Vector2f& world_offset, float delta_time)
 {
+    // Go through npc's
     for(NPC* npc : *manager.npcs)
     {
+        // Check if the npc is at their goal position.
         if(npc->position != npc->goal_position)
-        {
+        {   // Not at goal position.
+
+            // Update npc x and y cords (tile cords).
+            sf::Vector2f zero_vec(0,0);
+            npc->position_int = get_xy_cord(npc->position, zero_vec, manager);
+            
+            // No current path available.
             if(npc->path == nullptr)
             {
+                // Create a new path.
                 npc->path = new Path;
                 npc->path->path = generate_npc_path(npc->position, npc->goal_position, manager, *npc, world_offset);
-                if(&npc->path != nullptr && &npc->path->path != nullptr && npc->path->path[0]!= nullptr)
+
+                // Set the npc's next destination to the first element in the chain (last of vector).
+                if(!npc->path->path.empty() && npc->path->path[0]!= nullptr)
                 {
-                    npc->next_destination_vec = npc->path->path[npc->path->path.size()-1]->position;
                     npc->next_node = npc->path->path[npc->path->path.size()-1];
+                    npc->next_destination_vec = npc->path->path[npc->path->path.size()-1]->position;
+                    npc->next_destination_x = npc->path->path[npc->path->path.size()-1]->x;
+                    npc->next_destination_y = npc->path->path[npc->path->path.size()-1]->y;
                 }
-                
-                npc->next_destination_x = npc->path->path[npc->path->path.size()-1]->x;
-                npc->next_destination_y = npc->path->path[npc->path->path.size()-1]->y;
-            }
-            else if(npc->position_int == sf::Vector2i(npc->next_destination_x, npc->next_destination_y))
-            {
-                npc->path->path[npc->path->path.size()-1]->is_visited = true;
-                npc->next_node->is_visited = true;
-                for(int i = npc->path->path.size()-1; i > 0; i--)
+                // No path was created.
+                else
                 {
-                    if(npc->path->path[i] != nullptr && !npc->path->path[i]->is_visited)
-                    {
-                        npc->next_node = npc->path->path[i];
-                        npc->next_destination_vec = npc->path->path[i]->position;
-                        npc->next_destination_x = npc->path->path[i]->x;
-                        npc->next_destination_y = npc->path->path[i]->y;
-                        std::cout << i << '\n';
-                    }
+                    std::cout << "Could not find path \n";
                 }
             }
-            float move_distance = 20.f * PLAYER_SPEED * delta_time;
-            if(&npc->next_destination_vec != nullptr)
+
+            // NPC has a path but is already at the destination node.
+            else if(!npc->path->path.empty() && npc->position_int == sf::Vector2i(npc->next_destination_x, npc->next_destination_y))
             {
+                // Set node to visited.
+                npc->next_node->is_visited = true;
                 
+                // If available, set next destination to the next node in the chain.
+                if (npc->next_node != nullptr && npc->next_node->next != nullptr)
+                {
+                    npc->next_node = npc->next_node->next;
+                    npc->next_destination_vec = npc->next_node->position;
+                    npc->next_destination_x = npc->next_node->x;
+                    npc->next_destination_y = npc->next_node->y;
+                }
+
+            }
+            // Set moving distance.
+            float move_distance = 20.f * PLAYER_SPEED * delta_time;
+
+            // Move towards the destination.
+            if(!npc->path->path.empty())
+            {
+                // If distance is greater then moving distance, move towards the goal.
                 if(std::abs(npc->next_destination_vec.x - npc->position.x) > move_distance)
                 {
                     npc->position.x += (npc->next_destination_vec.x > npc->position.x) ? move_distance : -move_distance;
                 }
                 else
                 {
+                    // Snap to goal.
                     npc->position.x = npc->next_destination_vec.x;
                 }
+                // X position is correct, now update y position.
                 if(npc->position.x == npc->next_destination_vec.x)
                 {
                     if(std::abs(npc->next_destination_vec.y - npc->position.y) > move_distance)
@@ -360,9 +381,8 @@ void update_npc_locations(Dialogue_manager& manager, sf::Vector2f& world_offset,
                     }
                 }
             }
-            sf::Vector2f zero_vec(0,0);
-            npc->position_int = get_xy_cord(npc->position, zero_vec, manager);
             std::cout << "X: " << npc->position_int.x << " Y: " << npc->position_int.y << '\n';
+            std::cout << "goal X: " << npc->next_destination_x << " goal Y: " << npc->next_destination_y << '\n';
         }
     }
 }
@@ -386,8 +406,8 @@ std::vector<Path_Node*> generate_npc_path(sf::Vector2f& current_position, sf::Ve
 
     bool is_finished = false;
     
-    std::vector<Path_Node*> path;
-    std::vector<Path_Node*> board;
+    std::vector<Path_Node*> path = {};
+    std::vector<Path_Node*> board = {};
 
     std::vector<Path_Node*> winning_path;
     Path_Node *starting_node = new Path_Node;
@@ -424,7 +444,7 @@ std::vector<Path_Node*> generate_npc_path(sf::Vector2f& current_position, sf::Ve
         Path_Node* walk = &winner;
         if(walk != nullptr)
         {
-            while (walk->parent != nullptr && counter < 100)
+            while (walk->parent != nullptr)
             {
                 
                 Path_Node* new_walk = new Path_Node();
@@ -436,13 +456,25 @@ std::vector<Path_Node*> generate_npc_path(sf::Vector2f& current_position, sf::Ve
                 counter++;
                 walk = walk->parent;
             }
+            for(int i = winning_path.size()-1; i >= 1; i--)
+            {
+                winning_path[i]->next = winning_path[i-1];
+            }
         }
     }
-    for(Path_Node* node : path)
+    else
     {
-        if(node != nullptr)
-            delete node;
+        std::cout << "could not create path \n";
     }
+    if(path[0] != nullptr)
+    {
+        for(Path_Node* node : path)
+        {
+            if(node != nullptr)
+                delete node;
+        }
+    }
+    
     for(Path_Node* node : board)
     {
         if(node != nullptr)
@@ -456,7 +488,7 @@ std::vector<Path_Node*> generate_npc_path(sf::Vector2f& current_position, sf::Ve
 void call_look_around(std::vector<Path_Node*>& path, bool& is_finished, Path_Node& parent, int goal_x, int goal_y, std::vector<Path_Node*>& board, Dialogue_manager& manager, Path_Node& winner, int j, int i)
 {
     if(parent.x + j < manager.current_level->LEVEL_WIDTH && parent.x + j >= 0 && parent.y + i < manager.current_level->LEVEL_HEIGHT && parent.y + i >= 0
-                && is_free(manager, parent.x + j, parent.y + i) && !(i == 0 && j == 0) && (i == 0 || j == 0))
+                && is_free(manager, parent.x + j, parent.y + i))
     {
     Path_Node* node = new Path_Node();
     node->parent = &parent;
@@ -533,8 +565,8 @@ bool look_around(std::vector<Path_Node*>& path, bool& is_finished, Path_Node& pa
         {
             // Prioritize down.
             call_look_around(path, is_finished, parent, goal_x, goal_y, board, manager, winner, 0, 1);
-            call_look_around(path, is_finished, parent, goal_x, goal_y, board, manager, winner, 1, 0);
             call_look_around(path, is_finished, parent, goal_x, goal_y, board, manager, winner, -1, 0);
+            call_look_around(path, is_finished, parent, goal_x, goal_y, board, manager, winner, 1, 0);
             call_look_around(path, is_finished, parent, goal_x, goal_y, board, manager, winner, 0, -1);
         }
     }

@@ -10,6 +10,7 @@ struct Path_Node
     int y;
     bool is_visited = false;
     Path_Node* parent = nullptr;
+    Path_Node* next;
     Path_Node(sf::Vector2f position) : position(position)
     {
         
