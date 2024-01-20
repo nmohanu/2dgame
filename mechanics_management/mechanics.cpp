@@ -314,21 +314,25 @@ void update_npc_locations(Dialogue_manager& manager, sf::Vector2f& world_offset,
                 if(&npc->path != nullptr && &npc->path->path != nullptr && npc->path->path[0]!= nullptr)
                 {
                     npc->next_destination_vec = npc->path->path[npc->path->path.size()-1]->position;
+                    npc->next_node = npc->path->path[npc->path->path.size()-1];
                 }
                 
                 npc->next_destination_x = npc->path->path[npc->path->path.size()-1]->x;
                 npc->next_destination_y = npc->path->path[npc->path->path.size()-1]->y;
             }
-            else if(npc->position == npc->next_destination_vec)
+            else if(npc->position_int == sf::Vector2i(npc->next_destination_x, npc->next_destination_y))
             {
                 npc->path->path[npc->path->path.size()-1]->is_visited = true;
+                npc->next_node->is_visited = true;
                 for(int i = npc->path->path.size()-1; i > 0; i--)
                 {
                     if(npc->path->path[i] != nullptr && !npc->path->path[i]->is_visited)
                     {
+                        npc->next_node = npc->path->path[i];
                         npc->next_destination_vec = npc->path->path[i]->position;
                         npc->next_destination_x = npc->path->path[i]->x;
                         npc->next_destination_y = npc->path->path[i]->y;
+                        std::cout << i << '\n';
                     }
                 }
             }
@@ -356,8 +360,8 @@ void update_npc_locations(Dialogue_manager& manager, sf::Vector2f& world_offset,
                     }
                 }
             }
-
-            npc->position_int = get_xy_cord(npc->position, world_offset, manager);
+            sf::Vector2f zero_vec(0,0);
+            npc->position_int = get_xy_cord(npc->position, zero_vec, manager);
             std::cout << "X: " << npc->position_int.x << " Y: " << npc->position_int.y << '\n';
         }
     }
@@ -449,7 +453,7 @@ std::vector<Path_Node*> generate_npc_path(sf::Vector2f& current_position, sf::Ve
     return winning_path;
 }
 
-void call_look_around(std::vector<Path_Node*>& path, bool& is_finished, Path_Node& parent, int goal_x, int goal_y, std::vector<Path_Node*>& board, Dialogue_manager& manager, Path_Node& winner, int i, int j)
+void call_look_around(std::vector<Path_Node*>& path, bool& is_finished, Path_Node& parent, int goal_x, int goal_y, std::vector<Path_Node*>& board, Dialogue_manager& manager, Path_Node& winner, int j, int i)
 {
     if(parent.x + j < manager.current_level->LEVEL_WIDTH && parent.x + j >= 0 && parent.y + i < manager.current_level->LEVEL_HEIGHT && parent.y + i >= 0
                 && is_free(manager, parent.x + j, parent.y + i) && !(i == 0 && j == 0) && (i == 0 || j == 0))

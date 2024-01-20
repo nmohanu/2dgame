@@ -46,6 +46,7 @@ struct NPC
     sf::Vector2f goal_position;
     Path* path = nullptr;
     Walk_Event* current_event = nullptr;
+    Path_Node* next_node = nullptr;
     sf::Vector2f next_destination_vec;
     int next_destination_x;
     int next_destination_y;

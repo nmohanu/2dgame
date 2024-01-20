@@ -265,7 +265,7 @@ void Renderer::render_mouse_icon(sf::RenderWindow& window, sf::Vector2f mouse_po
             }          
         }
     }
-    if(player_inventory.draw_progress && !cursor_drawn)
+    if(player_inventory.draw_progress)
     {
         window.draw(sprite_loader.progress_bar_sprite);
         player_inventory.draw_progress = false;
