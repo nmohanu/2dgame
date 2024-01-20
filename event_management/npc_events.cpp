@@ -35,6 +35,8 @@ void Dialogue_manager::render_dialogue_frame(sf::RenderWindow& window, Sprite_lo
     }
 }
 
+
+
 void Dialogue_manager::initialize_dialogues()
 {
     std::cout << "dialogues initialized \n";
@@ -56,7 +58,7 @@ void Dialogue_manager::initialize_dialogues()
     
     this->spork_npc_dialogue2->ID = "SPORK_2";
     this->spork_npc_dialogue2->message = &message;
-    this->spork_npc_dialogue2->walk_to = new Walk_Event(sf::Vector2f(3, 0));
+    this->spork_npc_dialogue2->walk_to = new Walk_Event(sf::Vector2f(4, 6));
     this->spork_npc_dialogue2->npc = spork;
 
 

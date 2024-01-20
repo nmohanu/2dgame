@@ -10,6 +10,7 @@ void game_window::open_game_window()
     
     current_scene = &level_1;
     this->dialogue_manager->current_level = current_scene->level_1;
+    set_npc_locations(current_scene->world_offset, *dialogue_manager);
     sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Bruh", sf::Style::Titlebar | sf::Style::Close);
     window.setFramerateLimit(120);
     // window.setVerticalSyncEnabled(true);

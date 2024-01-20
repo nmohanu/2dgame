@@ -1,6 +1,8 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include "../mechanics_management/arithmetic.h"
+
 //#include "../level_management/level.h"
 
 // Temporary scale stuff, for development.

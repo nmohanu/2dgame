@@ -5,7 +5,7 @@
 
 struct game_window
 {
-    Dialogue_manager* dialogue_manager = new Dialogue_manager;
+    
 
     sf::Clock* game_clock = new sf::Clock;
 
@@ -18,6 +18,7 @@ struct game_window
     sf::Clock frame_clock;
     sf::Clock delta_clock;
     Renderer* current_scene = nullptr;
+    Dialogue_manager* dialogue_manager = new Dialogue_manager;
     Renderer level_1;
 
     int player_money = 100;
@@ -35,6 +36,7 @@ struct game_window
 
     game_window() 
     {
+        
         if (!font.loadFromFile("../Assets/fonts/pixels.ttf")) 
         {
             // handle error if the font fails to load

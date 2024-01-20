@@ -225,6 +225,7 @@ void Renderer::draw_level_tiles(sf::RenderWindow& window, sf::Vector2f mouse_pos
 void Renderer::render_npc(sf::RenderWindow& window, Sprite_loader& sprite_loader, Dialogue_manager& manager)
 {
     sf::Vector2f new_position = manager.spork->position;
+    new_position += world_offset;
     sprite_loader.old_man_npc.setPosition(new_position);
     window.draw(sprite_loader.old_man_npc);
     collision_sprites.push_back(sprite_loader.old_man_npc.getGlobalBounds());
@@ -252,7 +253,7 @@ void Renderer::render_mouse_icon(sf::RenderWindow& window, sf::Vector2f mouse_po
     }
     for(sf::Sprite sprite : render_object_sprites)
     {
-        if(sprite.getGlobalBounds().contains(mouse_position))
+        if(sprite.getGlobalBounds().contains(mouse_position) && !cursor_drawn)
         {
             if( abs(mouse_position.x - CENTER_X) < PLAYER_REACH
                 && abs(mouse_position.y - CENTER_Y) < PLAYER_REACH&& 
@@ -264,16 +265,18 @@ void Renderer::render_mouse_icon(sf::RenderWindow& window, sf::Vector2f mouse_po
             }          
         }
     }
+    if(player_inventory.draw_progress && !cursor_drawn)
+    {
+        window.draw(sprite_loader.progress_bar_sprite);
+        player_inventory.draw_progress = false;
+        cursor_drawn = true;
+    }
     if(!cursor_drawn)
     {
         sprite_loader.default_mouse_icon_sprite.setPosition(mouse_position.x-8, mouse_position.y-8);
         window.draw(sprite_loader.default_mouse_icon_sprite);
     }
-    if(player_inventory.draw_progress)
-    {
-        window.draw(sprite_loader.progress_bar_sprite);
-        player_inventory.draw_progress = false;
-    }
+    
 }
 
 

@@ -26,7 +26,7 @@ struct Path_Node
 
 struct Path
 {
-    std::vector<Path_Node*> path;
+    std::vector<Path_Node*> path = {};
 };
 
 struct Walk_Event
@@ -66,7 +66,7 @@ struct Message
 struct Dialogue
 {
     bool print_next_message = true;
-    sf::Text* message;
+    sf::Text* message = nullptr;
     bool finished = false;
     
     std::string ID;
@@ -95,15 +95,12 @@ struct Dialogue_manager
     NPC* spork = new NPC;
     std::vector<NPC*>* npcs= new std::vector<NPC*>;
 
+    
+
     Dialogue_manager()
     {
         initialize_dialogues();
         
-        spork->position_int = sf::Vector2i(3, 3);
-        //spork->position = 
-
-        spork->goal_position = spork->position;
-        npcs->push_back(spork);
     }
 
     // Dialogues
@@ -113,3 +110,4 @@ struct Dialogue_manager
 
 };
 
+                                                                        

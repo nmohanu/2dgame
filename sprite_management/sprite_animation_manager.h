@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "../mechanics_management/arithmetic.h"
 
+#include "../event_management/npc_events.h"
 
 
 

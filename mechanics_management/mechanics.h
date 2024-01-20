@@ -5,6 +5,8 @@
 
 const int TILE_SIZE = 16;
 
+void set_npc_locations(sf::Vector2f world_offset, Dialogue_manager& manager);
+
 // Save all sprites for which collision should be checked.
 
 void clean_up(std::vector<sf::FloatRect>& collision_sprites, std::vector<sf::Sprite>& clickable_sprites);
@@ -27,11 +29,13 @@ void update_npc_locations(Dialogue_manager& manager, sf::Vector2f& world_offset,
 
 sf::Vector2f get_tile_cords(int x, int y, sf::Vector2f& world_offset, Dialogue_manager& manager);
 
+sf::Vector2f get_tile_cords(int x, int y, sf::Vector2f& world_offset, Dialogue_manager& manager);
+
 void get_xy_cord(sf::Vector2f position, int& xcord, int& ycord, sf::Vector2f& world_offset, Dialogue_manager& manager);
 
 bool is_free(Dialogue_manager& manager, int x, int y);
 
-void look_around(std::vector<Path_Node*>& path, bool& is_finished, Path_Node& parent, int goal_x, int goal_y, std::vector<Path_Node*>& board, Dialogue_manager& manager, Path_Node& winner);
+bool look_around(std::vector<Path_Node*>& path, bool& is_finished, Path_Node& parent, int goal_x, int goal_y, std::vector<Path_Node*>& board, Dialogue_manager& manager, Path_Node& winner);
 
 // Hotbar render positions.
 const sf::Vector2f hotbar_item_1_pos(SCREEN_WIDTH/2-(154)*INV_SCALE/2 + 1*INV_SCALE, SCREEN_HEIGHT-18*INV_SCALE - 20);

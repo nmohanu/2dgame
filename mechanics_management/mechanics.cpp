@@ -2,6 +2,13 @@
 #include <iostream>
 #include <cmath>
 
+void set_npc_locations(sf::Vector2f world_offset, Dialogue_manager& manager)
+{
+    manager.spork->position_int = sf::Vector2i(5, 3);
+    manager.spork->position = get_tile_cords(manager.spork->position_int.x, manager.spork->position_int.y, world_offset, manager);
+    manager.spork->goal_position = manager.spork->position;
+    manager.npcs->push_back(manager.spork);
+}
 
 void clean_up(std::vector<sf::FloatRect>& collision_sprites, std::vector<sf::Sprite>& clickable_sprites)
 {
@@ -281,16 +288,17 @@ sf::Vector2f get_tile_cords(int x, int y, sf::Vector2f& world_offset, Dialogue_m
     return position;
 }
 
-void get_xy_cord(sf::Vector2f position, int& xcord, int& ycord, sf::Vector2f& world_offset, Dialogue_manager& manager)
+sf::Vector2i get_xy_cord(sf::Vector2f position, sf::Vector2f& world_offset, Dialogue_manager& manager)
 {
 
     // Subtract the world offset
     position -= world_offset;
 
     // Reverse the scaling and translation operations
-    xcord = (float)(position.x - (SCREEN_WIDTH - (TILE_SIZE * TILE_SIZE * SCALE_FACTOR_X)) / 2 - manager.current_level->LEVEL_WIDTH * SCALE_FACTOR_X * TILE_SIZE / 2) / (SCALE_FACTOR_X * TILE_SIZE);
-    ycord = (float)(position.y - (SCREEN_HEIGHT - (TILE_SIZE * TILE_SIZE * SCALE_FACTOR_Y)) / 2 - manager.current_level->LEVEL_HEIGHT * SCALE_FACTOR_Y * TILE_SIZE / 2) / (SCALE_FACTOR_Y * TILE_SIZE);
+    int xcord = (float)(position.x - (SCREEN_WIDTH - (TILE_SIZE * TILE_SIZE * SCALE_FACTOR_X)) / 2 - manager.current_level->LEVEL_WIDTH * SCALE_FACTOR_X * TILE_SIZE / 2) / (SCALE_FACTOR_X * TILE_SIZE);
+    int ycord = (float)(position.y - (SCREEN_HEIGHT - (TILE_SIZE * TILE_SIZE * SCALE_FACTOR_Y)) / 2 - manager.current_level->LEVEL_HEIGHT * SCALE_FACTOR_Y * TILE_SIZE / 2) / (SCALE_FACTOR_Y * TILE_SIZE);
 
+    return sf::Vector2i(xcord, ycord);
 }
 
 void update_npc_locations(Dialogue_manager& manager, sf::Vector2f& world_offset, float delta_time)
@@ -327,7 +335,7 @@ void update_npc_locations(Dialogue_manager& manager, sf::Vector2f& world_offset,
             float move_distance = 20.f * PLAYER_SPEED * delta_time;
             if(&npc->next_destination_vec != nullptr)
             {
-
+                
                 if(std::abs(npc->next_destination_vec.x - npc->position.x) > move_distance)
                 {
                     npc->position.x += (npc->next_destination_vec.x > npc->position.x) ? move_distance : -move_distance;
@@ -348,6 +356,9 @@ void update_npc_locations(Dialogue_manager& manager, sf::Vector2f& world_offset,
                     }
                 }
             }
+
+            npc->position_int = get_xy_cord(npc->position, world_offset, manager);
+            std::cout << "X: " << npc->position_int.x << " Y: " << npc->position_int.y << '\n';
         }
     }
 }
@@ -380,6 +391,9 @@ std::vector<Path_Node*> generate_npc_path(sf::Vector2f& current_position, sf::Ve
     starting_node->x = start_x;
     starting_node->y = start_y;
     path.push_back(starting_node);
+    sf::Vector2f zero_vec(0,0);
+
+    // sf::Vector2f negative_world_offset = sf::Vector2f(world_offset.x * -1, world_offset.y *- 1);
 
     for(int y = 0; y < manager.current_level->LEVEL_HEIGHT; y++)
     {
@@ -408,8 +422,9 @@ std::vector<Path_Node*> generate_npc_path(sf::Vector2f& current_position, sf::Ve
         {
             while (walk->parent != nullptr && counter < 100)
             {
+                
                 Path_Node* new_walk = new Path_Node();
-                new_walk->position = get_tile_cords(walk->x, walk->y, world_offset, manager);
+                new_walk->position = get_tile_cords(walk->x, walk->y, zero_vec, manager);
                 new_walk->x = walk->x;
                 new_walk->y = walk->y;
                 new_walk->is_visited = false;
@@ -418,7 +433,6 @@ std::vector<Path_Node*> generate_npc_path(sf::Vector2f& current_position, sf::Ve
                 walk = walk->parent;
             }
         }
-        
     }
     for(Path_Node* node : path)
     {
@@ -430,57 +444,94 @@ std::vector<Path_Node*> generate_npc_path(sf::Vector2f& current_position, sf::Ve
         if(node != nullptr)
             delete node;
     }
-
+    
     npc.goal_position = get_tile_cords(npc.goal_position.x, npc.goal_position.y, world_offset, manager);
-
     return winning_path;
 }
 
-void look_around(std::vector<Path_Node*>& path, bool& is_finished, Path_Node& parent, int goal_x, int goal_y, std::vector<Path_Node*>& board, Dialogue_manager& manager, Path_Node& winner)
+void call_look_around(std::vector<Path_Node*>& path, bool& is_finished, Path_Node& parent, int goal_x, int goal_y, std::vector<Path_Node*>& board, Dialogue_manager& manager, Path_Node& winner, int i, int j)
 {
-    
-    for(int i = -1; i < 1; i++)
+    if(parent.x + j < manager.current_level->LEVEL_WIDTH && parent.x + j >= 0 && parent.y + i < manager.current_level->LEVEL_HEIGHT && parent.y + i >= 0
+                && is_free(manager, parent.x + j, parent.y + i) && !(i == 0 && j == 0) && (i == 0 || j == 0))
     {
-        for(int j = -1; j < 1; j++)
-        {
-            if(parent.x + j <= manager.current_level->LEVEL_WIDTH && parent.x + j >= 0 && parent.y + i <= manager.current_level->LEVEL_HEIGHT && parent.y + i >= 0
-                && is_free(manager, parent.x + j, parent.y + i))
-                {
-                    // TO DO: CHECK IF X AND Y ARE ALREADY CHECKED.
-                Path_Node* node = new Path_Node();
+    Path_Node* node = new Path_Node();
+    node->parent = &parent;
+    
+    node->x = node->parent->x + j;
+    node->y = node->parent->y + i;
 
-                if(&parent != nullptr)
-                {
-                    node->parent = &parent;
-                
-                    node->x = node->parent->x + j;
-                    node->y = node->parent->y + i;
-                }
-                if(node->x == goal_x && node->y == goal_y)
-                {
-                    winner.x = node->x;
-                    winner.y = node->y;
-                    winner.parent = node->parent;
-                    return;
-                }
-                bool is_visited = false;
-                Path_Node* board_node;
-                for(Path_Node* check_node : board)
-                {
-                    if(check_node->x == node->x && check_node->y == node->y)
-                    {
-                        board_node = check_node;
-                    }
-                }
-                
-                if(board_node != nullptr && !board_node->is_visited)
-                {
-                    node->is_visited = true;
-                    board_node->is_visited = true;
-                    path.push_back(node);
-                    look_around(path, is_finished, *node, goal_x, goal_y, board, manager, winner);
-                }
-            }
+    if(node->x == goal_x && node->y == goal_y)
+    {
+        winner.x = node->x;
+        winner.y = node->y;
+        winner.parent = node->parent;
+        is_finished = true;
+        return; 
+    }
+    bool is_visited = false;
+    Path_Node* board_node = nullptr;
+    for(Path_Node* check_node : board)
+    {
+        if(check_node->x == node->x && check_node->y == node->y)
+        {
+            board_node = check_node;
+        }
+    }
+    
+    if(board_node != nullptr && !board_node->is_visited)
+    {
+        node->is_visited = true;
+        board_node->is_visited = true;
+        path.push_back(node);
+        look_around(path, is_finished, *node, goal_x, goal_y, board, manager, winner);
+    }
+}
+}
+
+bool look_around(std::vector<Path_Node*>& path, bool& is_finished, Path_Node& parent, int goal_x, int goal_y, std::vector<Path_Node*>& board, Dialogue_manager& manager, Path_Node& winner)
+{
+
+    int dx = goal_x - parent.x;
+    int dy = goal_y - parent.y;
+
+    if(std::abs(dx) > std::abs(dy))
+    {
+        // Prioritize x.
+        if(dx < 0)
+        {
+            // Prioritize left.
+            call_look_around(path, is_finished, parent, goal_x, goal_y, board, manager, winner, -1, 0);
+            call_look_around(path, is_finished, parent, goal_x, goal_y, board, manager, winner, 0, 1);
+            call_look_around(path, is_finished, parent, goal_x, goal_y, board, manager, winner, 0, -1);
+            call_look_around(path, is_finished, parent, goal_x, goal_y, board, manager, winner, 1, 0);
+        }
+        else
+        {
+            // Prioritize right.
+            call_look_around(path, is_finished, parent, goal_x, goal_y, board, manager, winner, 1, 0);
+            call_look_around(path, is_finished, parent, goal_x, goal_y, board, manager, winner, 0, 1);
+            call_look_around(path, is_finished, parent, goal_x, goal_y, board, manager, winner, 0, -1);
+            call_look_around(path, is_finished, parent, goal_x, goal_y, board, manager, winner, -1, 0);
+        }
+    }
+    else
+    {
+        // prioritize y.
+        if(dy < 0)
+        {
+            // Prioritize up.
+            call_look_around(path, is_finished, parent, goal_x, goal_y, board, manager, winner, 0, -1);
+            call_look_around(path, is_finished, parent, goal_x, goal_y, board, manager, winner, 1, 0);
+            call_look_around(path, is_finished, parent, goal_x, goal_y, board, manager, winner, -1, 0);
+            call_look_around(path, is_finished, parent, goal_x, goal_y, board, manager, winner, 0, 1);
+        }
+        else
+        {
+            // Prioritize down.
+            call_look_around(path, is_finished, parent, goal_x, goal_y, board, manager, winner, 0, 1);
+            call_look_around(path, is_finished, parent, goal_x, goal_y, board, manager, winner, 1, 0);
+            call_look_around(path, is_finished, parent, goal_x, goal_y, board, manager, winner, -1, 0);
+            call_look_around(path, is_finished, parent, goal_x, goal_y, board, manager, winner, 0, -1);
         }
     }
 }
