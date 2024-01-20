@@ -225,7 +225,6 @@ void Renderer::draw_level_tiles(sf::RenderWindow& window, sf::Vector2f mouse_pos
 void Renderer::render_npc(sf::RenderWindow& window, Sprite_loader& sprite_loader, Dialogue_manager& manager)
 {
     sf::Vector2f new_position = manager.spork->position;
-    new_position += world_offset;
     sprite_loader.old_man_npc.setPosition(new_position);
     window.draw(sprite_loader.old_man_npc);
     collision_sprites.push_back(sprite_loader.old_man_npc.getGlobalBounds());

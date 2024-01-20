@@ -42,6 +42,7 @@ struct NPC
 {
     std::string name;
     sf::Vector2f position;
+    sf::Vector2i position_int;
     sf::Vector2f goal_position;
     Path* path = nullptr;
     Walk_Event* current_event = nullptr;
@@ -98,7 +99,9 @@ struct Dialogue_manager
     {
         initialize_dialogues();
         
-        spork->position = sf::Vector2f(CENTER_X-(16 * SCALE_FACTOR_X)/2 + 24*SCALE_FACTOR_X, CENTER_Y-(16 * SCALE_FACTOR_X)/2);
+        spork->position_int = sf::Vector2i(3, 3);
+        //spork->position = 
+
         spork->goal_position = spork->position;
         npcs->push_back(spork);
     }

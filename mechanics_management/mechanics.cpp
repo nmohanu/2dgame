@@ -303,7 +303,11 @@ void update_npc_locations(Dialogue_manager& manager, sf::Vector2f& world_offset,
             {
                 npc->path = new Path;
                 npc->path->path = generate_npc_path(npc->position, npc->goal_position, manager, *npc, world_offset);
-                npc->next_destination_vec = npc->path->path[npc->path->path.size()-1]->position;
+                if(&npc->path != nullptr && &npc->path->path != nullptr && npc->path->path[0]!= nullptr)
+                {
+                    npc->next_destination_vec = npc->path->path[npc->path->path.size()-1]->position;
+                }
+                
                 npc->next_destination_x = npc->path->path[npc->path->path.size()-1]->x;
                 npc->next_destination_y = npc->path->path[npc->path->path.size()-1]->y;
             }
@@ -323,7 +327,6 @@ void update_npc_locations(Dialogue_manager& manager, sf::Vector2f& world_offset,
             float move_distance = 20.f * PLAYER_SPEED * delta_time;
             if(&npc->next_destination_vec != nullptr)
             {
-                sf::Vector2f vec_new = npc->next_destination_vec;
 
                 if(std::abs(npc->next_destination_vec.x - npc->position.x) > move_distance)
                 {
@@ -356,21 +359,13 @@ bool cast_collision(sf::Vector2f& current_position)
 
 std::vector<Path_Node*> generate_npc_path(sf::Vector2f& current_position, sf::Vector2f& goal_position, Dialogue_manager& manager, NPC& npc, sf::Vector2f& world_offset)
 {
-    
-    bool not_finished = true;
-    int current_x;
-    int current_y;
-
-    int start_x;
-    int start_y;
+    int start_x = npc.position_int.x;
+    int start_y = npc.position_int.y;
     
     int goal_x = npc.current_event->walk_to_pos.x;
     int goal_y = npc.current_event->walk_to_pos.y;
 
-    get_xy_cord(current_position, start_x, start_y, world_offset, manager);
-
-    current_x = start_x;
-    current_y = start_y;
+    // get_xy_cord(current_position, start_x, start_y, world_offset, manager);
 
     int counter = 0;
 
